@@ -34,15 +34,16 @@ def DfReadDataFile(filename):
 
     """
 # =============================================================================
-# Load the Excel file
+# Load the Excel sheet
 # and check that all required worksheets exist
 # =============================================================================
     wb = load_workbook(filename)
     sheetNames = wb.sheetnames
+    sheetNamesU = [each_string.upper() for each_string in sheetNames]
     expectedNames = ["NL", "LL", "TRUTH"]
-    msg = ("Excel workbook has missing or incorrectly named sheets. "
-           "These are the correct names: ") + ", ".join(expectedNames)
-    myExit(sheetNames, expectedNames, msg)
+    msg = "Excel workbook is missing at least one of NL, LL or "
+    "TRUTH worksheets."
+    myExit(sheetNamesU, expectedNames, msg)
 
 # =============================================================================
 # Load the TRUTH worksheet
@@ -52,58 +53,45 @@ def DfReadDataFile(filename):
     data = ws.values
 
     columnNames = next(data)[0:]
+    columnNamesU = [each_string.upper() for each_string in columnNames]
     expectedNames = ['CaseID', 'LesionID', 'Weight']
-    msg = ("Excel worksheet TRUTH has missing or incorrect "
-           "required column names. These are the correct names: ") + ", ".join(expectedNames)
-    myExit(columnNames, expectedNames, msg)
+    expectedNamesU = [each_string.upper() for each_string in expectedNames]
+    msg = ("Excel workbook TRUTH sheet has missing or incorrect "
+           "required column names. These are the correct names: "
+           " 'CaseID', 'LesionID', 'Weight'")
+    myExit(columnNamesU, expectedNamesU, msg)
 
     # Extract the data minus the column names
-    dfTruth = pd.DataFrame(data, columns=columnNames)
+    df = pd.DataFrame(data, columns=columnNames)
 
     # Check for missing cells
-    if dfTruth.isnull().values.any():
+    if df.isnull().values.any():
         sys.exit("Missing cell(s) encountered in TRUTH worksheet")
 
-    dfTruth["TruthID"] = (dfTruth["LesionID"] > 0).astype(int)
+    df["TruthID"] = (df["LesionID"] > 0).astype(int)
     # sort on "TruthID" & "CaseID" fields, putting non-diseased cases first
-    dfTruth = dfTruth.sort_values(["TruthID", "CaseID"])
-    caseIDCol = dfTruth["CaseID"]
-    lesionIDCol = dfTruth["LesionID"]
-    weightCol = dfTruth["Weight"]
+    df = df.sort_values(["TruthID", "CaseID"])
+    caseIDCol = df["CaseID"]
+    lesionIDCol = df["LesionID"]
+    weightCol = df["Weight"]
     L = len(caseIDCol)
-    allCases = np.unique(np.array(dfTruth["CaseID"]))
-    normalCases = dfTruth.loc[dfTruth['LesionID'] == 0]["CaseID"]
+    allCases = np.unique(np.array(df["CaseID"]))
+    normalCases = df.loc[df['LesionID'] == 0]["CaseID"]
     K1 = len(normalCases)
-    abnormalCases = dfTruth.loc[dfTruth['LesionID'] == 1]["CaseID"]
+    abnormalCases = df.loc[df['LesionID'] == 1]["CaseID"]
     K2 = len(abnormalCases)
     K = K1 + K2
 
     # calculate lesion perCase
-    x = pd.Series(dfTruth["CaseID"])
+    x = pd.Series(df["CaseID"])
     x = x.isin(abnormalCases)
-    x = pd.Series(dfTruth["CaseID"][x])
+    x = pd.Series(df["CaseID"][x])
     x = x.value_counts()
     perCase = x.sort_index()
 
     maxLL = max(perCase)
     relWeights = [1/maxLL] * maxLL
  
-# =============================================================================
-# Check NL shee and check that all column names exits
-# =============================================================================
-    ws = wb['NL']
-    data = ws.values
-
-    columnNames = next(data)[0:]
-    expectedNames = ['ReaderID', 'ModalityID', 'CaseID', 'NLRating']
-    msg = ("Excel worksheet NL has missing or incorrect "
-           "required column names. These are the correct names: ") + ", ".join(expectedNames)
-
-    myExit(columnNames, expectedNames, msg)
-       
-       
-    return(dfTruth)
-
-def testDfReadDataFile (args):
-    for filename in args:
-        DfReadDataFile(filename)
+    
+ 
+    return(df)
