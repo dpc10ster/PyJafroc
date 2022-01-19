@@ -13,14 +13,6 @@ def myExit(sheetNames, expectedNames, msg):
         sys.exit(msg)
 
 
-# =============================================================================
-# Test with good and bad files
-# filename = 'extdata/toyFiles/FROCfrocCr.xlsx'
-# filename = 'extdata/toyFiles/FROC/bad/frocCr-01.xlsx'
-# filename = 'extdata/toyFiles/FROC/bad/frocCr-02.xlsx'
-# =============================================================================
-
-
 def DfReadDataFile(filename):
     """
     Parameters
@@ -32,10 +24,6 @@ def DfReadDataFile(filename):
     dataset object
 
     """
-# =============================================================================
-# Load the Excel sheet
-# and check that all required worksheets exist
-# =============================================================================
     wb = load_workbook(filename)
     sheetNames = wb.sheetnames
     expectedNames=["NL","LL","TRUTH"]
@@ -43,10 +31,6 @@ def DfReadDataFile(filename):
     "TRUTH worksheets."
     myExit(sheetNames,expectedNames,msg)
 
-# =============================================================================
-# Load the TRUTH worksheet
-# and check that all required columnNames exist
-# =============================================================================
     ws = wb['TRUTH']
     data = ws.values
 
@@ -57,14 +41,11 @@ def DfReadDataFile(filename):
         " 'CaseID', 'LesionID', 'Weight'")
     myExit(columnNames,expectedNames,msg)
 
-# Extract the data minus the column names
     df = pd.DataFrame(data, columns=columnNames)
     
-# Check for missing cells
     if df.isnull().values.any():
         sys.exit("Missing cell(s) encountered in TRUTH worksheet")
         
-    # sort on LesionID field, putting non-diseased cases first
     df["TruthID"]=(df["LesionID"] > 0).astype(int)
     df = df.sort_values(["TruthID", "CaseID"])
     caseIDCol = df["CaseID"]
