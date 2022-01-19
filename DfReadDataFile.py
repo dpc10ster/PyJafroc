@@ -14,7 +14,7 @@ def myExit(sheetNames, expectedNames, msg):
 
 
 # =============================================================================
-# Test with good and bad files
+# Test with good and 2 bad files
 # filename = 'extdata/toyFiles/FROCfrocCr.xlsx'
 # filename = 'extdata/toyFiles/FROC/bad/frocCr-01.xlsx'
 # filename = 'extdata/toyFiles/FROC/bad/frocCr-02.xlsx'
@@ -38,10 +38,10 @@ def DfReadDataFile(filename):
 # =============================================================================
     wb = load_workbook(filename)
     sheetNames = wb.sheetnames
-    expectedNames=["NL","LL","TRUTH"]
+    expectedNames = ["NL", "LL", "TRUTH"]
     msg = "Excel workbook is missing at least one of NL, LL or "
     "TRUTH worksheets."
-    myExit(sheetNames,expectedNames,msg)
+    myExit(sheetNames, expectedNames, msg)
 
 # =============================================================================
 # Load the TRUTH worksheet
@@ -53,39 +53,38 @@ def DfReadDataFile(filename):
     columnNames = next(data)[0:]
     expectedNames = ['CaseID', 'LesionID', 'Weight']
     msg = ("Excel workbook TRUTH sheet has missing or incorrect "
-        "required column names. These are the correct names: "
-        " 'CaseID', 'LesionID', 'Weight'")
-    myExit(columnNames,expectedNames,msg)
+           "required column names. These are the correct names: "
+           " 'CaseID', 'LesionID', 'Weight'")
+    myExit(columnNames, expectedNames, msg)
 
 # Extract the data minus the column names
     df = pd.DataFrame(data, columns=columnNames)
-    
+
 # Check for missing cells
     if df.isnull().values.any():
         sys.exit("Missing cell(s) encountered in TRUTH worksheet")
-        
-    # sort on LesionID field, putting non-diseased cases first
-    df["TruthID"]=(df["LesionID"] > 0).astype(int)
+
+    df["TruthID"] = (df["LesionID"] > 0).astype(int)
+    # sort on "TruthID" & "CaseID" fields, putting non-diseased cases first
     df = df.sort_values(["TruthID", "CaseID"])
     caseIDCol = df["CaseID"]
     lesionIDCol = df["LesionID"]
     weightCol = df["Weight"]
-    L=len(caseIDCol)
+    L = len(caseIDCol)
     allCases = np.unique(np.array(df["CaseID"]))
     normalCases = df.loc[df['LesionID'] == 0]["CaseID"]
-    K1=len(normalCases)
+    K1 = len(normalCases)
     abnormalCases = df.loc[df['LesionID'] == 1]["CaseID"]
-    K2=len(abnormalCases)
+    K2 = len(abnormalCases)
     K = K1 + K2
-    
+
     # calculate lesion perCase
-    x=pd.Series(df["CaseID"])
-    x=x.isin(abnormalCases)
-    x=pd.Series(df["CaseID"][x])
-    x=x.value_counts()
-    perCase=x.sort_index()
-    
+    x = pd.Series(df["CaseID"])
+    x = x.isin(abnormalCases)
+    x = pd.Series(df["CaseID"][x])
+    x = x.value_counts()
+    perCase = x.sort_index()
+
     # test code with unsorted file, where CaseID is not neatly ordered
-    
-    
+
     return(df)
