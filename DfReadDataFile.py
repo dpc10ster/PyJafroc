@@ -20,6 +20,12 @@ def myExit(sheetNames, expectedNames, msg):
 # filename = 'extdata/toyFiles/FROC/bad/frocCr-02.xlsx' unordered TRUTH
 # filename = 'extdata/toyFiles/FROC/bad/frocCr-03.xlsx' unexpected case
 # filename = 'extdata/toyFiles/FROC/bad/frocCr-04.xlsx' normal case in LL
+# filename = 'extdata/toyFiles/FROC/bad/frocCr-05.xlsx' do: numeric format
+# filename = 'extdata/toyFiles/FROC/bad/frocCr2BlankRows.xlsx'
+# filename = 'extdata/toyFiles/FROC/bad/frocCrNonCharInReaderID.xlsx'
+# filename = 'extdata/toyFiles/FROC/bad/incorrectCaseIDsInTP.xlsx' why missing?
+# filename = 'extdata/toyFiles/FROC/bad/incorrectCaseIDsInTP2.xlsx'
+# filename = "extdata/toyFiles/FROC/bad/incoCaseIDsInTP.xlsx"
 # fn = ['extdata/toyFiles/FROC/frocCr.xlsx',
 # 'extdata/toyFiles/FROC/bad/frocCr-01.xlsx',
 # 'extdata/toyFiles/FROC/bad/frocCr-02.xlsx',
@@ -56,8 +62,8 @@ def DfReadDataFile(filename):
 # =============================================================================
     ws = wb['TRUTH']
     data = ws.values
-
     columnNames = next(data)[0:]
+
     expectedNames = ['CaseID', 'LesionID', 'Weight']
     msg = ("Excel worksheet TRUTH has missing or incorrect "
            "required column names. "
@@ -100,8 +106,8 @@ def DfReadDataFile(filename):
 # =============================================================================
     ws = wb['NL']
     data = ws.values
-
     columnNames = next(data)[0:]
+
     expectedNames = ['ReaderID', 'ModalityID', 'CaseID', 'NLRating']
     msg = ("Excel worksheet NL has missing or incorrect "
            "required column names. "
@@ -124,8 +130,8 @@ def DfReadDataFile(filename):
 # =============================================================================
     ws = wb['LL']
     data = ws.values
-
     columnNames = next(data)[0:]
+    
     expectedNames = ['ReaderID', 'ModalityID', 'CaseID', 
                      'LesionID', 'LLRating']
     msg = ("Excel worksheet LL has missing or incorrect "
@@ -140,6 +146,7 @@ def DfReadDataFile(filename):
     # why do I need to convert to numeric? the cell with 1 otherwise
     # is read as a string
     if bool(set(pd.to_numeric(dfLL["CaseID"])) & set(normalCases)):
+    # if bool(set(dfLL["CaseID"]) & set(normalCases)):
         sys.exit("normal cases cannot occur in LL sheet")
 
     # Check for missing cells
