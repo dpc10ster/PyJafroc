@@ -7,17 +7,12 @@ from openpyxl import load_workbook
 warnings.simplefilter("ignore")
 
 
-def myExit(sheetNames, expectedNames, msg):
-    check = all(item in sheetNames for item in expectedNames)
-    if not check:
-        sys.exit(msg)
-
 
 # =============================================================================
 # Tested with 1 good and 2 bad files
 # filename = 'extdata/toyFiles/FROC/frocCr.xlsx'
-# filename = 'extdata/toyFiles/FROC/bad/frocCr-01.xlsx' unordered TRUTH
-# filename = 'extdata/toyFiles/FROC/bad/frocCr-02.xlsx' unordered TRUTH
+# filename = 'extdata/toyFiles/FROC/bad/frocCr-01.xlsx'
+# filename = 'extdata/toyFiles/FROC/bad/frocCr-02.xlsx'
 # filename = 'extdata/toyFiles/FROC/bad/frocCr-03.xlsx' unexpected case
 # filename = 'extdata/toyFiles/FROC/bad/frocCr-04.xlsx' normal case in LL
 # fn = ['extdata/toyFiles/FROC/frocCr.xlsx',
@@ -39,37 +34,15 @@ def DfReadDataFile(filename):
     dataset object
 
     """
-# =============================================================================
-# Load the Excel file
-# and check that all required worksheets exist
-# =============================================================================
     wb = load_workbook(filename)
     sheetNames = wb.sheetnames
-    expectedNames = ["NL", "LL", "TRUTH"]
-    msg = ("Excel workbook has missing or incorrectly named sheets. "
-           "These are the correct names: ") + ", ".join(expectedNames)
-    myExit(sheetNames, expectedNames, msg)
 
-# =============================================================================
-# Load the TRUTH worksheet
-# and check that all required columnNames exist
-# =============================================================================
     ws = wb['TRUTH']
     data = ws.values
-
     columnNames = next(data)[0:]
-    expectedNames = ['CaseID', 'LesionID', 'Weight']
-    msg = ("Excel worksheet TRUTH has missing or incorrect "
-           "required column names. "
-           "These are the correct names: ") + ", ".join(expectedNames)
-    myExit(columnNames, expectedNames, msg)
 
     # Extract the data minus the column names
     dfTruth = pd.DataFrame(data, columns=columnNames)
-
-    # Check for missing cells
-    if dfTruth.isnull().values.any():
-        sys.exit("Missing cell(s) encountered in TRUTH worksheet")
 
     dfTruth["TruthID"] = (dfTruth["LesionID"] > 0).astype(int)
     # sort on "TruthID" & "CaseID" fields, putting non-diseased cases first
@@ -94,52 +67,20 @@ def DfReadDataFile(filename):
 
     maxLL = max(perCase)
     relWeights = [1/maxLL] * maxLL
- 
-# =============================================================================
-# Read NL sheet and check that all column names exits
-# =============================================================================
-    ws = wb['NL']
-    data = ws.values
-
-    columnNames = next(data)[0:]
-    expectedNames = ['ReaderID', 'ModalityID', 'CaseID', 'NLRating']
-    msg = ("Excel worksheet NL has missing or incorrect "
-           "required column names. "
-           "These are the correct names: ") + ", ".join(expectedNames)
-    myExit(columnNames, expectedNames, msg)
-
-    # Extract the data minus the column names
-    dfNL = pd.DataFrame(data, columns=columnNames)
-
-    # Check for missing cells
-    if dfNL.isnull().values.any():
-        sys.exit("Missing cell(s) encountered in NL worksheet")
-    nlReaderIDCol = dfNL["ReaderID"]
-    nlModalityIDCol = dfNL["ModalityID"]
-    nlCaseIDCol = dfNL["CaseID"]
-    nlRatingsCol = dfNL["NLRating"]
 
 # =============================================================================
 # Read LL sheet and check that all column names exits
 # =============================================================================
     ws = wb['LL']
     data = ws.values
-
     columnNames = next(data)[0:]
-    expectedNames = ['ReaderID', 'ModalityID', 'CaseID', 
-                     'LesionID', 'LLRating']
-    msg = ("Excel worksheet LL has missing or incorrect "
-           "required column names. "
-           "These are the correct names: ") + ", ".join(expectedNames)
-    myExit(columnNames, expectedNames, msg)
+
 
     # Extract the data minus the column names
     dfLL = pd.DataFrame(data, columns=columnNames)
     
     # normal cases cannot occur in LL sheet
-    # why do I need to convert to numeric? the cell with 1 otherwise
-    # is read as a string
-    if bool(set(pd.to_numeric(dfLL["CaseID"])) & set(normalCases)):
+    if bool(set(dfLL["CaseID"]) & set(normalCases)):
         sys.exit("normal cases cannot occur in LL sheet")
 
     # Check for missing cells
