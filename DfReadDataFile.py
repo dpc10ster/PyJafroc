@@ -171,7 +171,23 @@ def DfReadDataFile(filename):
     llCaseIDCol = dfLL["CaseID"]
     llLesionIDCol = dfLL["LesionID"]
     llRatingsCol = dfLL["LLRating"]
+       
+    modalities = (llModalityIDCol.append(nlModalityIDCol)).unique()
+    I = len(modalities)
 
+    readers = (llReaderIDCol.append(nlReaderIDCol)).unique()
+    J = len(readers)
+    
+    maxNL = dfNL.groupby(['ReaderID',
+                          'ModalityID', 
+                          'CaseID']).transform(len).max()[0]
+    
+    maxLL = max(perCase)
+    
+    NegInf = -2000
+    NL = np.full((I,J,K,maxNL), NegInf)
+    LL = np.full((I,J,K,maxLL), NegInf)
+    
     return(dfTruth)
 
 
