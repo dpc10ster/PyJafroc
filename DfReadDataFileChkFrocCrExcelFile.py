@@ -55,6 +55,13 @@ def DfCheck(filename):
     if dfTruth.isnull().values.any():
         sys.exit("Missing cell(s) encountered in TRUTH worksheet")
 
+    AllCases = np.unique(dfTruth["CaseID"])
+    NormalCases = dfTruth.loc[dfTruth['LesionID'] == 0]["CaseID"]
+    K1 = len(NormalCases)
+    AbnormalCases = dfTruth.loc[dfTruth['LesionID'] == 1]["CaseID"]
+    K2 = len(AbnormalCases)
+    K = K1 + K2
+    
     ws = wb['NL']
     data = ws.values
     columnNames = next(data)[0:]
@@ -79,6 +86,14 @@ def DfCheck(filename):
     if dfLL.isnull().values.any():
         sys.exit("Missing cell(s) encountered in LL worksheet")
 
+    # check for occurence of normal cases in LL sheet
+    x1 = dfLL["CaseID"]
+    x1 = set(x1.astype(int))
+    x2 = NormalCases
+    x2 = set(x2.astype(int))
+    if len(x1 & x2) != 0:
+        sys.exit("Normal cases encountered in LL worksheet")
+        
 # =============================================================================
 # TODO: Add checks for duplicate rows in LL sheet
 # =============================================================================
@@ -208,9 +223,9 @@ def DfReadDataFile(filename):
     # construct truthTabiLeStr
     truthTableStr = np.full((I,J,K,maxLL+1), 0)
     for indxCsId in range(len(dfTruth["CaseID"])):
-        k = (AllCases == dfTruth["CaseID"][indxCsId])
+        c = (AllCases == dfTruth["CaseID"][indxCsId])
         l = dfTruth["LesionID"][indxCsId]
-        truthTableStr[:, :, k, l] = 1
+        truthTableStr[:, :, c, l] = 1
     
 # =============================================================================
 #         
@@ -229,6 +244,7 @@ def DfReadDataFile(filename):
         i = (modalities == dfNL["ModalityID"][indxNl])
         j = (readers == dfNL["ReaderID"][indxNl])
         c = (AllCases == dfNL["CaseID"][indxNl])
+
 # =============================================================================
 #         if dfNL["CaseID"][indxNl] in NormalCases:
 #             tt2 = truthTableStr[i,j,c,1] 
@@ -241,7 +257,7 @@ def DfReadDataFile(filename):
         for l in range(sum(matchCount)):
             if NL[i, j, c, l] == -np.inf: 
                 NL[i, j, c, l] = dfNL["NLRating"][indxNl + l]
-            truthTableStr[:, :, c, l] = 1
+            truthTableStr[i, j, c, l] = 1
 
 
 # =============================================================================
@@ -334,9 +350,9 @@ def DfReadDataFile(filename):
                       (dfLL["ModalityID"] == dfLL["ModalityID"][indxLl]) & 
                       (dfLL["ReaderID"] == dfLL["ReaderID"][indxLl]))
         for l in range(sum(matchCount)):
-            if LL[i, j, c, l] == -np.inf: 
+            if LL[i, j, c, l] == -np.inf:
                 LL[i, j, c, l] = dfLL["LLRating"][indxLl + l]
-            truthTableStr[i, j, k, l] = 1
+            truthTableStr[i, j, np.append([False]*3, c), l] = 1
     
     
 # =============================================================================
