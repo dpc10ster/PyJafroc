@@ -15,24 +15,24 @@ def myExit(sheetNames, expectedNames, msg):
 # =============================================================================
 # Put all checks of the Excel file in here
 # =============================================================================
-def DfCheck(filename):
+def DfCheck(FileName):
 
 # =============================================================================
 # Tested with 1 good and 2 bad files
-# filename = 'extdata/toyFiles/FROC/frocCr.xlsx'
-# filename = 'extdata/toyFiles/FROC/bad/frocCr-01.xlsx' unordered TRUTH
-# filename = 'extdata/toyFiles/FROC/bad/frocCr-02.xlsx' unordered TRUTH
-# filename = 'extdata/toyFiles/FROC/bad/frocCr-03.xlsx' incorrect sheet names
-# filename = 'extdata/toyFiles/FROC/bad/frocCr-04.xlsx' normal case in LL
-# filename = 'extdata/toyFiles/FROC/bad/frocCr-05.xlsx' do: numeric format
-# filename = 'extdata/toyFiles/FROC/bad/frocCr2BlankRows.xlsx'
-# filename = 'extdata/toyFiles/FROC/bad/frocCrNonCharInReaderID.xlsx'
-# filename = 'extdata/toyFiles/FROC/bad/incorrectCaseIDsInLL.xlsx' why missing?
-# filename = 'extdata/toyFiles/FROC/bad/incorrectCaseIDsInLL2.xlsx'
-# filename = "extdata/toyFiles/FROC/bad/incoCaseIDsInTP.xlsx"
+# FileName = 'extdata/toyFiles/FROC/frocCr.xlsx'
+# FileName = 'extdata/toyFiles/FROC/bad/frocCr-01.xlsx' unordered TRUTH
+# FileName = 'extdata/toyFiles/FROC/bad/frocCr-02.xlsx' unordered TRUTH
+# FileName = 'extdata/toyFiles/FROC/bad/frocCr-03.xlsx' incorrect sheet names
+# FileName = 'extdata/toyFiles/FROC/bad/frocCr-04.xlsx' normal case in LL
+# FileName = 'extdata/toyFiles/FROC/bad/frocCr-05.xlsx' do: numeric format
+# FileName = 'extdata/toyFiles/FROC/bad/frocCr2BlankRows.xlsx'
+# FileName = 'extdata/toyFiles/FROC/bad/frocCrNonCharInReaderID.xlsx'
+# FileName = 'extdata/toyFiles/FROC/bad/incorrectCaseIDsInLL.xlsx' why missing?
+# FileName = 'extdata/toyFiles/FROC/bad/incorrectCaseIDsInLL2.xlsx'
+# FileName = "extdata/toyFiles/FROC/bad/incoCaseIDsInTP.xlsx"
 # =============================================================================
 
-    wb = load_workbook(filename)
+    wb = load_workbook(FileName)
     sheetNames = wb.sheetnames
     expectedNames = ["NL", "LL", "TRUTH"]
     msg = ("Excel workbook has missing or incorrectly named sheets. "
@@ -97,11 +97,15 @@ def DfCheck(filename):
 # TODO: Add checks for duplicate rows in LL sheet
 # =============================================================================
 
-def DfReadDataFile(filename):
+def DfReadDataFile(FileName, DataType = "FROC"):
     """
     Parameters
     ----------
-    filename : JAFROC format Excel input file name
+    FileName : str
+        JAFROC format Excel input file name
+        
+    DataType : str
+        The type of data, "FROC" (default) or "ROC"
 
     Returns
     -------
@@ -112,8 +116,8 @@ def DfReadDataFile(filename):
 # Check the Excel file
 # Load the Excel file
 # =============================================================================
-    DfCheck(filename)
-    wb = load_workbook(filename)
+    DfCheck(FileName)
+    wb = load_workbook(FileName)
 
 # =============================================================================
 # Load the TRUTH worksheet
@@ -207,7 +211,11 @@ def DfReadDataFile(filename):
         for l in range(sum(matchCount)):
             if NL[i, j, c, l] == -np.inf:
                 NL[i, j, c, l] = dfNL["NLRating"][indxNl + l]
-            truthTableStr[i, j, c, l] = 1
+            if truthTableStr[i, j, c, l] == 0:
+                truthTableStr[i, j, c, l] = 1
+            else:
+                print(indxNl)
+                sys.exit("Error is here")
 
     LL = np.full((I, J, K2, maxLL), -np.inf)
     for indxLl in range(len(dfLL["ModalityID"])):
@@ -226,5 +234,5 @@ def DfReadDataFile(filename):
 # =============================================================================
 # Return a dataset object
 # =============================================================================
-    ds = [NL, LL, perCase, relWeights]
+    ds = [NL, LL, perCase, relWeights, DataType]
     return(ds)
