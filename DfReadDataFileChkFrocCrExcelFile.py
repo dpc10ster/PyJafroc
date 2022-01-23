@@ -23,19 +23,14 @@ def DfCheck(filename):
 # filename = 'extdata/toyFiles/FROC/frocCr.xlsx'
 # filename = 'extdata/toyFiles/FROC/bad/frocCr-01.xlsx' unordered TRUTH
 # filename = 'extdata/toyFiles/FROC/bad/frocCr-02.xlsx' unordered TRUTH
-# filename = 'extdata/toyFiles/FROC/bad/frocCr-03.xlsx' unexpected case
+# filename = 'extdata/toyFiles/FROC/bad/frocCr-03.xlsx' incorrect sheet names
 # filename = 'extdata/toyFiles/FROC/bad/frocCr-04.xlsx' normal case in LL
 # filename = 'extdata/toyFiles/FROC/bad/frocCr-05.xlsx' do: numeric format
 # filename = 'extdata/toyFiles/FROC/bad/frocCr2BlankRows.xlsx'
 # filename = 'extdata/toyFiles/FROC/bad/frocCrNonCharInReaderID.xlsx'
-# filename = 'extdata/toyFiles/FROC/bad/incorrectCaseIDsInTP.xlsx' why missing?
-# filename = 'extdata/toyFiles/FROC/bad/incorrectCaseIDsInTP2.xlsx'
+# filename = 'extdata/toyFiles/FROC/bad/incorrectCaseIDsInLL.xlsx' why missing?
+# filename = 'extdata/toyFiles/FROC/bad/incorrectCaseIDsInLL2.xlsx'
 # filename = "extdata/toyFiles/FROC/bad/incoCaseIDsInTP.xlsx"
-# fn = ['extdata/toyFiles/FROC/frocCr.xlsx',
-# 'extdata/toyFiles/FROC/bad/frocCr-01.xlsx',
-# 'extdata/toyFiles/FROC/bad/frocCr-02.xlsx',
-# 'extdata/toyFiles/FROC/bad/frocCr-03.xlsx',
-# 'extdata/toyFiles/FROC/bad/frocCr-04.xlsx']
 # =============================================================================
 
     wb = load_workbook(filename)
