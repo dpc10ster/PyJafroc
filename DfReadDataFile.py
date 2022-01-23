@@ -97,13 +97,13 @@ def DfCheck(FileName):
 # TODO: Add checks for duplicate rows in LL sheet
 # =============================================================================
 
-def DfReadDataFile(FileName, DataType = "FROC"):
+def DfReadDataFile(FileName, DataType="FROC"):
     """
     Parameters
     ----------
     FileName : str
         JAFROC format Excel input file name
-        
+
     DataType : str
         The type of data, "FROC" (default) or "ROC"
 
@@ -193,14 +193,16 @@ def DfReadDataFile(FileName, DataType = "FROC"):
     maxLL = max(perCase)
 
     # construct truthTabiLeStr
-    truthTableStr = np.full((I, J, K, maxLL+1), 0)
+    truthTableStr = np.full((I, J, K, max(maxNL,maxLL)+1), 0)
     for indxCsId in range(len(dfTruth["CaseID"])):
         c = (AllCases == dfTruth["CaseID"][indxCsId])
         l = dfTruth["LesionID"][indxCsId]
         truthTableStr[:, :, c, l] = 1
 
     NL = np.full((I, J, K, maxNL), -np.inf)
-    for indxNl in range(len(dfNL["ModalityID"])):
+    counter = 0
+    for indxNl in range(14):
+    #for indxNl in range(len(dfNL["ModalityID"])):
         i = (modalities == dfNL["ModalityID"][indxNl])
         j = (readers == dfNL["ReaderID"][indxNl])
         c = (AllCases == dfNL["CaseID"][indxNl])
@@ -229,7 +231,7 @@ def DfReadDataFile(FileName, DataType = "FROC"):
         for l in range(sum(matchCount)):
             if LL[i, j, c, l] == -np.inf:
                 LL[i, j, c, l] = dfLL["LLRating"][indxLl + l]
-            truthTableStr[i, j, np.append([False]*3, c), l] = 1
+            truthTableStr[i, j, np.append([False]*K1, c), l] = 1
 
 # =============================================================================
 # Return a dataset object
