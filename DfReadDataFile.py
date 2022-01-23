@@ -28,14 +28,9 @@ def DfCheck(filename):
 # filename = 'extdata/toyFiles/FROC/bad/frocCr-05.xlsx' do: numeric format
 # filename = 'extdata/toyFiles/FROC/bad/frocCr2BlankRows.xlsx'
 # filename = 'extdata/toyFiles/FROC/bad/frocCrNonCharInReaderID.xlsx'
-# filename = 'extdata/toyFiles/FROC/bad/incorrectCaseIDsInTP.xlsx' why missing?
-# filename = 'extdata/toyFiles/FROC/bad/incorrectCaseIDsInTP2.xlsx'
+# filename = 'extdata/toyFiles/FROC/bad/incorrectCaseIDsInLL.xlsx' why missing?
+# filename = 'extdata/toyFiles/FROC/bad/incorrectCaseIDsInLL2.xlsx'
 # filename = "extdata/toyFiles/FROC/bad/incoCaseIDsInTP.xlsx"
-# fn = ['extdata/toyFiles/FROC/frocCr.xlsx',
-# 'extdata/toyFiles/FROC/bad/frocCr-01.xlsx',
-# 'extdata/toyFiles/FROC/bad/frocCr-02.xlsx',
-# 'extdata/toyFiles/FROC/bad/frocCr-03.xlsx',
-# 'extdata/toyFiles/FROC/bad/frocCr-04.xlsx']
 # =============================================================================
 
     wb = load_workbook(filename)
@@ -206,12 +201,7 @@ def DfReadDataFile(filename):
         i = (modalities == dfNL["ModalityID"][indxNl])
         j = (readers == dfNL["ReaderID"][indxNl])
         c = (AllCases == dfNL["CaseID"][indxNl])
-# =============================================================================
-#         if dfNL["CaseID"][indxNl] in NormalCases:
-#             tt2 = truthTableStr[i,j,c,1] 
-#         else: 
-#             tt2 = truthTableStr[i,j,c,2]   
-# =============================================================================
+
         matchCount = ((dfNL["CaseID"] == dfNL["CaseID"][indxNl]) & 
                       (dfNL["ModalityID"] == dfNL["ModalityID"][indxNl]) & 
                       (dfNL["ReaderID"] == dfNL["ReaderID"][indxNl]))
@@ -225,17 +215,7 @@ def DfReadDataFile(filename):
         i = (modalities == dfLL["ModalityID"][indxLl])
         j = (readers == dfLL["ReaderID"][indxLl])
         c = (AbnormalCases == dfLL["CaseID"][indxLl])
-        #l = (lesions == dfLL["LesionID"][indxLl])
-        
-# =============================================================================
-#         if K1 != 0:
-#             l = np.iL(np.unique(dfTruth["LesionID"])[1:] == 
-#                             dfTruth["LesionID"][l])
-#         else:    
-#             l = np.iL(np.unique(dfTruth["LesionID"]) == 
-#                             dfTruth["LesionID"][l])
-# 
-# =============================================================================
+        #l = (lesions == dfLL["LesionID"][indxLl])        
 
         matchCount = ((dfLL["CaseID"] == dfLL["CaseID"][indxLl]) & 
                       (dfLL["ModalityID"] == dfLL["ModalityID"][indxLl]) & 
