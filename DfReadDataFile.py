@@ -198,25 +198,37 @@ def DfReadDataFile(FileName, DataType="FROC"):
         l = dfTruth["LesionID"][indxCsId]
         truthTableStr[:, :, c, l] = 1
 
-    NL = np.full((I, J, K, maxNL), -np.inf)
-    counter = 0
-    for indxNl in range(14):
-    #for indxNl in range(len(dfNL["ModalityID"])):
+    NL = np.full((I, J, K, max(maxNL,maxLL)), -np.inf)
+    indxNl = 0
+    while True:
         i = (modalities == dfNL["ModalityID"][indxNl])
         j = (readers == dfNL["ReaderID"][indxNl])
         c = (AllCases == dfNL["CaseID"][indxNl])
 
-        matchCount = ((dfNL["CaseID"] == dfNL["CaseID"][indxNl]) &
-                      (dfNL["ModalityID"] == dfNL["ModalityID"][indxNl]) &
-                      (dfNL["ReaderID"] == dfNL["ReaderID"][indxNl]))
-        for l in range(sum(matchCount)):
+        multipleMarks = ((dfNL["CaseID"] == dfNL["CaseID"][indxNl]) &
+                         (dfNL["ModalityID"] == dfNL["ModalityID"][indxNl]) &
+                         (dfNL["ReaderID"] == dfNL["ReaderID"][indxNl]))
+        if len(multipleMarks) == 0:
+            myExit("multipleMarks has zero length")
+
+        for l in range(sum(multipleMarks)):
+            # if indxNl > 1:
+            #     break
+            print("indxNl = ", indxNl,
+                  ",\n l = ", l,
+                  ",\n indxNl = ", indxNl,
+                  # ",\n ModalityID = ", dfNL["ModalityID"][indxNl+l],
+                  # ",\n ReaderID = ", dfNL["ReaderID"][indxNl+l],
+                  ",\n CaseID = ", dfNL["CaseID"][indxNl+l],
+                  ",\n NLRating = ", dfNL["NLRating"][indxNl+l], "\n")
             if NL[i, j, c, l] == -np.inf:
-                NL[i, j, c, l] = dfNL["NLRating"][indxNl + l]
-            if truthTableStr[i, j, c, l] == 0:
-                truthTableStr[i, j, c, l] = 1
-            else:
-                print(indxNl)
-                sys.exit("Error is here")
+                NL[i, j, c, l] = dfNL["NLRating"][indxNl+l]
+            indxNl = indxNl + 1
+            if indxNl >= (len(dfNL["ModalityID"])-1):
+                break
+            truthTableStr[i, j, c, l] = 1
+        if indxNl >= len(dfNL["ModalityID"]):
+            break
 
     LL = np.full((I, J, K2, maxLL), -np.inf)
     for indxLl in range(len(dfLL["ModalityID"])):
@@ -224,10 +236,12 @@ def DfReadDataFile(FileName, DataType="FROC"):
         j = (readers == dfLL["ReaderID"][indxLl])
         c = (AbnormalCases == dfLL["CaseID"][indxLl])
 
-        matchCount = ((dfLL["CaseID"] == dfLL["CaseID"][indxLl]) &
-                      (dfLL["ModalityID"] == dfLL["ModalityID"][indxLl]) &
-                      (dfLL["ReaderID"] == dfLL["ReaderID"][indxLl]))
-        for l in range(sum(matchCount)):
+        multipleMarks = ((dfLL["CaseID"] == dfLL["CaseID"][indxLl]) &
+                         (dfLL["ModalityID"] == dfLL["ModalityID"][indxLl]) &
+                         (dfLL["ReaderID"] == dfLL["ReaderID"][indxLl]))
+        if len(multipleMarks) == 0:
+            myExit("multipleMarks has zero length")
+        for l in range(sum(multipleMarks)):
             if LL[i, j, c, l] == -np.inf:
                 LL[i, j, c, l] = dfLL["LLRating"][indxLl + l]
             truthTableStr[i, j, np.append([False]*K1, c), l] = 1
@@ -236,4 +250,4 @@ def DfReadDataFile(FileName, DataType="FROC"):
 # Return a dataset object
 # =============================================================================
     ds = [NL, LL, perCase, relWeights, DataType]
-    return(ds)
+    return(NL)
