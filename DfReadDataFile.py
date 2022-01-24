@@ -59,8 +59,7 @@ def DfCheck(FileName):
     K1 = len(NormalCases)
     AbnormalCases = dfTruth.loc[dfTruth['LesionID'] == 1]["CaseID"]
     K2 = len(AbnormalCases)
-    # K = K1 + K2
-
+ 
     ws = wb['NL']
     data = ws.values
     columnNames = next(data)[0:]
