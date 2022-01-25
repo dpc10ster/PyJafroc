@@ -212,26 +212,27 @@ def DfReadDataFile(FileName, DataType="FROC"):
             myExit("multipleMarks has zero length")
 
         for l in range(sum(multipleMarks)):
-            # if indxNl > 1:
-            #     break
-            print("indxNl = ", indxNl,
-                  ",\n l = ", l,
-                  ",\n indxNl = ", indxNl,
-                  # ",\n ModalityID = ", dfNL["ModalityID"][indxNl+l],
-                  # ",\n ReaderID = ", dfNL["ReaderID"][indxNl+l],
-                  ",\n CaseID = ", dfNL["CaseID"][indxNl+l],
-                  ",\n NLRating = ", dfNL["NLRating"][indxNl+l], "\n")
+            # print("indxNl = ", indxNl,
+            #       ", l = ", l,
+            #       ", indxNl = ", indxNl,
+            #       # ",\n ModalityID = ", dfNL["ModalityID"][indxNl+l],
+            #       # ",\n ReaderID = ", dfNL["ReaderID"][indxNl+l],
+            #       ", CaseID = ", dfNL["CaseID"][indxNl],
+            #       ", NLRating = ", dfNL["NLRating"][indxNl])
             if NL[i, j, c, l] == -np.inf:
-                NL[i, j, c, l] = dfNL["NLRating"][indxNl+l]
+                NL[i, j, c, l] = dfNL["NLRating"][indxNl]
             indxNl = indxNl + 1
-            if indxNl >= (len(dfNL["ModalityID"])-1):
+            if indxNl == (len(dfNL["ModalityID"])-1):
                 break
             truthTableStr[i, j, c, l] = 1
-        if indxNl >= len(dfNL["ModalityID"]):
+        if indxNl == (len(dfNL["ModalityID"])-1):
             break
 
     LL = np.full((I, J, K2, maxLL), -np.inf)
-    for indxLl in range(len(dfLL["ModalityID"])):
+    indxLl = 0
+    while True:
+        # if indxLl == 30:
+        #     pass
         i = (modalities == dfLL["ModalityID"][indxLl])
         j = (readers == dfLL["ReaderID"][indxLl])
         c = (AbnormalCases == dfLL["CaseID"][indxLl])
@@ -239,15 +240,22 @@ def DfReadDataFile(FileName, DataType="FROC"):
         multipleMarks = ((dfLL["CaseID"] == dfLL["CaseID"][indxLl]) &
                          (dfLL["ModalityID"] == dfLL["ModalityID"][indxLl]) &
                          (dfLL["ReaderID"] == dfLL["ReaderID"][indxLl]))
+        
         if len(multipleMarks) == 0:
             myExit("multipleMarks has zero length")
+            
         for l in range(sum(multipleMarks)):
             if LL[i, j, c, l] == -np.inf:
-                LL[i, j, c, l] = dfLL["LLRating"][indxLl + l]
+                LL[i, j, c, l] = dfLL["LLRating"][indxLl]
+            indxLl = indxLl + 1
+            if indxLl == (len(dfLL["ModalityID"])-1):
+                break
             truthTableStr[i, j, np.append([False]*K1, c), l] = 1
+        if indxLl == (len(dfLL["ModalityID"])-1):
+            break
 
 # =============================================================================
 # Return a dataset object
 # =============================================================================
     ds = [NL, LL, perCase, relWeights, DataType]
-    return(NL)
+    return(ds)
