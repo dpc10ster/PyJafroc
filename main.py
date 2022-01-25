@@ -7,7 +7,10 @@ Created on Mon Jan 24 17:30:32 2022
 """
 
 from DfReadDataFile import *
+from StSignificanceTesting import StSignificanceTesting
 
-ds = DfReadDataFile("extdata/toyFiles/FROC/frocCr.xlsx")
-ds = DfReadDataFile("extdata/Froc.xlsx")
-ds = DfReadDataFile("extdata/JT.xlsx")
+# ds = DfReadDataFile("extdata/toyFiles/FROC/frocCr.xlsx")
+# ds = DfReadDataFile("extdata/Froc.xlsx")
+# ds = DfReadDataFile("extdata/JT.xlsx")
+
+StSignificanceTesting("extdata/JT.xlsx")
