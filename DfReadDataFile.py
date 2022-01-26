@@ -120,13 +120,13 @@ def DfReadDataFile(FileName, DataType="FROC"):
 
 # =============================================================================
 # Load the TRUTH worksheet
-# Exract the columns
+# Extract the columns
 # =============================================================================
     ws = wb['TRUTH']
     data = ws.values
     columnNames = next(data)[0:]
     # Extract the data minus the column names
-    dfTruth = pd.DataFrame(data, columns=columnNames)
+    dfTruth = pd.DataFrame(data, columns=columnNames).astype(int)
     # add TruthID column based on cases with 0 or > 0 lesions
     dfTruth["TruthID"] = (dfTruth["LesionID"] > 0).astype(int)
 
@@ -139,29 +139,30 @@ def DfReadDataFile(FileName, DataType="FROC"):
     # sort on "TruthID" & "CaseID" fields to put non-diseased cases first
     dfTruth = dfTruth.sort_values(["TruthID", "CaseID"])
     # TODO variable weights not currently implemented
-    dfTruth['Weight'] = dfTruth['Weight'].astype(float, errors='raise')
+    # dfTruth['Weight'] = dfTruth['Weight'].astype(float, errors='raise')
     # weightCol = dfTruth["Weight"]
 
-    AllCases = np.unique(dfTruth["CaseID"])
+    u, ind = np.unique(dfTruth["CaseID"], return_index=True)
+    AllCases = u[np.argsort(ind)]
     NormalCases = dfTruth.loc[dfTruth['LesionID'] == 0]["CaseID"]
     K1 = len(NormalCases)
     AbnormalCases = dfTruth.loc[dfTruth['LesionID'] == 1]["CaseID"]
     K2 = len(AbnormalCases)
     K = K1 + K2
-
+    
     # calculate lesion perCase
     x = pd.Series(dfTruth["CaseID"])
     x = x.isin(AbnormalCases)
     x = pd.Series(dfTruth["CaseID"][x])
     x = x.value_counts()
-    perCase = x.sort_index().tolist()
+    perCase = x.sort_index()
 
     maxLL = max(perCase)
     relWeights = [1/maxLL] * maxLL
 
 # =============================================================================
 # Load the NL sheet
-# Exract the columns
+# Extract the columns
 # =============================================================================
     ws = wb['NL']
     data = ws.values
@@ -191,71 +192,36 @@ def DfReadDataFile(FileName, DataType="FROC"):
 
     maxLL = max(perCase)
 
-    # construct truthTabiLeStr
-    truthTableStr = np.full((I, J, K, max(maxNL,maxLL)+1), 0)
-    for indxCsId in range(len(dfTruth["CaseID"])):
-        c = (AllCases == dfTruth["CaseID"][indxCsId])
-        l = dfTruth["LesionID"][indxCsId]
-        truthTableStr[:, :, c, l] = 1
-
-    NL = np.full((I, J, K, max(maxNL,maxLL)), -np.inf)
-    indxNl = 0
-    while True:
+    NL = np.full((I,J,K,maxNL), -np.inf)
+    for indxNl in range(len(dfNL["ModalityID"])):
         i = (modalities == dfNL["ModalityID"][indxNl])
         j = (readers == dfNL["ReaderID"][indxNl])
         c = (AllCases == dfNL["CaseID"][indxNl])
 
-        multipleMarks = ((dfNL["CaseID"] == dfNL["CaseID"][indxNl]) &
-                         (dfNL["ModalityID"] == dfNL["ModalityID"][indxNl]) &
-                         (dfNL["ReaderID"] == dfNL["ReaderID"][indxNl]))
-        if len(multipleMarks) == 0:
-            myExit("multipleMarks has zero length")
+        matchCount = ((dfNL["CaseID"] == dfNL["CaseID"][indxNl]) & 
+                      (dfNL["ModalityID"] == dfNL["ModalityID"][indxNl]) & 
+                      (dfNL["ReaderID"] == dfNL["ReaderID"][indxNl]))
+        for l in range(sum(matchCount)):
+            if NL[i, j, c, l] == -np.inf: 
+                NL[i, j, c, l] = dfNL["NLRating"][indxNl + l]
 
-        for l in range(sum(multipleMarks)):
-            # print("indxNl = ", indxNl,
-            #       ", l = ", l,
-            #       ", indxNl = ", indxNl,
-            #       # ",\n ModalityID = ", dfNL["ModalityID"][indxNl+l],
-            #       # ",\n ReaderID = ", dfNL["ReaderID"][indxNl+l],
-            #       ", CaseID = ", dfNL["CaseID"][indxNl],
-            #       ", NLRating = ", dfNL["NLRating"][indxNl])
-            if NL[i, j, c, l] == -np.inf:
-                NL[i, j, c, l] = dfNL["NLRating"][indxNl]
-            indxNl = indxNl + 1
-            if indxNl == (len(dfNL["ModalityID"])-1):
-                break
-            truthTableStr[i, j, c, l] = 1
-        if indxNl == (len(dfNL["ModalityID"])-1):
-            break
-
-    LL = np.full((I, J, K2, maxLL), -np.inf)
-    indxLl = 0
-    while True:
-        # if indxLl == 30:
-        #     pass
+    lesions = list(range(1, maxLL+1))
+    LL = np.full((I,J,K2,maxLL), -np.inf)
+    for indxLl in range(len(dfLL["ModalityID"])):
         i = (modalities == dfLL["ModalityID"][indxLl])
         j = (readers == dfLL["ReaderID"][indxLl])
         c = (AbnormalCases == dfLL["CaseID"][indxLl])
-
-        multipleMarks = ((dfLL["CaseID"] == dfLL["CaseID"][indxLl]) &
-                         (dfLL["ModalityID"] == dfLL["ModalityID"][indxLl]) &
-                         (dfLL["ReaderID"] == dfLL["ReaderID"][indxLl]))
+        l = (lesions == dfLL["LesionID"][indxLl])
         
-        if len(multipleMarks) == 0:
-            myExit("multipleMarks has zero length")
-            
-        for l in range(sum(multipleMarks)):
-            if LL[i, j, c, l] == -np.inf:
-                LL[i, j, c, l] = dfLL["LLRating"][indxLl]
-            indxLl = indxLl + 1
-            if indxLl == (len(dfLL["ModalityID"])-1):
-                break
-            truthTableStr[i, j, np.append([False]*K1, c), l] = 1
-        if indxLl == (len(dfLL["ModalityID"])-1):
-            break
+        LL[i, j, c, l] = dfLL["LLRating"][indxLl]
 
 # =============================================================================
 # Return a dataset object
 # =============================================================================
     ds = [NL, LL, perCase, relWeights, DataType]
     return(ds)
+
+
+# FileName = "extdata/toyFiles/FROC/frocCr.xlsx"
+# FileName = "extdata/JT.xlsx"
+# ds = DfReadDataFile(FileName)
