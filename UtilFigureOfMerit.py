@@ -107,14 +107,13 @@ def UtilFigureOfMerit(ds, FOM = "wAfroc"):
                     if NL[i,j,k1,l1] > fp: # capture the highest value
                         fp = NL[i,j,k1,l1]
                 for k2 in range(K2):
-                    # why do I need to add 1?
-                    for l2 in range(perCase[k2+1]):
-                        ret += lesWghtDistr[perCase[k2+1]-1,l2] * Psi(fp, LL[i,j,k2,l2])            
+                    for l2 in range(perCase[k2]):
+                        ret += lesWghtDistr[perCase[k2]-1,l2] * Psi(fp, LL[i,j,k2,l2])            
             ret /= (K1*K2)
             fom[i,j] = ret
     return fom
 
 
-# FileName = "extdata/JT.xlsx"
-# ds = DfReadDataFile(FileName)
-# val = UtilFigureOfMerit(ds, "wAfroc")
+FileName = "extdata/JT.xlsx"
+ds = DfReadDataFile(FileName)
+val = UtilFigureOfMerit(ds, "wAfroc")

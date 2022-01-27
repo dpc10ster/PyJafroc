@@ -154,8 +154,11 @@ def DfReadDataFile(FileName, DataType="FROC"):
     x = pd.Series(dfTruth["CaseID"])
     x = x.isin(AbnormalCases)
     x = pd.Series(dfTruth["CaseID"][x])
-    x = x.value_counts()
+    x = x.value_counts(sort = False)
     perCase = x.sort_index()
+    # next line indexes using abnormal cases, 0 to K2-1
+    # Fixes indexing of perCase array
+    perCase = pd.Series(list(perCase))
 
     maxLL = max(perCase)
     relWeights = [1/maxLL] * maxLL
