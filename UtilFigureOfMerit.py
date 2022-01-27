@@ -108,5 +108,6 @@ def UtilFigureOfMerit(ds, FOM):
     return ret
 
 
-ds = DfReadDataFile("extdata/JT.xlsx")
+FileName = "extdata/JT.xlsx"
+ds = DfReadDataFile(FileName)
 val = UtilFigureOfMerit(ds, "wAfroc")
