@@ -6,6 +6,7 @@ Created on Mon Jan 24 09:26:41 2022
 @author: Dev
 """
 from DfReadDataFile import DfReadDataFile
+from UtilFigureOfMerit import UtilFigureOfMerit
 
 def StSignificanceTesting(FileName, DataType="FROC",
                           analysisOption = "RRRC"):
@@ -36,3 +37,13 @@ def StSignificanceTesting(FileName, DataType="FROC",
     elif I == 1: 
         analysisOption = "RRFC"
     pass
+
+    foms = UtilFigureOfMerit(ds, "wAfroc")
+
+    return foms
+
+
+FileName = "extdata/JT.xlsx"
+#ds = DfReadDataFile(FileName)
+# val = UtilFigureOfMerit(ds, "wAfroc")
+st = StSignificanceTesting(FileName)
