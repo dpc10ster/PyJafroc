@@ -64,7 +64,9 @@ def FOMijk2VarCov (resampleFOMijk):
         for ip in range(I):
             for j in range(J):
                 for jp in range(J):
-                    covMatrix[i, ip, j, jp] = np.cov(resampleFOMijk[i, j, :], resampleFOMijk[ip, jp, :])[0,1]
+                    covMatrix[i, ip, j, jp] = \
+                        np.cov(resampleFOMijk[i, j, :], \
+                               resampleFOMijk[ip, jp, :])[0,1]
     Var = 0.0
     count = 0
     I = len(covMatrix[:,0,0,0])
@@ -130,6 +132,21 @@ def FOMijk2VarCov (resampleFOMijk):
 
 
 def UtilORVarComponentsFactorial(ds, FOM = "wAfroc"):
+    """
+    Parameters
+    ----------
+    ds : list
+        JAFROC dataset list object created by DfReadDataFile()
+
+    FOM: str
+        The figure of merit or measure of performance, the
+        default is "wAFROC", or "Wilcoxon"
+
+    Returns
+    -------
+    list [TRanova, VarCom]
+
+    """
     NL = ds[0]
     LL = ds[1]
     if not FOM in ["wAfroc", "Wilcoxon"]:
@@ -140,9 +157,9 @@ def UtilORVarComponentsFactorial(ds, FOM = "wAfroc"):
     K = len(NL[0,0,:,0])
     
     foms = UtilFigureOfMerit(ds)
-    fomsMeansEchRdr = foms.mean(axis=0) # row means
+    fomsMeansEchRdr = foms.mean(axis=0) # col means
     fomsMeansEchMod = foms.mean(axis=1) # row means
-    fomsMean = foms.mean() # row means
+    fomsMean = foms.mean() # mean over all values
     
     if I > 1:
         msT = 0.0
@@ -162,7 +179,8 @@ def UtilORVarComponentsFactorial(ds, FOM = "wAfroc"):
         msTR = 0.0
         for i in range(I):
             for j in range(J):
-                msTR += (foms[i, j] - fomsMeansEchMod[i] - fomsMeansEchRdr[j] + fomsMean) ** 2
+                msTR += (foms[i, j] - fomsMeansEchMod[i] - \
+                         fomsMeansEchRdr[j] + fomsMean) ** 2
         msTR /= ((J - 1) * (I - 1))
     else: msTR = 0
     
@@ -174,73 +192,33 @@ def UtilORVarComponentsFactorial(ds, FOM = "wAfroc"):
     TRanova.index = ["T", "R", "TR"]
     
     resampleFOMijk = UtilPseudoValues(ds)[0]
-    CovTemp = FOMijk2VarCov(resampleFOMijk)
+    covMatrix = FOMijk2VarCov(resampleFOMijk)
+    Var = covMatrix[0]
+    Cov1 = covMatrix[1]
+    Cov2 = covMatrix[2]
+    Cov3 = covMatrix[3]
     
+    if I > 1:
+        VarTR = msTR - Var + Cov1 + max(Cov2 - Cov3, 0)
+    else:
+        VarTR = 0
     
-# BEGIN    
+    VarR = (msR - VarTR - Var + Cov2 - (I-1)*(Cov1 - Cov3))/I
+    
+    VarCom = pd.DataFrame({"Estimates": [VarR, VarTR, Var, Cov1, Cov2, Cov3], \
+                           "rhos": ["", "", "", Cov1/Var, Cov2/Var, Cov3/Var]})
+    VarCom.index = ["VarR", "VarTR", "Var", "Cov1", "Cov2", "Cov3"]
+    
 # TODO later
 # pending implementation of DfExtractDataset            
 # single treatment msR_i 
-# if J > 1:
-#     msR_i = np.full(I, 0.0)
-#     for i in range(I):
-#         for j in range(J):
-#             msR_i[i] += (foms[i,j] - fomsMeansEchMod[i]) ** 2
-#         msR_i[i] /= (J-1)
-#  else: msR_i[i] = 0.0    
-# cov2EachTrt = vector(length = I)
-# varEachTrt = vector(length = I)
-# for (i in 1:I) {
-#   dsi = DfExtractDataset(dataset, trts = i)
-#   ret = OrVarCovMatrixFactorial(dsi, FOM, FPFValue, nBoots, covEstMethod, seed)
-#   varEachTrt[i] = ret$Var
-#   cov2EachTrt[i] = ret$Cov2
-# }
+# # single reader msT_j
 
-# modID = as.vector(dataset$descriptions$modalityID)
-# IndividualTrt = data.frame(DF = rep(J-1, I), 
-#                             msREachTrt = msR_i, 
-#                             varEachTrt = varEachTrt, 
-#                             cov2EachTrt = cov2EachTrt, 
-#                             row.names = paste0("trt", modID),
-#                             stringsAsFactors = FALSE)    
-# TODO later
-# pending implementation of DfExtractDataset
-# # single reader msT_j ###############################################################
-# if (I > 1) {
-#   msT_j = array(0, dim = J)
-#   for (j in 1:J) {
-#     for (i in 1:I) {
-#       msT_j[j] = msT_j[j] + (mean(Foms[i, j]) -  mean(Foms[,j]))**2 
-#     }
-#     msT_j[j] = msT_j[j]/(I - 1)
-#   }
-# } else msT_j = NA
-
-# varEachRdr = vector(length = J)
-# cov1EachRdr = vector(length = J)
-# for (j in 1:J) {
-#   dsj = DfExtractDataset(dataset, rdrs = j)
-#   ret = OrVarCovMatrixFactorial(dsj, FOM, FPFValue, nBoots, covEstMethod, seed)
-#   varEachRdr[j] = ret$Var
-#   cov1EachRdr[j] = ret$Cov1
-# }
-
-# rdrID = as.vector(dataset$descriptions$readerID)
-# if (I > 1) {
-#   IndividualRdr = data.frame(DF = rep(I-1, J), 
-#                               msTEachRdr = msT_j, 
-#                               varEachRdr = varEachRdr, 
-#                               cov1EachRdr = cov1EachRdr, 
-#                               row.names = paste0("rdr", rdrID),
-#                               stringsAsFactors = FALSE)
-# } else IndividualRdr = NA         
-# END    
-    return [fomsMeansEchRdr, fomsMeansEchMod]
+    return [TRanova, VarCom]
 
 #FileName = "extdata/JT.xlsx"
-FileName = "extdata/toyFiles/FROC/frocCr.xlsx"
-ds = DfReadDataFile(FileName)
-pv = UtilPseudoValues(ds)
-covMatrix = UtilORVarComponentsFactorial(ds)
+# FileName = "extdata/toyFiles/FROC/frocCr.xlsx"
+# ds = DfReadDataFile(FileName)
+# pv = UtilPseudoValues(ds)
+# varCom = UtilORVarComponentsFactorial(ds)
 #fomMeans = UtilORVarComponentsFactorial(ds)    

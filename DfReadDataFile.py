@@ -108,7 +108,7 @@ def DfReadDataFile(FileName, DataType="FROC"):
 
     Returns
     -------
-    dataset object ds
+    dataset list object ds = [NL, LL, perCase, relWeights, DataType]
 
     """
 # =============================================================================

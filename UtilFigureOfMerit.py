@@ -65,8 +65,8 @@ def UtilFigureOfMerit(ds, FOM = "wAfroc"):
     """
     Parameters
     ----------
-    FileName : ds
-        JAFROC dataset object created by DfReadDataFile()
+    FileName : list
+        JAFROC dataset list object created by DfReadDataFile()
 
     FOM: str
         The figure of merit or measure of performance, the

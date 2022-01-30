@@ -3,6 +3,12 @@
 This repository is for converting some of the `RJafroc` functions to `Python`.
 
 
+
+
+## Added UtilORVarComponentsFactorial 01/30/22
+compared to R code
+
+
 ## Added FOMijk2VarCov 01/29/22
 compared to R code
 
