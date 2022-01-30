@@ -114,6 +114,6 @@ def UtilFigureOfMerit(ds, FOM = "wAfroc"):
     return fom
 
 
-FileName = "extdata/JT.xlsx"
-ds = DfReadDataFile(FileName)
-val = UtilFigureOfMerit(ds, "wAfroc")
+# FileName = "extdata/JT.xlsx"
+# ds = DfReadDataFile(FileName)
+# val = UtilFigureOfMerit(ds, "wAfroc")
