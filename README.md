@@ -3,6 +3,8 @@
 This repository is for converting some of the `RJafroc` functions to `Python`.
 
 
+## Working on StSignificanceTesting 01/30/22
+Need to add modalityID and readerID fields to dataset object
 
 
 ## Added UtilORVarComponentsFactorial 01/30/22
