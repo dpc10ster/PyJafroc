@@ -14,6 +14,8 @@ import numpy as np
 
 
 
+
+
 def ORSummaryRRRC(ds, FOMs, ANOVA, alpha, diffTRName):
     pass
 
@@ -63,9 +65,9 @@ def StSignificanceTesting(ds, FOM = "wAfroc", analysisOption = "RRRC", \
     pass
 
     foms = UtilFigureOfMerit(ds, "wAfroc")
-    # fomsMeansEchRdr = foms.mean(axis=0) # col means
-    fomsMeansEchMod = foms.mean(axis=1) # row means
-    # fomsMean = foms.mean() # mean over all values
+    # fomsMeansEchRdr = foms.values.mean(axis=0) # col means
+    fomsMeansEchMod = foms.values.mean(axis=1) # row means
+    # fomsMean = foms.values.mean() # mean over all values
     trtMeans = pd.DataFrame({"Estimate": fomsMeansEchMod})
     
     ret = UtilORVarComponentsFactorial(ds)
@@ -88,7 +90,7 @@ def StSignificanceTesting(ds, FOM = "wAfroc", analysisOption = "RRRC", \
     trtMeanDiffs = pd.DataFrame({"Estimate": trtMeanDiffs})
     trtMeanDiffs.index = diffTRName
     
-    FOMs = [foms, trtMeans, trtMeans]
+    FOMs = [foms, trtMeans, trtMeanDiffs]
     
     pass
 
@@ -105,7 +107,7 @@ def StSignificanceTesting(ds, FOM = "wAfroc", analysisOption = "RRRC", \
         RRFC = ORSummaryRRFC(ds, FOMs, ANOVA, alpha, diffTRName)
         return [FOMs, ANOVA, RRFC]
     
-    
+    pass
 
 
 

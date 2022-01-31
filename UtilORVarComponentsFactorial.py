@@ -46,8 +46,8 @@ def UtilPseudoValues (ds, FOM = "WAfroc"):
                     perCase_jk = perCase.drop(k-K1)
                     perCase_jk = pd.Series(list(perCase_jk))
                 dsjk = [nlij_jk, llij_jk, perCase_jk, ds[3], ds[4]]
-                jkFomValues[i, j, k] = UtilFigureOfMerit(dsjk)[0,0]
-                jkPseudoValues[i, j, k]  = (fom[i, j] * K - jkFomValues[i, j, k] * (K-1))
+                jkFomValues[i, j, k] = UtilFigureOfMerit(dsjk).values[0,0]
+                jkPseudoValues[i, j, k]  = (fom.values[i, j] * K - jkFomValues[i, j, k] * (K-1))
                 pass
     return [jkFomValues, jkPseudoValues]
 
@@ -150,7 +150,7 @@ def UtilORVarComponentsFactorial(ds, FOM = "wAfroc"):
     NL = ds[0]
     LL = ds[1]
     if not FOM in ["wAfroc", "Wilcoxon"]:
-        myExit('FOM NOT in ["wAfroc", "Wilcoxon"]')
+        sys.exit('FOM NOT in ["wAfroc", "Wilcoxon"]')
         
     I = len(NL[:,0,0,0])
     J = len(NL[0,:,0,0])
@@ -159,7 +159,7 @@ def UtilORVarComponentsFactorial(ds, FOM = "wAfroc"):
     foms = UtilFigureOfMerit(ds)
     fomsMeansEchRdr = foms.mean(axis=0) # col means
     fomsMeansEchMod = foms.mean(axis=1) # row means
-    fomsMean = foms.mean() # mean over all values
+    fomsMean = foms.mean().mean() # mean over all values
     
     if I > 1:
         msT = 0.0
@@ -179,7 +179,7 @@ def UtilORVarComponentsFactorial(ds, FOM = "wAfroc"):
         msTR = 0.0
         for i in range(I):
             for j in range(J):
-                msTR += (foms[i, j] - fomsMeansEchMod[i] - \
+                msTR += (foms.values[i, j] - fomsMeansEchMod[i] - \
                          fomsMeansEchRdr[j] + fomsMean) ** 2
         msTR /= ((J - 1) * (I - 1))
     else: msTR = 0
@@ -214,11 +214,10 @@ def UtilORVarComponentsFactorial(ds, FOM = "wAfroc"):
 # single treatment msR_i 
 # # single reader msT_j
 
-    return [TRanova, VarCom]
+    return [foms, TRanova, VarCom]
 
 #FileName = "extdata/JT.xlsx"
 # FileName = "extdata/toyFiles/FROC/frocCr.xlsx"
 # ds = DfReadDataFile(FileName)
 # pv = UtilPseudoValues(ds)
 # varCom = UtilORVarComponentsFactorial(ds)
-#fomMeans = UtilORVarComponentsFactorial(ds)    
