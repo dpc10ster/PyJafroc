@@ -144,7 +144,7 @@ def UtilORVarComponentsFactorial(ds, FOM = "wAfroc"):
 
     Returns
     -------
-    list [TRanova, VarCom]
+    TODO dictionary ANOVA
 
     """
     NL = ds[0]
@@ -188,9 +188,30 @@ def UtilORVarComponentsFactorial(ds, FOM = "wAfroc"):
     dfArray = [I - 1, J - 1, (I - 1) * (J - 1)]
     ssArray = [a * b for a, b in zip(msArray, dfArray)]
     
-    TRanova = pd.DataFrame({"SS": ssArray, "DF": dfArray, "MS": msArray})
-    TRanova.index = ["T", "R", "TR"]
-    
+    TRAnova = pd.DataFrame({"SS": ssArray, "DF": dfArray, "MS": msArray})
+    TRAnova.index = ["T", "R", "TR"]
+
+    if J > 1:
+        msR_i = [0] * I
+        for i in range(I):
+            for j in range(J):
+                msR_i[i] = msR_i[i] + (foms.values[i, j] -  np.mean(foms.values[i,:])) ** 2
+            msR_i[i] /= (J - 1)
+    else: 
+        msR_i = 0
+
+# =============================================================================
+#     cov2EachTrt = [0] * I
+#     varEachTrt = [0] * I
+#     for i in range(I):
+#         dsi <- DfExtractDataset(dataset, trts = i)
+#     ret = OrVarCovMatrixFactorial(dsi, FOM, FPFValue, nBoots, covEstMethod, seed)
+#     varEachTrt[i] = ret$Var
+#     cov2EachTrt[i] = ret$Cov2
+# 
+# =============================================================================
+
+   
     resampleFOMijk = UtilPseudoValues(ds)[0]
     covMatrix = FOMijk2VarCov(resampleFOMijk)
     Var = covMatrix[0]
@@ -214,7 +235,8 @@ def UtilORVarComponentsFactorial(ds, FOM = "wAfroc"):
 # single treatment msR_i 
 # # single reader msT_j
 
-    return [TRanova, VarCom]
+    ANOVA = {"TRAnova": ret[0], "VarCom": ret[1]}
+    return ANOVA
 
 #FileName = "extdata/JT.xlsx"
 # FileName = "extdata/toyFiles/FROC/frocCr.xlsx"

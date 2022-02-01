@@ -20,8 +20,9 @@ def ORSummaryRRRC(ds, FOMs, ANOVA, alpha, diffTRName):
     I = len(ds[0][:,0,0,0])
     J = len(ds[0][0,:,0,0])
 
-    trtMeans =  FOMs["trtMeans"]
-    trtMeanDiffs  =  FOMs["trtMeanDiffs"]
+    # alternate way of getting the key variables of dictionary data type
+    #trtMeans = FOMs[list(FOMs.keys())[0]]
+    trtMeanDiffs = FOMs[list(FOMs.keys())[2]]
     
     TRAnova = ANOVA["TRAnova"]
     VarCom = ANOVA["VarCom"]
@@ -119,9 +120,7 @@ def StSignificanceTesting(ds, FOM = "wAfroc", analysisOption = "RRRC", \
     # fomsMean = foms.values.mean() # mean over all values ? NO see TBA
     trtMeans = pd.DataFrame({"Estimate": fomsMeansEchMod})
     
-    ret = UtilORVarComponentsFactorial(ds)
-
-    ANOVA = {"TRAnova": ret[0], "VarCom": ret[1]}
+    ANOVA = UtilORVarComponentsFactorial(ds)
     
     trtMeanDiffs = np.full(math.comb(I,2), 0.0)
     # in following dtype=object is needed to hold variable length strings

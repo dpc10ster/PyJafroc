@@ -186,8 +186,10 @@ def DfReadDataFile(FileName, DataType="FROC"):
     # with FROC data not all modalities may appear in NL and LL sheets
     modalities = (dfLL["ModalityID"].append(dfNL["ModalityID"])).unique()
     I = len(modalities)
+    modalityID = [str(x) for x in list(range(I))] 
     readers = (dfLL["ReaderID"].append(dfNL["ReaderID"])).unique()
     J = len(readers)
+    readerID = [str(x) for x in list(range(J))] 
     # lesions = np.unique(dfTruth["LesionID"])[1:]
     maxNL = dfNL.groupby(['ReaderID',
                           'ModalityID',
@@ -221,10 +223,69 @@ def DfReadDataFile(FileName, DataType="FROC"):
 # =============================================================================
 # Return a dataset object
 # =============================================================================
-    ds = [NL, LL, perCase, relWeights, DataType]
+    ds = [NL, LL, perCase, relWeights, DataType, modalityID, readerID]
     return(ds)
 
 
 # FileName = "extdata/toyFiles/FROC/frocCr.xlsx"
 # FileName = "extdata/JT.xlsx"
 # ds = DfReadDataFile(FileName)
+
+
+def DfExtractDataset (ds, trts, rdrs):
+    """
+    Extract a dataset consisting of a subset of treatments/readers from a larger dataset
+    
+    Parameters
+    ----------
+    ds : list
+        The original dataset from which the subset is to be extracted
+
+    trts : list 
+        The indices of the treatments to extract; TODO if missing then all treatments are extracted
+
+    trts : list 
+        The indices of the readers to extract; TODO if missing then all readers are extracted
+
+    Returns
+    -------
+    A dataset containing only the specified treatments and readers extracted from the original dataset
+
+    """
+    
+    NL = ds[0]
+    LL = ds[1]
+        
+    I = len(NL[:,0,0,0])
+    J = len(NL[0,:,0,0])
+    K = len(NL[0,0,:,0])
+    K2 = len(LL[0,0,:,0])
+    modalityID = ds[5]
+    readerID = ds[6]
+    maxNL = len(NL[0,0,0,:]) # for original dataset
+    
+    # e denotes extracted values
+    # following trick is from StackOverflow in response to query below
+    # Numpy index slice without losing dimension information
+    # using tuples to avoid losing dimension information
+    NLe = NL[(trts,), (rdrs,), :, :]
+    # TODO test with dataset where one reader produces lots more NLs than others
+    # Extracting all but this reader will reduce maxNL and may break this code
+    maxNLe = len(NLe[0,0,0,:])
+    
+    LLe = LL[(trts,), (rdrs,), :, :]
+    # dont need above test as maxLL is fixed by Truth sheet and independent
+    # of treatments or readers
+    maxLL = len(LLe[0,0,0,:])
+    
+    modalityIDe = []
+    for i in range
+    
+    pass
+
+ 
+    
+ # FileName = "extdata/toyFiles/FROC/frocCr.xlsx"
+FileName = "extdata/JT.xlsx"
+dsOrg = DfReadDataFile(FileName)
+ds = DfExtractDataset(dsOrg, trts = [0,1], rdrs = [0,2])
