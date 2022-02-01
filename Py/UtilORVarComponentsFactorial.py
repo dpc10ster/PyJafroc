@@ -214,7 +214,7 @@ def UtilORVarComponentsFactorial(ds, FOM = "wAfroc"):
 # single treatment msR_i 
 # # single reader msT_j
 
-    return [foms, TRanova, VarCom]
+    return [TRanova, VarCom]
 
 #FileName = "extdata/JT.xlsx"
 # FileName = "extdata/toyFiles/FROC/frocCr.xlsx"
