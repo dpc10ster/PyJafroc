@@ -28,17 +28,20 @@ def ORSummaryRRRC(ds, FOMs, ANOVA, alpha, diffTRName):
     VarCom = ANOVA[1]
     
     # a) Test for H0: Treatments have the same AUC
-    msDen = TRanova['MS']['TR'] + max(J * (VarCom['Estimates']['Cov2'] \
-                                           - VarCom['Estimates']['Cov3']), 0)
+    msDen = TRanova['MS']['TR'] + \
+        max(J * (VarCom['Estimates']['Cov2'] \
+        - VarCom['Estimates']['Cov3']), 0)
     f_ = TRanova["MS"]["T"]/msDen
     ddf = msDen ** 2/(TRanova['MS']['TR'] ** 2 / ((I - 1) * (J - 1)))
     #https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.f.html
     p = 1 - f.cdf(f_, I-1, ddf)
-    RRRC = ["FTests", "GTests"]
-    RRRC[0] = pd.DataFrame({"DF": (I-1,ddf), \
+    
+    RRRC = {"FTests": [], "ciDiffTrt": []}
+    RRRC["FTests"].append(pd.DataFrame({"DF": (I-1,ddf), \
                             "MS": (TRanova["MS"]["T"], TRanova["MS"]["TR"]), \
                             "FStat": (f_, np.NAN), \
-                            "PValue": (p, np.NAN)})
+                            "PValue": (p, np.NAN)}).round(4))
+        
     stdErr = math.sqrt(2 * msDen/J)
     tStat = []
     PrGTt = []
@@ -53,27 +56,19 @@ def ORSummaryRRRC(ds, FOMs, ANOVA, alpha, diffTRName):
         CI[0][0] = trtMeanDiffs["Estimate"] - t.ppf(1 - alpha/2, ddf) * stdErr
         CI[0][1] = trtMeanDiffs["Estimate"] + t.ppf(1 - alpha/2, ddf) * stdErr 
     # *** ValueError: If using all scalar values, you must pass an index
-    RRRC[1] = pd.DataFrame({"Estimate": trtMeanDiffs.values[0][0], \
+    RRRC["ciDiffTrt"].append(pd.DataFrame({"Estimate": trtMeanDiffs.values[0][0], \
                             "StdErr": [stdErr], \
                             "DF": [ddf], \
-                            "t": [tStat], \
-                            "PrGTt": [PrGTt], \
+                            "t": [tStat[0]], \
+                            "PrGTt": [PrGTt[0]], \
                             "CI_Lo": [CI[0][0]], \
-                            "CI_hi": [CI[0][1]]})
-    RRRC[1].style.format(na_rep='MISS', precision=3)
+                            "CI_hi": [CI[0][1]]}).round(4))
     pass
+    return RRRC
 # =============================================================================
 # TODO this code needs to pass the FED 5-modality dataset
 # =============================================================================
 
-    # RRRC[1] = pd.DataFrame({"Estimate": (trtMeanDiffs), \
-    #                         "StdErr": ([stdErr] * math.comb(I, 2)),
-    #                         "DF": [ddf] * math.comb(I, 2),
-    #                         "t": (tStat),
-    #                         "PrGTt": (PrGTt),
-    #                         "CI_Lo": (CI[0][0]), \
-    #                         "CI_hi": (CI[0][1])})
-    # pass
 
 
 def ORSummaryFRRC(ds, FOMs, ANOVA, alpha, diffTRName):
@@ -122,7 +117,7 @@ def StSignificanceTesting(ds, FOM = "wAfroc", analysisOption = "RRRC", \
     foms = UtilFigureOfMerit(ds, "wAfroc")
     # fomsMeansEchRdr = foms.values.mean(axis=0) # col means
     fomsMeansEchMod = foms.values.mean(axis=1) # row means
-    # fomsMean = foms.values.mean() # mean over all values
+    # fomsMean = foms.values.mean() # mean over all values ? NO see TBA
     trtMeans = pd.DataFrame({"Estimate": fomsMeansEchMod})
     
     ret = UtilORVarComponentsFactorial(ds)
@@ -132,7 +127,7 @@ def StSignificanceTesting(ds, FOM = "wAfroc", analysisOption = "RRRC", \
     ANOVA = [TRAnova, VarCom]
     
     trtMeanDiffs = np.full(math.comb(I,2), 0.0)
-    # following is needed to hold variable length strings
+    # in following dtype=object is needed to hold variable length strings
     diffTRName = np.ndarray([math.comb(I,2)], dtype=object) 
     ii = 0
     for i in range(I):
