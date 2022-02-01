@@ -11,8 +11,7 @@ from UtilFigureOfMerit import UtilFigureOfMerit
 from UtilORVarComponentsFactorial import UtilORVarComponentsFactorial
 import math
 import numpy as np
-from scipy.stats import f
-from scipy.stats import t
+from scipy.stats import f, t
 
 
 
@@ -21,24 +20,24 @@ def ORSummaryRRRC(ds, FOMs, ANOVA, alpha, diffTRName):
     I = len(ds[0][:,0,0,0])
     J = len(ds[0][0,:,0,0])
 
-    trtMeans =  FOMs[1]
-    trtMeanDiffs  =  FOMs[2]
+    trtMeans =  FOMs["trtMeans"]
+    trtMeanDiffs  =  FOMs["trtMeanDiffs"]
     
-    TRanova = ANOVA[0]
-    VarCom = ANOVA[1]
+    TRAnova = ANOVA["TRAnova"]
+    VarCom = ANOVA["VarCom"]
     
     # a) Test for H0: Treatments have the same AUC
-    msDen = TRanova['MS']['TR'] + \
+    msDen = TRAnova['MS']['TR'] + \
         max(J * (VarCom['Estimates']['Cov2'] \
         - VarCom['Estimates']['Cov3']), 0)
-    f_ = TRanova["MS"]["T"]/msDen
-    ddf = msDen ** 2/(TRanova['MS']['TR'] ** 2 / ((I - 1) * (J - 1)))
+    f_ = TRAnova["MS"]["T"]/msDen
+    ddf = msDen ** 2/(TRAnova['MS']['TR'] ** 2 / ((I - 1) * (J - 1)))
     #https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.f.html
     p = 1 - f.cdf(f_, I-1, ddf)
     
     RRRC = {"FTests": [], "ciDiffTrt": []}
     RRRC["FTests"].append(pd.DataFrame({"DF": (I-1,ddf), \
-                            "MS": (TRanova["MS"]["T"], TRanova["MS"]["TR"]), \
+                            "MS": (TRAnova["MS"]["T"], TRAnova["MS"]["TR"]), \
                             "FStat": (f_, np.NAN), \
                             "PValue": (p, np.NAN)}).round(4))
         
@@ -101,7 +100,7 @@ def StSignificanceTesting(ds, FOM = "wAfroc", analysisOption = "RRRC", \
 
     Returns
     -------
-    TODO significanceTesting object st 
+    TODO significanceTesting object st
 
     """
     
@@ -121,10 +120,8 @@ def StSignificanceTesting(ds, FOM = "wAfroc", analysisOption = "RRRC", \
     trtMeans = pd.DataFrame({"Estimate": fomsMeansEchMod})
     
     ret = UtilORVarComponentsFactorial(ds)
-    TRAnova = ret[0]
-    VarCom = ret[1]
-    
-    ANOVA = [TRAnova, VarCom]
+
+    ANOVA = {"TRAnova": ret[0], "VarCom": ret[1]}
     
     trtMeanDiffs = np.full(math.comb(I,2), 0.0)
     # in following dtype=object is needed to hold variable length strings
@@ -140,10 +137,11 @@ def StSignificanceTesting(ds, FOM = "wAfroc", analysisOption = "RRRC", \
     trtMeanDiffs = pd.DataFrame({"Estimate": trtMeanDiffs})
     trtMeanDiffs.index = diffTRName
     
-    FOMs = [foms, trtMeans, trtMeanDiffs]
+    FOMs = {"foms": foms, "trtMeans": trtMeans, "trtMeanDiffs": trtMeanDiffs}
     
     pass
 
+# list(FOMs.keys())[0]
     if analysisOption == "RRRC":
         RRRC = ORSummaryRRRC(ds, FOMs, ANOVA, alpha, diffTRName)
         return [FOMs, ANOVA, RRRC]
