@@ -159,10 +159,10 @@ def StSignificanceTesting(ds, FOM = "wAfroc", analysisOption = "RRRC", \
 
 
 
-#FileName = "extdata/JT.xlsx"
-FileName = "extdata/toyFiles/FROC/frocCr.xlsx"
-ds = DfReadDataFile(FileName)
-# pv = UtilPseudoValues(ds)
-# varCom = UtilORVarComponentsFactorial(ds)
-#fomMeans = UtilORVarComponentsFactorial(ds)
-st = StSignificanceTesting(ds)
+# #FileName = "extdata/JT.xlsx"
+# FileName = "extdata/toyFiles/FROC/frocCr.xlsx"
+# ds = DfReadDataFile(FileName)
+# # pv = UtilPseudoValues(ds)
+# # varCom = UtilORVarComponentsFactorial(ds)
+# #fomMeans = UtilORVarComponentsFactorial(ds)
+# st = StSignificanceTesting(ds)

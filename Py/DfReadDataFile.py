@@ -263,6 +263,9 @@ def DfExtractDataset (ds, trts, rdrs):
     modalityID = ds[5]
     readerID = ds[6]
     maxNL = len(NL[0,0,0,:]) # for original dataset
+    perCase = ds[2]
+    relWeights = ds[3]
+    DataType = ds[4]
     
     # e denotes extracted values
     # following trick is from StackOverflow in response to query below
@@ -279,12 +282,22 @@ def DfExtractDataset (ds, trts, rdrs):
     maxLL = len(LLe[0,0,0,:])
     
     modalityIDe = []
-    for i in range
+    for i in trts:
+        modalityIDe.append(trts[i])
+    modalityIDe = [str(x) for x in modalityIDe]
+    readerIDe = []
+    for i in trts:
+        readerIDe.append(rdrs[i])
+    readerIDe = [str(x) for x in readerIDe]
     
     pass
 
- 
-    
+    dse = [NLe, LLe, perCase, relWeights, DataType, modalityIDe, readerIDe]
+    return(dse) 
+  
+
+
+  
  # FileName = "extdata/toyFiles/FROC/frocCr.xlsx"
 FileName = "extdata/JT.xlsx"
 dsOrg = DfReadDataFile(FileName)
