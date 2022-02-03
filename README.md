@@ -3,6 +3,14 @@
 This repository is for converting some of the `RJafroc` functions to `Python`.
 
 
+## JT1.xlsx
+All readers except 1 and 3 removed
+check into MS error; should be:
+st$RRRC$FTests
+                 DF          MS     FStat          p
+Treatment 1.0000000 0.300496943 3.5955149 0.12348145
+Error     4.4561033 0.083575497        NA         NA
+
 ## Working on StSignificanceTesting 01/30/22
 Need to add modalityID and readerID fields to dataset object
 

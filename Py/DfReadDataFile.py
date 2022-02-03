@@ -254,29 +254,33 @@ def DfExtractDataset (ds, trts, rdrs):
     """
     
     NL = ds[0]
-    LL = ds[1]
-        
+    LL = ds[1]      
     I = len(NL[:,0,0,0])
     J = len(NL[0,:,0,0])
     K = len(NL[0,0,:,0])
     K2 = len(LL[0,0,:,0])
-    modalityID = ds[5]
-    readerID = ds[6]
     maxNL = len(NL[0,0,0,:]) # for original dataset
+    
     perCase = ds[2]
     relWeights = ds[3]
     DataType = ds[4]
+    modalityID = ds[5]
+    readerID = ds[6]
     
     # e denotes extracted values
-    # following trick is from StackOverflow in response to query below
-    # Numpy index slice without losing dimension information
-    # using tuples to avoid losing dimension information
-    NLe = NL[(trts,), (rdrs,), :, :]
+# =============================================================================
+#   TODO Tnere is a risk of losing dimensions; need more careful checking with
+#   other datasets
+# =============================================================================
+    # this has to be done in two steps !!dpc!!
+    NLe = NL[trts, :, :, :]
+    NLe = NLe[:, rdrs, :, :]
     # TODO test with dataset where one reader produces lots more NLs than others
     # Extracting all but this reader will reduce maxNL and may break this code
     maxNLe = len(NLe[0,0,0,:])
     
-    LLe = LL[(trts,), (rdrs,), :, :]
+    LLe = LL[:, rdrs, :, :]
+    LLe = LLe[trts, :, :, :]
     # dont need above test as maxLL is fixed by Truth sheet and independent
     # of treatments or readers
     maxLL = len(LLe[0,0,0,:])
@@ -286,7 +290,7 @@ def DfExtractDataset (ds, trts, rdrs):
         modalityIDe.append(trts[i])
     modalityIDe = [str(x) for x in modalityIDe]
     readerIDe = []
-    for i in trts:
+    for i in rdrs:
         readerIDe.append(rdrs[i])
     readerIDe = [str(x) for x in readerIDe]
     
@@ -298,7 +302,11 @@ def DfExtractDataset (ds, trts, rdrs):
 
 
   
- # FileName = "extdata/toyFiles/FROC/frocCr.xlsx"
-FileName = "extdata/JT.xlsx"
-dsOrg = DfReadDataFile(FileName)
-ds = DfExtractDataset(dsOrg, trts = [0,1], rdrs = [0,2])
+# FileName = "extdata/toyFiles/FROC/frocCr.xlsx"
+# FileName = "extdata/JT.xlsx"
+# dsOrg = DfReadDataFile(FileName)
+# ds = DfExtractDataset(dsOrg, trts = [0,1], rdrs = [0,2])
+# FileName = "extdata/JT1.xlsx"
+# dsOrg = DfReadDataFile(FileName)
+#ds = DfExtractDataset(dsOrg, trts = [0,1], rdrs = [0,2])
+

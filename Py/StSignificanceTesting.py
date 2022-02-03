@@ -5,7 +5,7 @@ Created on Mon Jan 24 09:26:41 2022
 
 @author: Dev
 """
-from DfReadDataFile import DfReadDataFile
+from DfReadDataFile import DfReadDataFile, DfExtractDataset
 import pandas as pd
 from UtilFigureOfMerit import UtilFigureOfMerit
 from UtilORVarComponentsFactorial import UtilORVarComponentsFactorial
@@ -160,9 +160,16 @@ def StSignificanceTesting(ds, FOM = "wAfroc", analysisOption = "RRRC", \
 
 
 # #FileName = "extdata/JT.xlsx"
-# FileName = "extdata/toyFiles/FROC/frocCr.xlsx"
+FileName = "extdata/toyFiles/FROC/frocCr.xlsx"
 # ds = DfReadDataFile(FileName)
 # # pv = UtilPseudoValues(ds)
 # # varCom = UtilORVarComponentsFactorial(ds)
 # #fomMeans = UtilORVarComponentsFactorial(ds)
 # st = StSignificanceTesting(ds)
+# FileName = "extdata/JT.xlsx"
+ds = DfReadDataFile(FileName)
+# dse = DfExtractDataset(ds, trts = [0,1], rdrs = [0,2])
+#st = StSignificanceTesting(ds)
+ste = StSignificanceTesting(ds)
+
+

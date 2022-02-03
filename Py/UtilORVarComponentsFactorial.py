@@ -130,6 +130,10 @@ def FOMijk2VarCov (resampleFOMijk):
     return ([Var, Cov1, Cov2, Cov3])
   
 
+def OrVarCovMatrixFactorial(ds):
+    pass
+
+
 
 def UtilORVarComponentsFactorial(ds, FOM = "wAfroc"):
     """
@@ -200,19 +204,24 @@ def UtilORVarComponentsFactorial(ds, FOM = "wAfroc"):
     else: 
         msR_i = 0
 
-# =============================================================================
-#     cov2EachTrt = [0] * I
-#     varEachTrt = [0] * I
-#     for i in range(I):
-#         dsi <- DfExtractDataset(dataset, trts = i)
-#     ret = OrVarCovMatrixFactorial(dsi, FOM, FPFValue, nBoots, covEstMethod, seed)
-#     varEachTrt[i] = ret$Var
-#     cov2EachTrt[i] = ret$Cov2
-# 
-# =============================================================================
+    cov2EachTrt = [0] * I
+    varEachTrt = [0] * I
+    for i in range(I):
+        dsi = DfExtractDataset(ds, trts = [i], rdrs = [0,1,2])
+        ret = OrVarCovMatrixFactorial(dsi)
+        [resampleFOMijk, jkPseudoValues] = UtilPseudoValues(dsi)
+        covMatrix = FOMijk2VarCov(resampleFOMijk)
+        Var = covMatrix[0]
+        Cov1 = covMatrix[1]
+        Cov2 = covMatrix[2]
+        Cov3 = covMatrix[3]
+    #ret = OrVarCovMatrixFactorial(dsi)
+    #varEachTrt[i] = ret$Var
+    #cov2EachTrt[i] = ret$Cov2
+ 
 
    
-    resampleFOMijk = UtilPseudoValues(ds)[0]
+    [resampleFOMijk, jkPseudoValues] = UtilPseudoValues(ds)
     covMatrix = FOMijk2VarCov(resampleFOMijk)
     Var = covMatrix[0]
     Cov1 = covMatrix[1]
@@ -235,7 +244,7 @@ def UtilORVarComponentsFactorial(ds, FOM = "wAfroc"):
 # single treatment msR_i 
 # # single reader msT_j
 
-    ANOVA = {"TRAnova": ret[0], "VarCom": ret[1]}
+    ANOVA = {"TRAnova": TRAnova, "VarCom": VarCom}
     return ANOVA
 
 #FileName = "extdata/JT.xlsx"

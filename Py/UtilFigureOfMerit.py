@@ -8,7 +8,7 @@ Created on Tue Jan 25 08:52:01 2022
 
 import numpy as np
 import pandas as pd
-from DfReadDataFile import DfReadDataFile
+from DfReadDataFile import DfReadDataFile, DfExtractDataset
 import sys
 
 def UtilLesionWeightsDistr(maxLL, relWeights = 0):
@@ -123,3 +123,7 @@ def UtilFigureOfMerit(ds, FOM = "wAfroc"):
 # FileName = "extdata/toyFiles/FROC/frocCr.xlsx"
 # ds = DfReadDataFile(FileName)
 # fom = UtilFigureOfMerit(ds, "wAfroc")
+# FileName = "extdata/JT.xlsx"
+# ds = DfReadDataFile(FileName)
+# dse = DfExtractDataset(ds, trts = [0,1], rdrs = [0,2])
+# fome = UtilFigureOfMerit(dse)
