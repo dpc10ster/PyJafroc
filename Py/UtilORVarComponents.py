@@ -130,12 +130,7 @@ def FOMijk2VarCov (resampleFOMijk):
     return ([Var, Cov1, Cov2, Cov3])
   
 
-def OrVarCovMatrixFactorial(ds):
-    pass
-
-
-
-def UtilORVarComponentsFactorial(ds, FOM = "wAfroc"):
+def UtilORVarComponents(ds, FOM = "wAfroc"):
     """
     Parameters
     ----------
@@ -195,6 +190,7 @@ def UtilORVarComponentsFactorial(ds, FOM = "wAfroc"):
     TRAnova = pd.DataFrame({"SS": ssArray, "DF": dfArray, "MS": msArray})
     TRAnova.index = ["T", "R", "TR"]
 
+    # single treatment msR_i
     if J > 1:
         msR_i = [0] * I
         for i in range(I):
@@ -204,23 +200,52 @@ def UtilORVarComponentsFactorial(ds, FOM = "wAfroc"):
     else: 
         msR_i = 0
 
-    cov2EachTrt = [0] * I
     varEachTrt = [0] * I
+    cov2EachTrt = [0] * I
     for i in range(I):
         dsi = DfExtractDataset(ds, trts = [i], rdrs = [0,1,2])
-        ret = OrVarCovMatrixFactorial(dsi)
         [resampleFOMijk, jkPseudoValues] = UtilPseudoValues(dsi)
         covMatrix = FOMijk2VarCov(resampleFOMijk)
-        Var = covMatrix[0]
-        Cov1 = covMatrix[1]
-        Cov2 = covMatrix[2]
-        Cov3 = covMatrix[3]
-    #ret = OrVarCovMatrixFactorial(dsi)
-    #varEachTrt[i] = ret$Var
-    #cov2EachTrt[i] = ret$Cov2
- 
+        varEachTrt[i] = covMatrix[0]
+        cov2EachTrt[i] = covMatrix[2] 
 
-   
+    modID = ds[5]
+    IndividualTrt = pd.DataFrame({"DF": [J-1] * I, 
+                                "msREachTrt": msR_i, 
+                                "varEachTrt": varEachTrt, 
+                                "cov2EachTrt": cov2EachTrt})
+    IndividualTrt.index = ["trt" + s for s in modID]
+
+    # single reader msT_j
+    if I > 1:
+        msT_j = [0] * J
+        for j in range(J):
+            for i in range(I):
+                msT_j[j] = msT_j[j] + (foms.values[i, j] -  fomsMeansEchRdr[j]) ** 2
+                msT_j[j] /= (I - 1)
+    else: 
+        msT_j <- 0
+    
+ 
+    varEachRdr = [0] * J
+    cov1EachRdr = [0] * J
+    for j in range(J):
+        dsj = DfExtractDataset(ds, trts = [0,1], rdrs = [j])
+        [resampleFOMijk, jkPseudoValues] = UtilPseudoValues(dsj)
+        covMatrix = FOMijk2VarCov(resampleFOMijk)
+        varEachRdr[j] = covMatrix[0]
+        cov1EachRdr[j] = covMatrix[1]
+        
+    rdrID = ds[6]
+    if I > 1:
+        IndividualRdr = pd.DataFrame({"DF": [I-1] * J, 
+                                "msTEachRdr": msT_j, 
+                                "varEachRdr": varEachRdr, 
+                                "cov1EachRdr": cov1EachRdr})
+        IndividualRdr.index = ["rdr" + s for s in rdrID]
+    else :
+        IndividualRdr = 0
+ 
     [resampleFOMijk, jkPseudoValues] = UtilPseudoValues(ds)
     covMatrix = FOMijk2VarCov(resampleFOMijk)
     Var = covMatrix[0]
@@ -244,11 +269,9 @@ def UtilORVarComponentsFactorial(ds, FOM = "wAfroc"):
 # single treatment msR_i 
 # # single reader msT_j
 
-    ANOVA = {"TRAnova": TRAnova, "VarCom": VarCom}
+    ANOVA = {"TRAnova": TRAnova,
+             "VarCom": VarCom,
+             "IndividualTrt": IndividualTrt,
+             "IndividualRdr": IndividualRdr}
+        
     return ANOVA
-
-#FileName = "extdata/JT.xlsx"
-# FileName = "extdata/toyFiles/FROC/frocCr.xlsx"
-# ds = DfReadDataFile(FileName)
-# pv = UtilPseudoValues(ds)
-# varCom = UtilORVarComponentsFactorial(ds)

@@ -286,11 +286,11 @@ def DfExtractDataset (ds, trts, rdrs):
     maxLL = len(LLe[0,0,0,:])
     
     modalityIDe = []
-    for i in trts:
+    for i in range(len(trts)):
         modalityIDe.append(trts[i])
     modalityIDe = [str(x) for x in modalityIDe]
     readerIDe = []
-    for i in rdrs:
+    for i in range(len(rdrs)):
         readerIDe.append(rdrs[i])
     readerIDe = [str(x) for x in readerIDe]
     
