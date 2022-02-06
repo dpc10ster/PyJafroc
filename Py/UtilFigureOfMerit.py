@@ -91,6 +91,7 @@ def UtilFigureOfMerit(ds, FOM = "wAfroc"):
         sys.exit("FROC dataset requires FOM = 'wAfroc'")
 # =============================================================================
 # Following code works for both ROC and FROC data
+# Checked with NicoCadRad.xlsx file
 # =============================================================================
     NL = ds[0]
     LL = ds[1]
