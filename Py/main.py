@@ -1,5 +1,5 @@
 from DfReadDataFile import *
-from StSignificanceTesting import StSignificanceTesting
+from StSignificanceTesting import StSignificanceTesting, StSignificanceTestingCadVsRad
 from UtilFigureOfMerit import UtilFigureOfMerit
 from UtilFigureOfMerit import UtilLesionWeightsDistr
 
@@ -24,8 +24,9 @@ from UtilFigureOfMerit import UtilLesionWeightsDistr
 # st = StSignificanceTesting(ds)
 # FileName = "extdata/JT.xlsx"
 FileName = "extdata/NicoRadRoc.xlsx"
-ds = DfReadDataFile(FileName)
+ds = DfReadDataFile(FileName, DataType="ROC")
 # dse = DfExtractDataset(ds, trts = [0,1], rdrs = [0,2])
 #st = StSignificanceTesting(ds)
 # ste = StSignificanceTesting(ds)
-st = StSignificanceTestingCadVsRad(ds, FOM = "Wilcoxon")
+#st = StSignificanceTestingCadVsRad(ds, FOM = "Wilcoxon")
+fom = UtilFigureOfMerit(ds, FOM = "Wilcoxon")

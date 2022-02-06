@@ -161,6 +161,8 @@ def DfReadDataFile(FileName, DataType="FROC"):
     perCase = pd.Series(list(perCase))
 
     maxLL = max(perCase)
+    if (maxLL > 1) & (DataType != "FROC"):
+        sys.exit("Only FROC data can have more than one lesion per case")
     relWeights = [1/maxLL] * maxLL
 
 # =============================================================================
@@ -195,7 +197,8 @@ def DfReadDataFile(FileName, DataType="FROC"):
                           'ModalityID',
                           'CaseID']).transform(len).max()[0]
 
-    maxLL = max(perCase)
+    if (maxNL > 1) & (DataType != "FROC"):
+        sys.exit("Only FROC data can have more than one NL per case")
 
     NL = np.full((I,J,K,maxNL), -np.inf)
     for indxNl in range(len(dfNL["ModalityID"])):

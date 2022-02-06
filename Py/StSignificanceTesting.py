@@ -7,7 +7,7 @@ Created on Mon Jan 24 09:26:41 2022
 """
 import pandas as pd
 from UtilFigureOfMerit import UtilFigureOfMerit, DfExtractDataset
-from UtilORVarComponents import UtilORVarComponents
+from UtilORVarComponents import UtilORVarComponents, UtilPseudoValues
 import math
 import numpy as np
 from scipy.stats import f, t
@@ -227,6 +227,7 @@ def StSignificanceTestingCadVsRad(ds, FOM = "wAfroc", alpha = 0.05):
     -------
     TODO.
     """
+    ret = DiffFomVarCov2(ds)
     pass
 
 
@@ -234,5 +235,7 @@ def DiffFomVarCov2(ds):
     J = len(ds[0][0,:,0,0])
     K = len(ds[0][0,0,:,0])
     dsCad = DfExtractDataset(ds, trts = [0], rdrs = [0])
-    dsRad = DfExtractDataset(ds, trts = [0], rdrs = [1,2,3,4,5,6,7,8,9])
+    dsRad = DfExtractDataset(ds, trts = [0], rdrs = list(range(1,J)))
+    jkFomValuesCad = UtilPseudoValues(dsCad, FOM = "Wilcoxon")
+    pass
 

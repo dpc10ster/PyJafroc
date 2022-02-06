@@ -80,15 +80,22 @@ def UtilFigureOfMerit(ds, FOM = "wAfroc"):
     A dataframe with I rows and J columns, corresponding to treatments and
     readers, respectively, containing the FOM values
     """
+    DataType = ds[4]
+
+    if not FOM in ["wAfroc", "Wilcoxon"]:
+        sys.exit('FOM NOT in ["wAfroc", "Wilcoxon"]')
+
+    if (FOM != "Wilcoxon") & (DataType == "ROC"):
+        sys.exit("ROC dataset requires FOM = 'Wilcoxon'")
+    if (FOM != "wAfroc") & (DataType == "FROC"):
+        sys.exit("FROC dataset requires FOM = 'wAfroc'")
+# =============================================================================
+# Following code works for both ROC and FROC data
+# =============================================================================
     NL = ds[0]
     LL = ds[1]
     perCase = ds[2]
     relWeights = ds[3]
-    DataType = ds[4]
-    pass
-
-    if not FOM in ["wAfroc", "Wilcoxon"]:
-        sys.exit('FOM NOT in ["wAfroc", "Wilcoxon"]')
     I = len(NL[:,0,0,0])
     J = len(NL[0,:,0,0])
     K = len(NL[0,0,:,0])
@@ -96,6 +103,11 @@ def UtilFigureOfMerit(ds, FOM = "wAfroc"):
     K1 = K - K2
     maxNL = len(NL[0,0,0,:])
     maxLL = len(LL[0,0,0,:])
+    if (maxNL > 1) & (DataType != "FROC"):
+        sys.exit("Only FROC data can have more than one NL per case")
+    if (maxLL > 1) & (DataType != "FROC"):
+        sys.exit("Only FROC data can have more than one lesion per case")
+        
     lesWghtDistr = UtilLesionWeightsDistr(maxLL)
 # =============================================================================
 # TODO: control # of decimal places shown and add row and column names    
