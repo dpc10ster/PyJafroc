@@ -64,7 +64,7 @@ def Psi(x, y):
     return ret
 
 
-def UtilFigureOfMerit(ds, FOM = "wAfroc"):
+def UtilFigureOfMerit(ds, FOM):
     """
     Parameters
     ----------

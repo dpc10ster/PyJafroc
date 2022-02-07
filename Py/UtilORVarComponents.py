@@ -10,7 +10,7 @@ from DfReadDataFile import *
 from UtilFigureOfMerit import UtilFigureOfMerit
 
 
-def UtilPseudoValues (ds, FOM = "WAfroc"):
+def UtilPseudoValues (ds, FOM):
     NL = ds[0]
     LL = ds[1]
     maxNL = len(NL[0,0,0,:])
@@ -22,33 +22,59 @@ def UtilPseudoValues (ds, FOM = "WAfroc"):
     K1 = K - K2
     perCase = ds[2]
     
-    fom = UtilFigureOfMerit(ds)
+    fom = UtilFigureOfMerit(ds, FOM)
     jkFomValues = np.full((I,J,K), 0.0)
     jkPseudoValues = np.full((I,J,K), 0.0)
 
     if FOM == "Wilcoxon":
-        pass
-    
-    for i in range(I):
-        for j in range(J):
-            for k in range(K):
-                if k < K1:
-                    nlij_jk = pd.DataFrame(NL[i,j,:,:]).drop(k)
-                    nlij_jk = np.array(nlij_jk).reshape(1,1,K-1,maxNL)
-                    llij_jk = pd.DataFrame(LL[i,j,:,:])
-                    llij_jk = np.array(llij_jk).reshape(1,1,K2,maxLL)
-                    perCase_jk = perCase
-                else:
-                    nlij_jk = pd.DataFrame(NL[i,j,:,:]).drop(k)
-                    nlij_jk = np.array(nlij_jk).reshape(1,1,K-1,maxNL)
-                    llij_jk = pd.DataFrame(LL[i,j,:,:]).drop(k-K1)
-                    llij_jk = np.array(llij_jk).reshape(1,1,K2-1,maxLL)
-                    perCase_jk = perCase.drop(k-K1)
-                    perCase_jk = pd.Series(list(perCase_jk))
-                dsjk = [nlij_jk, llij_jk, perCase_jk, ds[3], ds[4]]
-                jkFomValues[i, j, k] = UtilFigureOfMerit(dsjk).values[0,0]
-                jkPseudoValues[i, j, k]  = (fom.values[i, j] * K - jkFomValues[i, j, k] * (K-1))
-                pass
+        for i in range(I):
+            for j in range(J):
+                for k in range(K):
+                    x = NL[i,j,:,0]
+                    y = LL[i,j,:,0]                
+                    if k < K1:
+                        x1 = list(x)
+                        del x1[k]
+                        nlij_jk = np.array(x1).reshape(1,1,K-1,maxNL)
+                        y1 = pd.DataFrame(y)
+                        llij_jk = np.array(y1).reshape(1,1,K2,maxLL)
+                        perCase_jk = perCase
+                    else:
+                        x1 = list(x)
+                        del x1[k]
+                        nlij_jk = np.array(x1).reshape(1,1,K-1,maxNL)
+                        y1 = pd.DataFrame(y)
+                        y1 = list(y)
+                        del y1[k-K1]
+                        llij_jk = np.array(y1).reshape(1,1,K2-1,maxLL)
+                        perCase_jk = perCase.drop(k-K1)
+                        perCase_jk = pd.Series(list(perCase_jk))
+                    dsjk = [nlij_jk, llij_jk, perCase_jk, ds[3], ds[4]]
+                    jkFomValues[i, j, k] = UtilFigureOfMerit(dsjk, FOM).values[0,0]
+                    jkPseudoValues[i, j, k]  = (fom.values[i, j] * K \
+                                                - jkFomValues[i, j, k] * (K-1))
+    else:
+        for i in range(I):
+            for j in range(J):
+                for k in range(K):
+                    if k < K1:
+                        nlij_jk = pd.DataFrame(NL[i,j,:,:]).drop(k)
+                        nlij_jk = np.array(nlij_jk).reshape(1,1,K-1,maxNL)
+                        llij_jk = pd.DataFrame(LL[i,j,:,:])
+                        llij_jk = np.array(llij_jk).reshape(1,1,K2,maxLL)
+                        perCase_jk = perCase
+                    else:
+                        nlij_jk = pd.DataFrame(NL[i,j,:,:]).drop(k)
+                        nlij_jk = np.array(nlij_jk).reshape(1,1,K-1,maxNL)
+                        llij_jk = pd.DataFrame(LL[i,j,:,:]).drop(k-K1)
+                        llij_jk = np.array(llij_jk).reshape(1,1,K2-1,maxLL)
+                        perCase_jk = perCase.drop(k-K1)
+                        perCase_jk = pd.Series(list(perCase_jk))
+                    dsjk = [nlij_jk, llij_jk, perCase_jk, ds[3], ds[4]]
+                    jkFomValues[i, j, k] = UtilFigureOfMerit(dsjk, FOM).values[0,0]
+                    jkPseudoValues[i, j, k]  = (fom.values[i, j] * K \
+                                                - jkFomValues[i, j, k] * (K-1))
+                    pass
     return [jkFomValues, jkPseudoValues]
 
 
@@ -155,7 +181,7 @@ def UtilORVarComponents(ds, FOM = "wAfroc"):
     J = len(NL[0,:,0,0])
     K = len(NL[0,0,:,0])
     
-    foms = UtilFigureOfMerit(ds)
+    foms = UtilFigureOfMerit(ds, FOM)
     fomsMeansEchRdr = foms.mean(axis=0) # col means
     fomsMeansEchMod = foms.mean(axis=1) # row means
     fomsMean = foms.mean().mean() # mean over all values

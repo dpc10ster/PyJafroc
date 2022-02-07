@@ -162,7 +162,7 @@ def StSignificanceTesting(ds, FOM = "wAfroc", analysisOption = "RRRC", \
         analysisOption = "RRFC"
     pass
 
-    foms = UtilFigureOfMerit(ds, "wAfroc")
+    foms = UtilFigureOfMerit(ds, FOM)
     # fomsMeansEchRdr = foms.values.mean(axis=0) # col means
     fomsMeansEchMod = foms.values.mean(axis=1) # row means
     # fomsMean = foms.values.mean() # mean over all values ? NO see TBA
@@ -228,7 +228,7 @@ def StSignificanceTestingCadVsRad(ds, FOM = "wAfroc", alpha = 0.05):
     TODO.
     """
     ret = DiffFomVarCov2(ds)
-    pass
+    return ret
 
 
 def DiffFomVarCov2(ds):
@@ -236,6 +236,7 @@ def DiffFomVarCov2(ds):
     K = len(ds[0][0,0,:,0])
     dsCad = DfExtractDataset(ds, trts = [0], rdrs = [0])
     dsRad = DfExtractDataset(ds, trts = [0], rdrs = list(range(1,J)))
-    jkFomValuesCad = UtilPseudoValues(dsCad, FOM = "Wilcoxon")
-    pass
+    [jkFomValuesCad, jkPseudoValuesCad] = UtilPseudoValues(dsCad, FOM = "Wilcoxon")
+    [jkFomValuesRad, jkPseudoValuesRad] = UtilPseudoValues(dsRad, FOM = "Wilcoxon")
+    return [jkFomValuesCad, jkFomValuesRad]
 

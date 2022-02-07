@@ -1059,9 +1059,9 @@ static const char __pyx_k_name_2[] = "name";
 static const char __pyx_k_helloworld[] = "helloworld";
 static const char __pyx_k_say_hello_to[] = "say_hello_to";
 static const char __pyx_k_helloworld_pyx[] = "helloworld.pyx";
+static const char __pyx_k_Hello_my_name_is_s[] = "Hello my name is %s!";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
-static const char __pyx_k_Hello_my_crap_name_is_s[] = "Hello my crap name is %s!";
-static PyObject *__pyx_kp_s_Hello_my_crap_name_is_s;
+static PyObject *__pyx_kp_s_Hello_my_name_is_s;
 static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_n_s_end;
 static PyObject *__pyx_n_s_file;
@@ -1080,7 +1080,7 @@ static PyObject *__pyx_codeobj__2;
 
 /* "helloworld.pyx":1
  * def say_hello_to(name):             # <<<<<<<<<<<<<<
- *     print("Hello my crap name is %s!" % name)
+ *     print("Hello my name is %s!" % name)
  */
 
 /* Python wrapper */
@@ -1108,16 +1108,16 @@ static PyObject *__pyx_pf_10helloworld_say_hello_to(CYTHON_UNUSED PyObject *__py
 
   /* "helloworld.pyx":2
  * def say_hello_to(name):
- *     print("Hello my crap name is %s!" % name)             # <<<<<<<<<<<<<<
+ *     print("Hello my name is %s!" % name)             # <<<<<<<<<<<<<<
  */
-  __pyx_t_1 = __Pyx_PyString_FormatSafe(__pyx_kp_s_Hello_my_crap_name_is_s, __pyx_v_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyString_FormatSafe(__pyx_kp_s_Hello_my_name_is_s, __pyx_v_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (__Pyx_PrintOne(0, __pyx_t_1) < 0) __PYX_ERR(0, 2, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "helloworld.pyx":1
  * def say_hello_to(name):             # <<<<<<<<<<<<<<
- *     print("Hello my crap name is %s!" % name)
+ *     print("Hello my name is %s!" % name)
  */
 
   /* function exit code */
@@ -1179,7 +1179,7 @@ static struct PyModuleDef __pyx_moduledef = {
 #endif
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
-  {&__pyx_kp_s_Hello_my_crap_name_is_s, __pyx_k_Hello_my_crap_name_is_s, sizeof(__pyx_k_Hello_my_crap_name_is_s), 0, 0, 1, 0},
+  {&__pyx_kp_s_Hello_my_name_is_s, __pyx_k_Hello_my_name_is_s, sizeof(__pyx_k_Hello_my_name_is_s), 0, 0, 1, 0},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
   {&__pyx_n_s_end, __pyx_k_end, sizeof(__pyx_k_end), 0, 0, 1, 1},
   {&__pyx_n_s_file, __pyx_k_file, sizeof(__pyx_k_file), 0, 0, 1, 1},
@@ -1203,7 +1203,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
 
   /* "helloworld.pyx":1
  * def say_hello_to(name):             # <<<<<<<<<<<<<<
- *     print("Hello my crap name is %s!" % name)
+ *     print("Hello my name is %s!" % name)
  */
   __pyx_tuple_ = PyTuple_Pack(1, __pyx_n_s_name_2); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
@@ -1489,7 +1489,7 @@ if (!__Pyx_RefNanny) {
 
   /* "helloworld.pyx":1
  * def say_hello_to(name):             # <<<<<<<<<<<<<<
- *     print("Hello my crap name is %s!" % name)
+ *     print("Hello my name is %s!" % name)
  */
   __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_10helloworld_1say_hello_to, NULL, __pyx_n_s_helloworld); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
