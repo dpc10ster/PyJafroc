@@ -1,17 +1,79 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Jan 27 16:14:20 2022
-
-@author: Dev
-"""
-
+import time
 from DfReadDataFile import *
-from UtilFigureOfMerit import UtilFigureOfMerit
+from UtilFigureOfMerit import UtilFigureOfMerit, FigureOfMerit_ij
 
 
-def JackKnife(NL, LL, FOM):
-    pass
+def JackKnife(x, y, z, FOM):
+    # x = NL; x1 = corresponding jackknife value
+    # y = LL; y1 = corresponding jackknife value
+    # z = perCase; z1 = corresponding jackknife value
+    K = len(x)
+    K2 = len(y)
+    K1 = K - K2
+    maxNL = len(x[0])
+    maxLL = len(y[0])
+    
+    jkFomValues = [0] * K
+    for k in range(K):
+        if k < K1:
+            if k == 0:
+                x1 = x[1:][:]
+            else:
+                x1 = x[0:k][:] + x[(k+1):][:]
+            y1 = y
+            z1 = z
+        else:
+            if k == (K-1):
+                x1 = x[0:(K-1)][:]
+                y1 = y[1:][:]
+                z1 = z[1:]
+            else:
+                x1 = x[0:k][:] + x[(k+1):][:]
+                y1 = y[0:(k-K1)][:] + y[(k-K1+1):][:]
+                z1 = z[0:(k-K1)] + z[(k-K1+1):]        
+        jkFomValues[k] = FigureOfMerit_ij(x1, y1, z1, FOM)
+       
+    return jkFomValues
+
+def testJackKnife (ds, FOM):
+    NL = ds[0]
+    LL = ds[1]
+    maxNL = len(NL[0,0,0,:])
+    maxLL = len(LL[0,0,0,:])
+    I = len(NL[:,0,0,0])
+    J = len(NL[0,:,0,0])
+    K = len(NL[0,0,:,0])
+    K2 = len(LL[0,0,:,0])
+    K1 = K - K2
+    perCase = ds[2]
+    
+# =============================================================================
+# TODO: check that correct FOM is passed
+# does it make a difference? r
+# ran JT dataset with Wilcoxon with no error??    
+# =============================================================================
+    #jkFomValues = np.full((I,J,K), 0.0)
+    jkFomValues = [[[0 for k in range(K)] for j in range(J)] for i in range(I)]
+
+    for i in range(I):
+        for j in range(J):
+            # 159 seconds per loop using pure Python without drop
+            x = NL[i,j,:,:]
+            y = LL[i,j,:,:]
+            tic = time.perf_counter()
+            jkFomValues[i][j][:] = JackKnife(list(x), \
+                                           list(y), \
+                                           list(perCase), \
+                                           FOM)
+            toc = time.perf_counter()
+            if (i == 0) & (j == 0): 
+                print(f"Loop time is {toc - tic:0.4f} seconds")
+            pass
+
+            
+                
+    return jkFomValues
+
 
 def UtilPseudoValues (ds, FOM):
     NL = ds[0]

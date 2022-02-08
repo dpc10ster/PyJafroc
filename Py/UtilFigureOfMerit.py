@@ -64,6 +64,48 @@ def Psi(x, y):
     return ret
 
 
+def FigureOfMerit_ij(NL, LL, perCase, FOM):
+    """
+    Parameters
+    ----------
+    TODO
+    NL : list
+        JAFROC dataset list object created by DfReadDataFile()
+
+    FOM: str
+        The figure of merit or measure of performance, the
+        default is "wAFROC", or "Wilcoxon"
+
+    Returns
+    -------
+    A dataframe with I rows and J columns, corresponding to treatments and
+    readers, respectively, containing the FOM values
+    """
+
+    K = len(NL)
+    K2 = len(LL)
+    K1 = K - K2
+    maxNL = len(NL[0][:])
+    maxLL = len(LL[0][:])
+        
+    lesWghtDistr = UtilLesionWeightsDistr(maxLL)
+    
+    ret = 0.0
+    for k1 in range(K1):
+        fp = -np.inf
+        for l1 in range(maxNL):
+            if NL[k1][l1] > fp: # capture the highest value
+                fp = NL[k1][l1]
+        for k2 in range(K2):
+            for l2 in range(perCase[k2]):
+                ret += lesWghtDistr.values[perCase[k2]-1,l2] * \
+                    Psi(fp, LL[k2][l2])            
+    ret /= (K1*K2)
+    fom = ret
+
+    return fom
+
+
 def UtilFigureOfMerit(ds, FOM):
     """
     Parameters
