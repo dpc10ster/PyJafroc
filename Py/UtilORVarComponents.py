@@ -10,6 +10,9 @@ from DfReadDataFile import *
 from UtilFigureOfMerit import UtilFigureOfMerit
 
 
+def JackKnife(NL, LL, FOM):
+    pass
+
 def UtilPseudoValues (ds, FOM):
     NL = ds[0]
     LL = ds[1]
@@ -29,9 +32,9 @@ def UtilPseudoValues (ds, FOM):
     if FOM == "Wilcoxon":
         for i in range(I):
             for j in range(J):
+                x = NL[i,j,:,0]
+                y = LL[i,j,:,0]                
                 for k in range(K):
-                    x = NL[i,j,:,0]
-                    y = LL[i,j,:,0]                
                     if k < K1:
                         x1 = list(x)
                         del x1[k]
