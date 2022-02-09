@@ -16,17 +16,17 @@ def JackKnife(x, y, z, FOM):
     jkFomValues = [0] * K
     for k in range(K):
         if k < K1:
-            if k == 0:
+            if k == 0: # first case is special
                 x1 = x[1:][:]
             else:
                 x1 = x[0:k][:] + x[(k+1):][:]
             y1 = y
             z1 = z
         else:
-            if k == (K-1):
-                x1 = x[0:(K-1)][:]
-                y1 = y[1:][:]
-                z1 = z[1:]
+            if k == (K-1): # last case is also special
+                x1 = x[0:(K-1)][:] # drop last abnormal case nl rationg
+                y1 = y[0:(K2-1)][:] # drop last abnormal case ll rating
+                z1 = z[0:(K2-1)]
             else:
                 x1 = x[0:k][:] + x[(k+1):][:]
                 y1 = y[0:(k-K1)][:] + y[(k-K1+1):][:]
@@ -57,14 +57,20 @@ def testJackKnife (ds, FOM):
 
     for i in range(I):
         for j in range(J):
-            # 159 seconds per loop using pure Python without drop
+            # Loop time is 2.6164 seconds using pure Python without drop method
+            # JT dataset; using array indexing
+            # Loop time is 1.7576 seconds using list indexing
             x = NL[i,j,:,:]
             y = LL[i,j,:,:]
             tic = time.perf_counter()
             jkFomValues[i][j][:] = JackKnife(list(x), \
-                                           list(y), \
-                                           list(perCase), \
-                                           FOM)
+                                            list(y), \
+                                            list(perCase), \
+                                            FOM)
+            # jkFomValues[i,j,:] = JackKnife(list(x), \
+            #                                list(y), \
+            #                                list(perCase), \
+            #                                FOM)
             toc = time.perf_counter()
             if (i == 0) & (j == 0): 
                 print(f"Loop time is {toc - tic:0.4f} seconds")
@@ -76,6 +82,7 @@ def testJackKnife (ds, FOM):
 
 
 def UtilPseudoValues (ds, FOM):
+    
     NL = ds[0]
     LL = ds[1]
     maxNL = len(NL[0,0,0,:])
@@ -88,58 +95,22 @@ def UtilPseudoValues (ds, FOM):
     perCase = ds[2]
     
     fom = UtilFigureOfMerit(ds, FOM)
-    jkFomValues = np.full((I,J,K), 0.0)
-    jkPseudoValues = np.full((I,J,K), 0.0)
+    
+    jkFomValues = [[[0 for k in range(K)] for j in range(J)] for i in range(I)]
+    jkPseudoValues = [[[0 for k in range(K)] for j in range(J)] for i in range(I)]
 
-    if FOM == "Wilcoxon":
-        for i in range(I):
-            for j in range(J):
-                x = NL[i,j,:,0]
-                y = LL[i,j,:,0]                
-                for k in range(K):
-                    if k < K1:
-                        x1 = list(x)
-                        del x1[k]
-                        nlij_jk = np.array(x1).reshape(1,1,K-1,maxNL)
-                        y1 = pd.DataFrame(y)
-                        llij_jk = np.array(y1).reshape(1,1,K2,maxLL)
-                        perCase_jk = perCase
-                    else:
-                        x1 = list(x)
-                        del x1[k]
-                        nlij_jk = np.array(x1).reshape(1,1,K-1,maxNL)
-                        y1 = pd.DataFrame(y)
-                        y1 = list(y)
-                        del y1[k-K1]
-                        llij_jk = np.array(y1).reshape(1,1,K2-1,maxLL)
-                        perCase_jk = perCase.drop(k-K1)
-                        perCase_jk = pd.Series(list(perCase_jk))
-                    dsjk = [nlij_jk, llij_jk, perCase_jk, ds[3], ds[4]]
-                    jkFomValues[i, j, k] = UtilFigureOfMerit(dsjk, FOM).values[0,0]
-                    jkPseudoValues[i, j, k]  = (fom.values[i, j] * K \
-                                                - jkFomValues[i, j, k] * (K-1))
-    else:
-        for i in range(I):
-            for j in range(J):
-                for k in range(K):
-                    if k < K1:
-                        nlij_jk = pd.DataFrame(NL[i,j,:,:]).drop(k)
-                        nlij_jk = np.array(nlij_jk).reshape(1,1,K-1,maxNL)
-                        llij_jk = pd.DataFrame(LL[i,j,:,:])
-                        llij_jk = np.array(llij_jk).reshape(1,1,K2,maxLL)
-                        perCase_jk = perCase
-                    else:
-                        nlij_jk = pd.DataFrame(NL[i,j,:,:]).drop(k)
-                        nlij_jk = np.array(nlij_jk).reshape(1,1,K-1,maxNL)
-                        llij_jk = pd.DataFrame(LL[i,j,:,:]).drop(k-K1)
-                        llij_jk = np.array(llij_jk).reshape(1,1,K2-1,maxLL)
-                        perCase_jk = perCase.drop(k-K1)
-                        perCase_jk = pd.Series(list(perCase_jk))
-                    dsjk = [nlij_jk, llij_jk, perCase_jk, ds[3], ds[4]]
-                    jkFomValues[i, j, k] = UtilFigureOfMerit(dsjk, FOM).values[0,0]
-                    jkPseudoValues[i, j, k]  = (fom.values[i, j] * K \
-                                                - jkFomValues[i, j, k] * (K-1))
-                    pass
+    for i in range(I):
+        for j in range(J):
+            x = NL[i,j,:,:]
+            y = LL[i,j,:,:]                
+            tic = time.perf_counter()
+            jkFomValues[i][j][:] = JackKnife(list(x), list(y), list(perCase), FOM)
+            toc = time.perf_counter()
+            if (i == 0) & (j == 0): 
+                print(f"Loop time is {toc - tic:0.4f} seconds")
+            for k in range(K):    
+                jkPseudoValues[i][j][k]  = (fom.values[i, j] * K - jkFomValues[i][j][k] * (K-1))
+            pass
     return [jkFomValues, jkPseudoValues]
 
 

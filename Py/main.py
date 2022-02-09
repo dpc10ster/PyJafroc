@@ -2,7 +2,7 @@ from DfReadDataFile import *
 from StSignificanceTesting import StSignificanceTesting, StSignificanceTestingCadVsRad
 from UtilFigureOfMerit import UtilFigureOfMerit
 from UtilFigureOfMerit import UtilLesionWeightsDistr
-from UtilORVarComponents import testJackKnife
+from UtilORVarComponents import testJackKnife, UtilPseudoValues
 
 
 
@@ -28,4 +28,5 @@ ds = DfReadDataFile("extdata/JT.xlsx")
 # ste = StSignificanceTesting(ds)
 # st = StSignificanceTestingCadVsRad(ds, FOM = "Wilcoxon")
 #fom = UtilFigureOfMerit(ds, FOM = "Wilcoxon")
-jkFomValues = testJackKnife(ds, FOM = "wAfroc")
+#jkFomValues = testJackKnife(ds, FOM = "wAfroc")
+pv = UtilPseudoValues(ds, FOM = "wAfroc")
