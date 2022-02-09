@@ -1,4 +1,4 @@
-from DfReadDataFile import *
+from DfReadDataFile import DfReadDataFile, DfFroc2Roc
 from StSignificanceTesting import StSignificanceTesting, StSignificanceTestingCadVsRad
 from UtilFigureOfMerit import UtilFigureOfMerit
 from UtilFigureOfMerit import UtilLesionWeightsDistr
@@ -7,8 +7,10 @@ from UtilORVarComponents import testJackKnife, UtilPseudoValues
 
 
 #ds = DfReadDataFile("extdata/toyFiles/FROC/frocCr.xlsx")
+#ds = DfReadDataFile("extdata/toyFiles/ROC/rocCr.xlsx")
 #ds = DfReadDataFile("extdata/Froc.xlsx")
 ds = DfReadDataFile("extdata/JT.xlsx")
+ds1 = DfFroc2Roc(ds)
 # val = UtilFigureOfMerit(ds, "wAfroc")
 # ds = StSignificanceTesting("extdata/JT.xlsx")
 
@@ -28,5 +30,7 @@ ds = DfReadDataFile("extdata/JT.xlsx")
 # ste = StSignificanceTesting(ds)
 # st = StSignificanceTestingCadVsRad(ds, FOM = "Wilcoxon")
 #fom = UtilFigureOfMerit(ds, FOM = "Wilcoxon")
-#jkFomValues = testJackKnife(ds, FOM = "wAfroc")
-pv = UtilPseudoValues(ds, FOM = "wAfroc")
+jkFomValuesds1 = testJackKnife(ds, FOM = "wAfroc")
+jkFomValuesds2 = testJackKnife(ds1, FOM = "Wilcoxon")
+jkFomValuesds3 = testJackKnife(ds1, FOM = "wAfroc")
+#pv = UtilPseudoValues(ds, FOM = "wAfroc")

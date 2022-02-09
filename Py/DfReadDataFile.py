@@ -2,6 +2,7 @@ import warnings
 import sys
 import pandas as pd
 import numpy as np
+import copy
 from openpyxl import load_workbook
 warnings.simplefilter("ignore")
 
@@ -303,13 +304,29 @@ def DfExtractDataset (ds, trts, rdrs):
     return(dse) 
   
 
-
-  
-# FileName = "extdata/toyFiles/FROC/frocCr.xlsx"
-# FileName = "extdata/JT.xlsx"
-# dsOrg = DfReadDataFile(FileName)
-# ds = DfExtractDataset(dsOrg, trts = [0,1], rdrs = [0,2])
-# FileName = "extdata/JT1.xlsx"
-# dsOrg = DfReadDataFile(FileName)
-#ds = DfExtractDataset(dsOrg, trts = [0,1], rdrs = [0,2])
+def DfFroc2Roc(ds):
+    NL = ds[0]
+    LL = ds[1]      
+    K = len(NL[0,0,:,0])
+    K2 = len(LL[0,0,:,0])
+    K1 = K - K2
+    
+    ds1 = copy.deepcopy(ds)    
+    nl = np.array(ds1[0])
+    fp = np.max(nl, axis = 3, keepdims = True)
+    nl1 = fp[:,:,K1:,:]
+    ll = np.array(ds1[1])
+    ll1 = np.max(ll, axis = 3, keepdims = True)
+    tp = np.maximum(nl1, ll1)
+    fp[fp == -np.inf] = 0
+    tp[tp == -np.inf] = 0
+    ds1[0] = fp 
+    ds1[1] = tp 
+    ds1[2] = pd.Series([1] * K2)
+    ds1[3] = [1]
+    ds1[4] = "ROC"
+    pass
+    return ds1
+    
+    
 

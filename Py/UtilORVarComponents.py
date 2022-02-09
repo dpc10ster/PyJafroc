@@ -3,15 +3,13 @@ from DfReadDataFile import *
 from UtilFigureOfMerit import UtilFigureOfMerit, FigureOfMerit_ij
 
 
-def JackKnife(x, y, z, FOM):
+def JackKnifeList(x, y, z, FOM):
     # x = NL; x1 = corresponding jackknife value
     # y = LL; y1 = corresponding jackknife value
     # z = perCase; z1 = corresponding jackknife value
     K = len(x)
     K2 = len(y)
     K1 = K - K2
-    maxNL = len(x[0])
-    maxLL = len(y[0])
     
     jkFomValues = [0] * K
     for k in range(K):
@@ -35,6 +33,29 @@ def JackKnife(x, y, z, FOM):
        
     return jkFomValues
 
+def JackKnifeArr(x, y, z, FOM):
+    # x = NL; x1 = corresponding jackknife value
+    # y = LL; y1 = corresponding jackknife value
+    # z = perCase; z1 = corresponding jackknife value
+    K = len(x)
+    K2 = len(y)
+    K1 = K - K2
+    z = np.array(z) # otherwise np.delete (see below) fails
+    
+    jkFomValues = [0] * K
+    for k in range(K):
+        if k < K1:
+            x1 = np.delete(x,k,axis = 0)
+            y1 = y
+            z1 = z
+        else:
+            x1 = np.delete(x,k,axis = 0)
+            y1 = np.delete(y,k-K1,axis = 0)  
+            z1 = np.delete(z,k-K1,axis = 0)
+        jkFomValues[k] = FigureOfMerit_ij(x1, y1, z1, FOM)
+       
+    return jkFomValues
+
 def testJackKnife (ds, FOM):
     NL = ds[0]
     LL = ds[1]
@@ -52,8 +73,8 @@ def testJackKnife (ds, FOM):
 # does it make a difference? r
 # ran JT dataset with Wilcoxon with no error??    
 # =============================================================================
-    #jkFomValues = np.full((I,J,K), 0.0)
-    jkFomValues = [[[0 for k in range(K)] for j in range(J)] for i in range(I)]
+    jkFomValues = np.full((I,J,K), 0.0)
+    #jkFomValues = [[[0 for k in range(K)] for j in range(J)] for i in range(I)]
 
     for i in range(I):
         for j in range(J):
@@ -63,14 +84,11 @@ def testJackKnife (ds, FOM):
             x = NL[i,j,:,:]
             y = LL[i,j,:,:]
             tic = time.perf_counter()
-            jkFomValues[i][j][:] = JackKnife(list(x), \
-                                            list(y), \
-                                            list(perCase), \
-                                            FOM)
-            # jkFomValues[i,j,:] = JackKnife(list(x), \
-            #                                list(y), \
-            #                                list(perCase), \
-            #                                FOM)
+            # jkFomValues[i][j][:] = JackKnife(Listlist(x), \
+            #                                 list(y), \
+            #                                 list(perCase), \
+            #                                 FOM)
+            jkFomValues[i,j,:] = JackKnifeArr(x, y, perCase, FOM)
             toc = time.perf_counter()
             if (i == 0) & (j == 0): 
                 print(f"Loop time is {toc - tic:0.4f} seconds")
@@ -96,20 +114,24 @@ def UtilPseudoValues (ds, FOM):
     
     fom = UtilFigureOfMerit(ds, FOM)
     
-    jkFomValues = [[[0 for k in range(K)] for j in range(J)] for i in range(I)]
-    jkPseudoValues = [[[0 for k in range(K)] for j in range(J)] for i in range(I)]
+    jkFomValues = np.full((I,J,K), 0.0)
+    jkPseudoValues = np.full((I,J,K), 0.0)
+    # jkFomValues = [[[0 for k in range(K)] for j in range(J)] for i in range(I)]
+    # kPseudoValues = [[[0 for k in range(K)] for j in range(J)] for i in range(I)]
 
     for i in range(I):
         for j in range(J):
             x = NL[i,j,:,:]
             y = LL[i,j,:,:]                
             tic = time.perf_counter()
-            jkFomValues[i][j][:] = JackKnife(list(x), list(y), list(perCase), FOM)
+            #jkFomValues[i][j][:] = JackKnifeList(list(x), list(y), list(perCase), FOM)
+            jkFomValues[i,j,:] = JackKnifeArr(x, y, perCase, FOM)
             toc = time.perf_counter()
             if (i == 0) & (j == 0): 
                 print(f"Loop time is {toc - tic:0.4f} seconds")
-            for k in range(K):    
-                jkPseudoValues[i][j][k]  = (fom.values[i, j] * K - jkFomValues[i][j][k] * (K-1))
+            # for k in range(K):    
+            #     jkPseudoValues[i][j][k]  = (fom.values[i, j] * K - jkFomValues[i][j][k] * (K-1))
+            jkPseudoValues[i,j,:]  = (fom.values[i, j] * K - jkFomValues[i,j,:] * (K-1))
             pass
     return [jkFomValues, jkPseudoValues]
 
