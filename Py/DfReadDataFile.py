@@ -159,7 +159,9 @@ def DfReadDataFile(FileName, DataType="FROC"):
     perCase = x.sort_index()
     # next line indexes using abnormal cases, 0 to K2-1
     # Fixes indexing of perCase array
-    perCase = pd.Series(list(perCase))
+    # perCase = pd.Series(list(perCase))
+    # did not need the above after all
+    perCase = list(perCase)
 
     maxLL = max(perCase)
     if (maxLL > 1) & (DataType != "FROC"):
