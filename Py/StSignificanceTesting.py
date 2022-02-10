@@ -1,10 +1,4 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Jan 24 09:26:41 2022
-
-@author: Dev
-"""
+import sys
 import pandas as pd
 from UtilFigureOfMerit import UtilFigureOfMerit, DfExtractDataset
 from UtilORVarComponents import UtilORVarComponents, UtilPseudoValues
@@ -119,11 +113,13 @@ def ORSummaryRRRC(ds, FOMs, ANOVA, alpha, diffTRName):
 
 
 def ORSummaryFRRC(ds, FOMs, ANOVA, alpha, diffTRName):
+    sys.exit("FRRC not yet implemented")
     pass
 
 
 
 def ORSummaryRRFC(ds, FOMs, ANOVA, alpha, diffTRName):
+    sys.exit("RRFC not yet implemented")
     pass
 
 
@@ -134,16 +130,18 @@ def StSignificanceTesting(ds, FOM = "wAfroc", analysisOption = "RRRC", \
     Parameters
     ----------
     ds : list
-        dataset list object ds
-    FOM : string
-        The figure of merit or measure of performance, the
-        default is "wAfroc", or "Wilcoxon"
+        dataset object
+    FOM : str
+        The figure of merit or measure of performance, 
+        "wAfroc" (default) or "Wilcoxon"
         
     analysisOption : str
-        The desired generalization: RRRC" (default) or "RRFC" or "FRRC"
+        The desired generalization: random reader random case
+        "RRRC" (default), random reader fixed case "RRFC" or 
+        fixed reader random case "FRRC"
         
     alpha : float
-        The significance level of the test, defaults to 0.05    
+        The significance level of the test, 0.05 (default)    
 
     Returns
     -------
@@ -219,9 +217,9 @@ def StSignificanceTestingCadVsRad(ds, FOM = "wAfroc", alpha = 0.05):
     ds : list
         dataset.
     FOM : str, optional
-        The figure of merit: "wAfroc" or "Wilcoxon". The default is "wAfroc".
+        The figure of merit: "wAfroc" (default) or "Wilcoxon". 
     alpha : float, optional
-        The significance level of the test. The default is 0.05.
+        The significance level of the test, 0.05 (default)
 
     Returns
     -------
@@ -232,6 +230,7 @@ def StSignificanceTestingCadVsRad(ds, FOM = "wAfroc", alpha = 0.05):
 
 
 def DiffFomVarCov2(ds):
+    # TODO in progress
     J = len(ds[0][0,:,0,0])
     K = len(ds[0][0,0,:,0])
     dsCad = DfExtractDataset(ds, trts = [0], rdrs = [0])

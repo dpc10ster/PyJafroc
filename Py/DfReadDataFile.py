@@ -18,20 +18,20 @@ def myExit(sheetNames, expectedNames, msg):
 # =============================================================================
 def DfCheck(FileName):
 
-# =============================================================================
-# Tested with 1 good and 2 bad files
-# FileName = 'extdata/toyFiles/FROC/frocCr.xlsx'
-# FileName = 'extdata/toyFiles/FROC/bad/frocCr-01.xlsx' unordered TRUTH
-# FileName = 'extdata/toyFiles/FROC/bad/frocCr-02.xlsx' unordered TRUTH
-# FileName = 'extdata/toyFiles/FROC/bad/frocCr-03.xlsx' incorrect sheet names
-# FileName = 'extdata/toyFiles/FROC/bad/frocCr-04.xlsx' normal case in LL
-# FileName = 'extdata/toyFiles/FROC/bad/frocCr-05.xlsx' do: numeric format
-# FileName = 'extdata/toyFiles/FROC/bad/frocCr2BlankRows.xlsx'
-# FileName = 'extdata/toyFiles/FROC/bad/frocCrNonCharInReaderID.xlsx'
-# FileName = 'extdata/toyFiles/FROC/bad/incorrectCaseIDsInLL.xlsx' why missing?
-# FileName = 'extdata/toyFiles/FROC/bad/incorrectCaseIDsInLL2.xlsx'
-# FileName = "extdata/toyFiles/FROC/bad/incoCaseIDsInTP.xlsx"
-# =============================================================================
+    # =============================================================================
+    # Tested with 1 good and 2 bad files
+    # FileName = 'extdata/toyFiles/FROC/frocCr.xlsx'
+    # FileName = 'extdata/toyFiles/FROC/bad/frocCr-01.xlsx' unordered TRUTH
+    # FileName = 'extdata/toyFiles/FROC/bad/frocCr-02.xlsx' unordered TRUTH
+    # FileName = 'extdata/toyFiles/FROC/bad/frocCr-03.xlsx' incorrect sheet names
+    # FileName = 'extdata/toyFiles/FROC/bad/frocCr-04.xlsx' normal case in LL
+    # FileName = 'extdata/toyFiles/FROC/bad/frocCr-05.xlsx' do: numeric format
+    # FileName = 'extdata/toyFiles/FROC/bad/frocCr2BlankRows.xlsx'
+    # FileName = 'extdata/toyFiles/FROC/bad/frocCrNonCharInReaderID.xlsx'
+    # FileName = 'extdata/toyFiles/FROC/bad/incorrectCaseIDsInLL.xlsx' why missing?
+    # FileName = 'extdata/toyFiles/FROC/bad/incorrectCaseIDsInLL2.xlsx'
+    # FileName = "extdata/toyFiles/FROC/bad/incoCaseIDsInTP.xlsx"
+    # =============================================================================
 
     wb = load_workbook(FileName)
     sheetNames = wb.sheetnames
@@ -60,7 +60,7 @@ def DfCheck(FileName):
     K1 = len(NormalCases)
     AbnormalCases = dfTruth.loc[dfTruth['LesionID'] == 1]["CaseID"]
     K2 = len(AbnormalCases)
- 
+
     ws = wb['NL']
     data = ws.values
     columnNames = next(data)[0:]
@@ -150,12 +150,12 @@ def DfReadDataFile(FileName, DataType="FROC"):
     AbnormalCases = dfTruth.loc[dfTruth['LesionID'] == 1]["CaseID"]
     K2 = len(AbnormalCases)
     K = K1 + K2
-    
+
     # calculate lesion perCase
     x = pd.Series(dfTruth["CaseID"])
     x = x.isin(AbnormalCases)
     x = pd.Series(dfTruth["CaseID"][x])
-    x = x.value_counts(sort = False)
+    x = x.value_counts(sort=False)
     perCase = x.sort_index()
     # next line indexes using abnormal cases, 0 to K2-1
     # Fixes indexing of perCase array
@@ -191,10 +191,10 @@ def DfReadDataFile(FileName, DataType="FROC"):
     # with FROC data not all modalities may appear in NL and LL sheets
     modalities = (dfLL["ModalityID"].append(dfNL["ModalityID"])).unique()
     I = len(modalities)
-    modalityID = [str(x) for x in list(range(I))] 
+    modalityID = [str(x) for x in list(range(I))]
     readers = (dfLL["ReaderID"].append(dfNL["ReaderID"])).unique()
     J = len(readers)
-    readerID = [str(x) for x in list(range(J))] 
+    readerID = [str(x) for x in list(range(J))]
     # lesions = np.unique(dfTruth["LesionID"])[1:]
     maxNL = dfNL.groupby(['ReaderID',
                           'ModalityID',
@@ -203,27 +203,27 @@ def DfReadDataFile(FileName, DataType="FROC"):
     if (maxNL > 1) & (DataType != "FROC"):
         sys.exit("Only FROC data can have more than one NL per case")
 
-    NL = np.full((I,J,K,maxNL), -np.inf)
+    NL = np.full((I, J, K, maxNL), -np.inf)
     for indxNl in range(len(dfNL["ModalityID"])):
         i = (modalities == dfNL["ModalityID"][indxNl])
         j = (readers == dfNL["ReaderID"][indxNl])
         c = (AllCases == dfNL["CaseID"][indxNl])
 
-        matchCount = ((dfNL["CaseID"] == dfNL["CaseID"][indxNl]) & 
-                      (dfNL["ModalityID"] == dfNL["ModalityID"][indxNl]) & 
+        matchCount = ((dfNL["CaseID"] == dfNL["CaseID"][indxNl]) &
+                      (dfNL["ModalityID"] == dfNL["ModalityID"][indxNl]) &
                       (dfNL["ReaderID"] == dfNL["ReaderID"][indxNl]))
         for l in range(sum(matchCount)):
-            if NL[i, j, c, l] == -np.inf: 
+            if NL[i, j, c, l] == -np.inf:
                 NL[i, j, c, l] = dfNL["NLRating"][indxNl + l]
 
     lesions = list(range(1, maxLL+1))
-    LL = np.full((I,J,K2,maxLL), -np.inf)
+    LL = np.full((I, J, K2, maxLL), -np.inf)
     for indxLl in range(len(dfLL["ModalityID"])):
         i = (modalities == dfLL["ModalityID"][indxLl])
         j = (readers == dfLL["ReaderID"][indxLl])
         c = (AbnormalCases == dfLL["CaseID"][indxLl])
         l = (lesions == dfLL["LesionID"][indxLl])
-        
+
         LL[i, j, c, l] = dfLL["LLRating"][indxLl]
 
 # =============================================================================
@@ -238,20 +238,22 @@ def DfReadDataFile(FileName, DataType="FROC"):
 # ds = DfReadDataFile(FileName)
 
 
-def DfExtractDataset (ds, trts, rdrs):
+def DfExtractDataset(ds, trts = None, rdrs = None):
     """
-    Extract a dataset consisting of a subset of treatments/readers from a larger dataset
-    
+    Extract a subset of treatments/readers from a larger dataset
+
     Parameters
     ----------
     ds : list
         The original dataset from which the subset is to be extracted
 
     trts : list 
-        The indices of the treatments to extract; TODO if missing then all treatments are extracted
+        The indices of the treatments to extract; if missing then all 
+        treatments are extracted
 
     trts : list 
-        The indices of the readers to extract; TODO if missing then all readers are extracted
+        The indices of the readers to extract; 
+        if missing then all readers are extracted
 
     Returns
     -------
@@ -259,76 +261,82 @@ def DfExtractDataset (ds, trts, rdrs):
 
     """
     
-    NL = ds[0]
-    LL = ds[1]      
-    I = len(NL[:,0,0,0])
-    J = len(NL[0,:,0,0])
-    K = len(NL[0,0,:,0])
-    K2 = len(LL[0,0,:,0])
-    maxNL = len(NL[0,0,0,:]) # for original dataset
+    if (trts == None) & (rdrs == None):
+        return ds
     
+    NL = ds[0]
+    LL = ds[1]
+    I = len(NL[:, 0, 0, 0])
+    J = len(NL[0, :, 0, 0])
+    K = len(NL[0, 0, :, 0])
+    K2 = len(LL[0, 0, :, 0])
+    maxNL = len(NL[0, 0, 0, :])  # for original dataset
+
     perCase = ds[2]
     relWeights = ds[3]
     DataType = ds[4]
     modalityID = ds[5]
     readerID = ds[6]
     
+    if trts == None:
+        trts = list(range(I))
+    if rdrs == None:
+        rdrs = list(range(J))
+
     # e denotes extracted values
 # =============================================================================
 #   TODO Tnere is a risk of losing dimensions; need more careful checking with
 #   other datasets
 # =============================================================================
-    # this has to be done in two steps !!dpc!!
+    # this has to be done in two steps !!why?!! !!dpc!!
     NLe = NL[trts, :, :, :]
     NLe = NLe[:, rdrs, :, :]
+    LLe = LL[trts, :, :, :]
+    LLe = LLe[:, rdrs, :, :]
     # TODO test with dataset where one reader produces lots more NLs than others
     # Extracting all but this reader will reduce maxNL and may break this code
-    maxNLe = len(NLe[0,0,0,:])
-    
-    LLe = LL[:, rdrs, :, :]
-    LLe = LLe[trts, :, :, :]
-    # dont need above test as maxLL is fixed by Truth sheet and independent
-    # of treatments or readers
-    maxLL = len(LLe[0,0,0,:])
-    
+    maxNLe = len(NLe[0, 0, 0, :])
+    NLe = NLe[:,:,:,list(range(maxNLe))]
+    # dont need above type code as maxLL is fixed by Truth sheet and is 
+    # independent of treatment or reader
+    # maxLL = len(LLe[0, 0, 0, :])
+
     modalityIDe = []
     for i in range(len(trts)):
         modalityIDe.append(trts[i])
     modalityIDe = [str(x) for x in modalityIDe]
+    
     readerIDe = []
     for i in range(len(rdrs)):
         readerIDe.append(rdrs[i])
     readerIDe = [str(x) for x in readerIDe]
-    
+
     pass
 
     dse = [NLe, LLe, perCase, relWeights, DataType, modalityIDe, readerIDe]
-    return(dse) 
-  
+    return(dse)
+
 
 def DfFroc2Roc(ds):
     NL = ds[0]
-    LL = ds[1]      
-    K = len(NL[0,0,:,0])
-    K2 = len(LL[0,0,:,0])
+    LL = ds[1]
+    K = len(NL[0, 0, :, 0])
+    K2 = len(LL[0, 0, :, 0])
     K1 = K - K2
-    
-    ds1 = copy.deepcopy(ds)    
+
+    ds1 = copy.deepcopy(ds)
     nl = np.array(ds1[0])
-    fp = np.max(nl, axis = 3, keepdims = True)
-    nl1 = fp[:,:,K1:,:]
+    fp = np.max(nl, axis=3, keepdims=True)
+    nl1 = fp[:, :, K1:, :]
     ll = np.array(ds1[1])
-    ll1 = np.max(ll, axis = 3, keepdims = True)
+    ll1 = np.max(ll, axis=3, keepdims=True)
     tp = np.maximum(nl1, ll1)
     fp[fp == -np.inf] = 0
     tp[tp == -np.inf] = 0
-    ds1[0] = fp 
-    ds1[1] = tp 
+    ds1[0] = fp
+    ds1[1] = tp
     ds1[2] = pd.Series([1] * K2)
     ds1[3] = [1]
     ds1[4] = "ROC"
     pass
     return ds1
-    
-    
-
