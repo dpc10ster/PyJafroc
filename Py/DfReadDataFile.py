@@ -268,15 +268,10 @@ def DfExtractDataset(ds, trts = None, rdrs = None):
     LL = ds[1]
     I = len(NL[:, 0, 0, 0])
     J = len(NL[0, :, 0, 0])
-    K = len(NL[0, 0, :, 0])
-    K2 = len(LL[0, 0, :, 0])
-    maxNL = len(NL[0, 0, 0, :])  # for original dataset
 
     perCase = ds[2]
     relWeights = ds[3]
     DataType = ds[4]
-    modalityID = ds[5]
-    readerID = ds[6]
     
     if trts == None:
         trts = list(range(I))
@@ -318,6 +313,20 @@ def DfExtractDataset(ds, trts = None, rdrs = None):
 
 
 def DfFroc2Roc(ds):
+    """
+    Convert an FROC dataset to an ROC dataset
+
+    Parameters
+    ----------
+    ds : list
+        The original FROC dataset
+
+
+    Returns
+    -------
+    A highest-rating inferred-ROC dataset
+
+    """
     NL = ds[0]
     LL = ds[1]
     K = len(NL[0, 0, :, 0])
