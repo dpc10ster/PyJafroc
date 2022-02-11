@@ -1,7 +1,7 @@
 import sys
 import pandas as pd
 from UtilFigureOfMerit import UtilFigureOfMerit, DfExtractDataset
-from UtilORVarComponents import UtilORVarComponents, UtilPseudoValues
+from UtilORVarComponents import UtilORVarComponents, UtilPseudoValues, FOMijk2VarCov
 import math
 import numpy as np
 from scipy.stats import f, t
@@ -72,7 +72,7 @@ def ORSummaryRRRC(ds, FOMs, ANOVA, alpha, diffTRName):
     #
     dfSingle = [0] * I
     msDenSingle = [0] * I
-    stdErrSingle = [0] * I
+    stdErr1T = [0] * I
     CISingle = np.zeros((I,2))
     # alternate way of getting the key variables of dictionary data type
     trtMeans = FOMs[list(FOMs.keys())[0]]
@@ -89,11 +89,11 @@ def ORSummaryRRRC(ds, FOMs, ANOVA, alpha, diffTRName):
         msDenSingle[i] = ANOVA["IndividualTrt"]["msREachTrt"][trtStr] + \
             max(J * ANOVA["IndividualTrt"]["cov2EachTrt"][trtStr], 0)
         dfSingle[i] = (msDenSingle[i] ** 2) / (ANOVA["IndividualTrt"]["msREachTrt"][trtStr] ** 2) * (J - 1)
-        stdErrSingle[i] = math.sqrt(msDenSingle[i]/J) # Eqn. 25
-        CISingle[i][0] = trtMeans[i] - t.ppf(1 - alpha/2, dfSingle[i]) * stdErrSingle[i] 
-        CISingle[i][1] = trtMeans[i] + t.ppf(1 - alpha/2, dfSingle[i]) * stdErrSingle[i] # Eqn. 25
+        stdErr1T[i] = math.sqrt(msDenSingle[i]/J) # Eqn. 25
+        CISingle[i][0] = trtMeans[i] - t.ppf(1 - alpha/2, dfSingle[i]) * stdErr1T[i] 
+        CISingle[i][1] = trtMeans[i] + t.ppf(1 - alpha/2, dfSingle[i]) * stdErr1T[i] # Eqn. 25
         ci = ci.append({"Estimate": trtMeans[i], 
-                   "StdErr": stdErrSingle[i], 
+                   "StdErr": stdErr1T[i], 
                    "DF": dfSingle[i],
                    "CI_lo": CISingle[i][0], 
                    "CI_hi": CISingle[i][1],
@@ -161,9 +161,7 @@ def StSignificanceTesting(ds, FOM = "wAfroc", analysisOption = "RRRC", \
     pass
 
     foms = UtilFigureOfMerit(ds, FOM)
-    # fomsMeansEchRdr = foms.values.mean(axis=0) # col means
-    fomsMeansEchMod = foms.values.mean(axis=1) # row means
-    # fomsMean = foms.values.mean() # mean over all values ? NO see TBA
+    fomsMeansEchMod = foms.mean(axis=1) # row means
     trtMeans = pd.DataFrame({"Estimate": fomsMeansEchMod})
     
     ANOVA = UtilORVarComponents(ds)
@@ -223,19 +221,65 @@ def StSignificanceTestingCadVsRad(ds, FOM = "wAfroc", alpha = 0.05):
 
     Returns
     -------
-    TODO.
+    TODO
+    Implements SingleModalityRRRC(dataset, FOM, alpha) in R-Code
     """
-    ret = DiffFomVarCov2(ds)
-    return ret
-
-
-def DiffFomVarCov2(ds):
-    # TODO in progress
+    
     J = len(ds[0][0,:,0,0])
-    K = len(ds[0][0,0,:,0])
     dsCad = DfExtractDataset(ds, trts = [0], rdrs = [0])
     dsRad = DfExtractDataset(ds, trts = [0], rdrs = list(range(1,J)))
-    [jkFomValuesCad, jkPseudoValuesCad] = UtilPseudoValues(dsCad, FOM = "Wilcoxon")
-    [jkFomValuesRad, jkPseudoValuesRad] = UtilPseudoValues(dsRad, FOM = "Wilcoxon")
-    return [jkFomValuesCad, jkFomValuesRad]
+    
+    jkFomValuesCad = UtilPseudoValues(dsCad, FOM)[0]
+    jkFomValuesRad = UtilPseudoValues(dsRad, FOM)[0]
+    
+    jkDiffFomValues = jkFomValuesRad - jkFomValuesCad
+    varCov = FOMijk2VarCov(jkDiffFomValues)
+    Var = varCov[0]
+    Cov2 = varCov[2]
+    thetajc = UtilFigureOfMerit(ds, FOM)
+    Psijc = thetajc[0][list(range(1,J))] - thetajc[0][0]
+    Cad = thetajc[0][0]
+    avgRad = np.mean(thetajc[0][list(range(1,J))])
+    avgPsijc = np.mean(Psijc)
+    
+    J1 = (J-1) # number of radiologists
+    # numpy variance function is incorrect
+    varRad = np.var(thetajc[0][list(range(1,J))])*J1/(J1-1)
+                       
+    
+    MSR = 0 # 1st un-numbered equation on page 607
+    avgDiffFom = np.mean(Psijc)
+    for j in range(J1):
+        MSR += (Psijc[j] - avgDiffFom) ** 2
+    MSR /= (J1 - 1)
+    
+    # Compared to equations in 2013 Hillis paper, in paragraph following Table I
+    # OK; 10/14/19
+    MSden1T = MSR + max(J1 * Cov2, 0) #  # 2nd un-numbered equation on page 607
+    stdErr1T = math.sqrt(MSden1T/J1)
+    ddf1T = MSden1T ** 2 / (MSR ** 2 / (J1 - 1))  # 3rd un-numbered equation on page 607
+    TstatStar = avgDiffFom / np.sqrt(MSden1T/J1) # in-text equation on line 1 on page 607
+    # BUT with theta0 = 0
+    pval = 2 * (1 - t.cdf(abs(TstatStar), ddf1T))
+    # Equation 25 on page 607
+    ciDiffTrt_lo = avgPsijc - t.ppf(1 - alpha/2, ddf1T) * stdErr1T
+    ciDiffTrt_hi = avgPsijc + t.ppf(1 - alpha/2, ddf1T) * stdErr1T
+    
+    RadMinusCadStats = pd.DataFrame({"Rad": [avgRad], \
+                                "CAD": [Cad], \
+                                "Rad-CAD": [np.mean(Psijc)], \
+                                "VarRad": [varRad], \
+                                "VarError": [Var], \
+                                "Cov2": [Cov2], \
+                                "MSden1T": [MSden1T], \
+                                "stdErr1T": [stdErr1T], \
+                                "ddf1T": [ddf1T], \
+                                "Tstat": [TstatStar], \
+                                "p val": [pval], \
+                                "CI_lo": [ciDiffTrt_lo], \
+                                "CI_hi": [ciDiffTrt_hi]})
+            
+    return RadMinusCadStats
+
+
 

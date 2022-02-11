@@ -132,7 +132,7 @@ def UtilPseudoValues(ds, FOM):
             # for k in range(K):
             #     jkPseudoValues[i][j][k]  = (fom.values[i, j] * K - jkFomValues[i][j][k] * (K-1))
             jkPseudoValues[i, j, :] = (
-                fom.values[i, j] * K - jkFomValues[i, j, :] * (K-1))
+                fom[i, j] * K - jkFomValues[i, j, :] * (K-1))
             pass
     return [jkFomValues, jkPseudoValues]
 
@@ -266,7 +266,7 @@ def UtilORVarComponents(ds, FOM="wAfroc"):
         msTR = 0.0
         for i in range(I):
             for j in range(J):
-                msTR += (foms.values[i, j] - fomsMeansEchMod[i] -
+                msTR += (foms[i, j] - fomsMeansEchMod[i] -
                          fomsMeansEchRdr[j] + fomsMean) ** 2
         msTR /= ((J - 1) * (I - 1))
     else:
@@ -285,7 +285,7 @@ def UtilORVarComponents(ds, FOM="wAfroc"):
         for i in range(I):
             for j in range(J):
                 msR_i[i] = msR_i[i] + \
-                    (foms.values[i, j] - np.mean(foms.values[i, :])) ** 2
+                    (foms[i, j] - np.mean(foms[i, :])) ** 2
             msR_i[i] /= (J - 1)
     else:
         msR_i = 0
@@ -294,7 +294,7 @@ def UtilORVarComponents(ds, FOM="wAfroc"):
     cov2EachTrt = [0] * I
     for i in range(I):
         dsi = DfExtractDataset(ds, trts=[i], rdrs=[0, 1, 2])
-        [resampleFOMijk, jkPseudoValues] = UtilPseudoValues(dsi)
+        resampleFOMijk = UtilPseudoValues(dsi, FOM)[0]
         covMatrix = FOMijk2VarCov(resampleFOMijk)
         varEachTrt[i] = covMatrix[0]
         cov2EachTrt[i] = covMatrix[2]
@@ -312,7 +312,7 @@ def UtilORVarComponents(ds, FOM="wAfroc"):
         for j in range(J):
             for i in range(I):
                 msT_j[j] = msT_j[j] + \
-                    (foms.values[i, j] - fomsMeansEchRdr[j]) ** 2
+                    (foms[i, j] - fomsMeansEchRdr[j]) ** 2
                 msT_j[j] /= (I - 1)
     else:
         msT_j < - 0
@@ -321,7 +321,7 @@ def UtilORVarComponents(ds, FOM="wAfroc"):
     cov1EachRdr = [0] * J
     for j in range(J):
         dsj = DfExtractDataset(ds, trts=[0, 1], rdrs=[j])
-        [resampleFOMijk, jkPseudoValues] = UtilPseudoValues(dsj)
+        resampleFOMijk = UtilPseudoValues(dsj, FOM)[0]
         covMatrix = FOMijk2VarCov(resampleFOMijk)
         varEachRdr[j] = covMatrix[0]
         cov1EachRdr[j] = covMatrix[1]
@@ -336,7 +336,7 @@ def UtilORVarComponents(ds, FOM="wAfroc"):
     else:
         IndividualRdr = 0
 
-    [resampleFOMijk, jkPseudoValues] = UtilPseudoValues(ds)
+    resampleFOMijk = UtilPseudoValues(ds, FOM)[0]
     covMatrix = FOMijk2VarCov(resampleFOMijk)
     Var = covMatrix[0]
     Cov1 = covMatrix[1]
