@@ -30,7 +30,7 @@ def ORSummaryRRRC(ds, FOMs, ANOVA, alpha, diffTRName):
     
     RRRC = {"FTests": [], "ciDiffTrt": [], "ciAvgRdrEachTrt": []}
     ftests = pd.DataFrame({"DF": (I-1,ddf), \
-                            "MS": (TRAnova["MS"]["T"], TRAnova["MS"]["TR"]), \
+                            "MS": (TRAnova["MS"]["T"], msDen), \
                             "FStat": (f_, np.NAN), \
                             "PValue": (p, np.NAN)}).round(4)
     ftests.index = ["Treatment", "Error"]        
@@ -202,6 +202,17 @@ def StSignificanceTesting(ds, FOM = "wAfroc", analysisOption = "RRRC", \
 
 
 
+def MyVar(x):
+    avgx = np.mean(x)
+    var = 0.0
+    N = len(x)
+    for i in range(N):
+        var += (x[i] - avgx) ** 2
+    var /=  (N - 1)
+    return var
+    
+    
+
 def StSignificanceTestingCadVsRad(ds, FOM = "wAfroc", alpha = 0.05):
     """
     Compares standalone CAD to average of radiologists interpreting the same 
@@ -244,7 +255,10 @@ def StSignificanceTestingCadVsRad(ds, FOM = "wAfroc", alpha = 0.05):
     
     J1 = (J-1) # number of radiologists
     # numpy variance function is incorrect
-    varRad = np.var(thetajc[0][list(range(1,J))])*J1/(J1-1)
+    # https://stackoverflow.com/questions/11236951/output-values-differ-between-r-and-python#comment14763812_11236993
+    x = thetajc[0][list(range(1,J))]
+    #varRad = np.var(x) * J1/(J1-1)
+    varRad = MyVar(x)
                        
     
     MSR = 0 # 1st un-numbered equation on page 607

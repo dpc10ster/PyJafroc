@@ -293,7 +293,7 @@ def UtilORVarComponents(ds, FOM="wAfroc"):
     varEachTrt = [0] * I
     cov2EachTrt = [0] * I
     for i in range(I):
-        dsi = DfExtractDataset(ds, trts=[i], rdrs=[0, 1, 2])
+        dsi = DfExtractDataset(ds, trts=[i], rdrs=list(range(J)))
         resampleFOMijk = UtilPseudoValues(dsi, FOM)[0]
         covMatrix = FOMijk2VarCov(resampleFOMijk)
         varEachTrt[i] = covMatrix[0]

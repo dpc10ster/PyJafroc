@@ -29,6 +29,7 @@ from UtilORVarComponents import testJackKnife, UtilPseudoValues
 # jkFomValuesds2 = testJackKnife(ds1, FOM = "Wilcoxon")
 # jkFomValuesds3 = testJackKnife(ds1, FOM = "wAfroc")
 # pv = UtilPseudoValues(ds, FOM = "wAfroc")
+# ds = DfReadDataFile("extdata/JT.xlsx")
 
 
 
@@ -42,6 +43,11 @@ from UtilORVarComponents import testJackKnife, UtilPseudoValues
 
 
 ## test2
-#ds = DfReadDataFile("extdata/NicoRadRoc.xlsx", DataType="ROC")
-#dse = DfExtractDataset(ds, rdrs = [0,1,2,3])
-#Stats = StSignificanceTestingCadVsRad(dse, FOM = "Wilcoxon")
+# ds = DfReadDataFile("extdata/NicoRadRoc.xlsx", DataType="ROC")
+# dse = DfExtractDataset(ds, rdrs = [0,1,2,3])
+# Stats = StSignificanceTestingCadVsRad(dse, FOM = "Wilcoxon")
+
+
+## test 3
+ds = DfReadDataFile("extdata/JT2Rdrs.xlsx")
+st = StSignificanceTesting(ds)

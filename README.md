@@ -3,17 +3,24 @@
 This repository is works-in-progress for converting some of the `RJafroc` functions to `Python`.
 
 
+## Work on significance testing 2/11/22
+* Implemented `StSignificanceTestingCadVsRad`, only `RRRC` analysis and checked vs. `R`
+* Discovered error in `Numpy` variance function, which does not yield unbiased estimate
+* Replaced `np.var` with `MyVar()` in `StSignificanceTestingCadVsRad`
+* Checked all values for `$FTests` below; OK
+
+
 ## Work on significance testing 2/4/22
 * `FOMijk2VarCov` to be renamed to `FOMijk2CovMatrix`
 
-## JT1.xlsx
+## JT2Rdr.xlsx
 * All readers except 1 and 3 removed
-* check into MS error; should be:
+* check into MS error; should be: OK, see note above on 2/11/22
 ```
-st$RRRC$FTests
-                 DF          MS     FStat          p
-Treatment 1.0000000 0.300496943 3.5955149 0.12348145
-Error     4.4561033 0.083575497        NA         NA
+$FTests
+                 DF            MS     FStat          p
+Treatment 1.0000000 0.00326627112 3.5955149 0.12348145
+Error     4.4561033 0.00090842931        NA         NA
 ```
 
 ## Working on StSignificanceTesting 01/30/22

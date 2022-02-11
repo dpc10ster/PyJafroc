@@ -170,16 +170,31 @@ pre code {
 <div id="pyjafroc" class="section level1">
 <h1>PyJafroc</h1>
 <p>This repository is works-in-progress for converting some of the <code>RJafroc</code> functions to <code>Python</code>.</p>
-<div id="jt1.xlsx" class="section level2">
-<h2>JT1.xlsx</h2>
+<div id="work-on-significance-testing-21122" class="section level2">
+<h2>Work on significance testing 2/11/22</h2>
+<ul>
+<li>Implemented <code>StSignificanceTestingCadVsRad</code>, only <code>RRRC</code> analysis and checked vs. <code>R</code></li>
+<li>Discovered error in <code>Numpy</code> variance function, which does not yield unbiased estimate</li>
+<li>Replaced <code>np.var</code> with <code>MyVar()</code> in <code>StSignificanceTestingCadVsRad</code></li>
+<li>Checked all values for <code>$FTests</code> below; OK</li>
+</ul>
+</div>
+<div id="work-on-significance-testing-2422" class="section level2">
+<h2>Work on significance testing 2/4/22</h2>
+<ul>
+<li><code>FOMijk2VarCov</code> to be renamed to <code>FOMijk2CovMatrix</code></li>
+</ul>
+</div>
+<div id="jt2rdr.xlsx" class="section level2">
+<h2>JT2Rdr.xlsx</h2>
 <ul>
 <li>All readers except 1 and 3 removed</li>
-<li>check into MS error; should be:</li>
+<li>check into MS error; should be: OK, see note above on 2/11/22</li>
 </ul>
-<pre><code>st$RRRC$FTests
-                 DF          MS     FStat          p
-Treatment 1.0000000 0.300496943 3.5955149 0.12348145
-Error     4.4561033 0.083575497        NA         NA</code></pre>
+<pre><code>$FTests
+                 DF            MS     FStat          p
+Treatment 1.0000000 0.00326627112 3.5955149 0.12348145
+Error     4.4561033 0.00090842931        NA         NA</code></pre>
 </div>
 <div id="working-on-stsignificancetesting-013022" class="section level2">
 <h2>Working on StSignificanceTesting 01/30/22</h2>
