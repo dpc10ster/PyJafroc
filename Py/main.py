@@ -49,5 +49,9 @@ from UtilORVarComponents import testJackKnife, UtilPseudoValues
 
 
 ## test 3
-ds = DfReadDataFile("extdata/JT2Rdrs.xlsx")
-st = StSignificanceTesting(ds)
+# ds = DfReadDataFile("extdata/JT2Rdrs.xlsx")
+# st = StSignificanceTesting(ds)
+
+## test4
+ds = DfReadDataFile("extdata/NicoRadRoc.xlsx", DataType="ROC")
+Stats = StSignificanceTestingCadVsRad(ds, FOM = "Wilcoxon")
