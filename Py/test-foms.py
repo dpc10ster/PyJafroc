@@ -77,10 +77,10 @@ foms.wAfroc(nl,ll,perCase,lesWghtDistr)
 
 # SPEED TEST
 # Cython
-%timeit foms.wAfroc(nl,ll,perCase,lesWghtDistr)
+# %timeit foms.wAfroc(nl,ll,perCase,lesWghtDistr)
 # 1.32 µs ± 8.25 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)
 # Python
-nl12 = np.vstack((nl,ll[:,0:2]))
-%timeit FigureOfMerit_ij(nl12, ll, perCase, FOM = "wAfroc")
+# nl12 = np.vstack((nl,ll[:,0:2]))
+# %timeit FigureOfMerit_ij(nl12, ll, perCase, FOM = "wAfroc")
 # 1.11 ms ± 14.4 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
 # 833x!!
