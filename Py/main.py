@@ -53,5 +53,9 @@ from UtilORVarComponents import testJackKnife, UtilPseudoValues
 # st = StSignificanceTesting(ds)
 
 ## test4
-ds = DfReadDataFile("extdata/NicoRadRoc.xlsx", DataType="ROC")
-Stats = StSignificanceTestingCadVsRad(ds, FOM = "Wilcoxon")
+# ds = DfReadDataFile("extdata/NicoRadRoc.xlsx", DataType="ROC")
+# Stats = StSignificanceTestingCadVsRad(ds, FOM = "Wilcoxon")
+
+## test4 c interface to fom functions
+ds = DfReadDataFile("extdata/toyFiles/ROC/rocCr.xlsx", DataType="ROC")
+fom = UtilFigureOfMerit(ds, "Wilcoxon")
