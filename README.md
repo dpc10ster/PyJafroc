@@ -1,6 +1,25 @@
 # PyJafroc
 
-This repository is works-in-progress for converting some of the `RJafroc` functions to `Python`.
+This repository is a works-in-progress project for converting some of the `RJafroc` functions to `Python`. The converted functions are those judged essential for analyzing ROC/FROC datasets. Functions in `RJafroc` that are of research interest to me are not converted.
+
+
+## Cython code introduced 2/22/22
+* The Python code implementation of `StCadVsRad` for Nico ROC dataset was incredibly slow.
+* Spent about 10 days wading through tutorials on `Cython`.
+* Added `Cython` function `foms.pyx` which currently implements `Wilcoxon` and `wAfroc` FOMs. 
+* Checked vs. `RJafroc` implementation
+* An issue is that the `Cython` code does not easily implement -`Inf`. So the ratings have to be filtered to replace all such ratings with -10^6.
+* At this time check vs. `RJafroc` only applies to `Wilcoxon` FOM.
+
+
+## Workflow for using Cython 2/22/22
+* Note `setup.py` and `foms.pyx` files
+* Open Terminal and navigate to ~/GitHub/PyJafroc/Py directory.
+* `python setup.py build_ext -if`
+* `ipython`
+* Copy code from test-foms-roc.py to ipython windos and hit return
+* One can now work in Spyder. 
+* If any changes are made to foms.pyx one must recompile and restart ipython/spyder kernel.
 
 
 ## Work on significance testing 2/11/22

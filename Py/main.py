@@ -34,19 +34,14 @@ from UtilORVarComponents import testJackKnife, UtilPseudoValues
 
 
 
-# tests passed 2/10/22
-# tests passed 2/10/22
-# tests passed 2/10/22
 ## test1
 #ds = DfReadDataFile("extdata/JT.xlsx")
 #st = StSignificanceTesting(ds)
-
 
 ## test2
 # ds = DfReadDataFile("extdata/NicoRadRoc.xlsx", DataType="ROC")
 # dse = DfExtractDataset(ds, rdrs = [0,1,2,3])
 # Stats = StSignificanceTestingCadVsRad(dse, FOM = "Wilcoxon")
-
 
 ## test 3
 # ds = DfReadDataFile("extdata/JT2Rdrs.xlsx")
@@ -56,6 +51,12 @@ from UtilORVarComponents import testJackKnife, UtilPseudoValues
 # ds = DfReadDataFile("extdata/NicoRadRoc.xlsx", DataType="ROC")
 # Stats = StSignificanceTestingCadVsRad(ds, FOM = "Wilcoxon")
 
-## test4 c interface to fom functions
-ds = DfReadDataFile("extdata/toyFiles/ROC/rocCr.xlsx", DataType="ROC")
-fom = UtilFigureOfMerit(ds, "Wilcoxon")
+## test5 c interface to fom functions
+# ds = DfReadDataFile("extdata/toyFiles/ROC/rocCr.xlsx", DataType="ROC")
+# fom = UtilFigureOfMerit(ds, "Wilcoxon")
+
+
+## test6 check c fom function with NicoRad dataset
+ds = DfReadDataFile("extdata/NicoRadRoc.xlsx", DataType="ROC")
+#dse = DfExtractDataset(ds, rdrs = [0,1,2,3])
+Stats = StSignificanceTestingCadVsRad(ds, FOM = "Wilcoxon")

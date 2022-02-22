@@ -1,3 +1,4 @@
+import foms
 import numpy as np
 import pandas as pd
 from DfReadDataFile import DfReadDataFile, DfExtractDataset
@@ -59,7 +60,22 @@ def Psi(x, y):
     return ret
 
 
-def FigureOfMerit_ij(NL, LL, perCase, FOM):
+def FigureOfMerit_ij(nl, ll, perCase, FOM):
+    if FOM == "Wilcoxon":
+        nl = nl[:,0]
+        ll = ll[:,0]
+        np.where(nl == -np.inf, -1e7, nl) 
+        np.where(ll == -np.inf, -1e7, ll) 
+        return foms.wilcoxon(nl,ll)
+    elif FOM == "wAfroc":
+        maxLL = len(ll[0][:])
+        lesWghtDistr = UtilLesionWeightsDistr(maxLL)
+        return foms.wilcoxon(nl,ll,perCase,lesWghtDistr)
+    else: 
+        sys.exit("unsupported value of FOM")
+
+
+def FigureOfMerit_ij1(NL, LL, perCase, FOM):
     """
     Parameters
     ----------

@@ -2,13 +2,13 @@
 #cimport numpy as np
 from libc.stdio cimport printf
 
-def wilcoxon(float [:] fp, float [:] tp):
+def wilcoxon(double [:] fp, double [:] tp):
     cdef: 
         double ret = 0.0
         int K1, K2, k1, k2
   
-    K1 = fp.shape[0]
     K2 = tp.shape[0]
+    K1 = fp.shape[0] - K2
     
     for k1 in range(K1):
         for k2 in range(K2):
@@ -21,16 +21,16 @@ def wilcoxon(float [:] fp, float [:] tp):
     return ret
 
 
-def wAfroc(float [:,:] nl, float [:,:] ll, int [:] perCase, float [:,:] lesWghtDistr):
+def wAfroc(double [:,:] nl, double [:,:] ll, int [:] perCase, double [:,:] lesWghtDistr):
     cdef: 
         double ret = 0.0
-        float fp
+        double fp
         int K1, K2, k1, k2, maxNL, maxLL, l1, l2
   
-    K1    = nl.shape[0]
-    maxNL = nl.shape[1]
     K2    = ll.shape[0]
     maxLL = ll.shape[1]
+    K1    = nl.shape[0] - K2
+    maxNL = nl.shape[1]
     #printf("K1 = %d, K2 = %d\n", K1, K2)
     #printf("maxNL = %d, maxLL = %d\n", maxNL, maxLL)
     
