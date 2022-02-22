@@ -14,12 +14,12 @@ This repository is a works-in-progress project for converting some of the `RJafr
 
 ## Workflow for using Cython 2/22/22
 * Note `setup.py` and `foms.pyx` files
-* Open Terminal and navigate to ~/GitHub/PyJafroc/Py directory.
+* Open Terminal and navigate to `~/GitHub/PyJafroc/Py` directory.
 * `python setup.py build_ext -if`
 * `ipython`
-* Copy code from test-foms-roc.py to ipython windos and hit return
-* One can now work in Spyder. 
-* If any changes are made to foms.pyx one must recompile and restart ipython/spyder kernel.
+* Copy code from `test-foms-roc.py` to `ipython` window and hit return
+* One can now work in `Spyder` (useful for running in Debug mode, etc). 
+* If any changes are made to `foms.pyx` one must recompile and restart `ipython` or `Spyder` kernel.
 
 
 ## Work on significance testing 2/11/22
