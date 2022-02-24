@@ -356,3 +356,37 @@ def DfFroc2Roc(ds):
     ds1[4] = "ROC"
     pass
     return ds1
+
+
+def DfRatings2Dataset (NL, LL, InputIsCountsTable = False, *args):
+    """
+    Convert ratings arrays to a dataset
+
+    Parameters
+    ----------
+    NL : array
+        Non-lesion localizations array (or FP array for ROC data)
+
+    LL : array
+        Lesion localizations array (or TP array for ROC data)
+    
+    InputIsCountsTable: boolean 
+        If True, the NL and LL arrays are rating-counts tables, with common 
+        lengths equal to the number of ratings R, if False, the default, 
+        these are arrays of lengths K1, the number of non-diseased cases, 
+        and K2, the number of diseased cases, respectively.
+        
+    ...: optional parameters
+        Other elements of the dataset that may, depending on the context, 
+        need to be specified. perCase must be specified if an FROC dataset is 
+        to be returned. It is a K2-length array specifying the numbers of 
+        lesions in each diseased case in the dataset.
+
+    Returns
+    -------
+    ds: A dataset
+
+    """
+    
+
+    
