@@ -290,8 +290,15 @@ def DfExtractDataset(ds, trts = None, rdrs = None):
     LLe = LLe[:, rdrs, :, :]
     # TODO test with dataset where one reader produces lots more NLs than others
     # Extracting all but this reader will reduce maxNL and may break this code
-    maxNLe = len(NLe[0, 0, 0, :])
-    NLe = NLe[:,:,:,list(range(maxNLe))]
+# =============================================================================
+# Next 2 lines breaks C-contiguous property of NLe:
+# NLe.flags['C_CONTIGUOUS'] -> False 
+# dont really need them; they appear unnecessary
+# first line determines length of the 4th dimensiom
+# and the next operation is picking all elements of the 4th dimension   
+    ## maxNLe = len(NLe[0, 0, 0, :])
+    ## NLe = NLe[:,:,:,list(range(maxNLe))]
+# =============================================================================
     # dont need above type code as maxLL is fixed by Truth sheet and is 
     # independent of treatment or reader
     # maxLL = len(LLe[0, 0, 0, :])
