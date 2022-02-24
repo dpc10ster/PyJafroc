@@ -3,12 +3,25 @@
 This repository is a works-in-progress project for converting some of the `RJafroc` functions to `Python`. The converted functions are those judged essential for analyzing ROC/FROC datasets. Functions in `RJafroc` that are of research interest to me are not converted.
 
 
+## DfExtractDataset makes NL, LL arrays not C-contiguous 2/23/22
+* extended `cython` fom code to apply to `wAfroc` FOM.
+* had to change `perCase` and `lesWghtsDistr` to numpy arrays
+* UtilFom works but ... not when `DfExtractDataset` is used
+```
+ds = DfReadDataFile("extdata/Froc.xlsx")
+dse = DfExtractDataset(ds, trts= [0], rdrs = [0,1,2,3])
+fom = UtilFigureOfMerit(dse, FOM = "wAfroc")
+```
+* test for this with `dse[0].flags['C_CONTIGUOUS']` -> False
+* need to work on fixing this code
+
+
 ## Cython code introduced 2/22/22
 * The Python code implementation of `StCadVsRad` for Nico ROC dataset was incredibly slow.
 * Spent about 10 days wading through tutorials on `Cython`.
 * Added `Cython` function `foms.pyx` which currently implements `Wilcoxon` and `wAfroc` FOMs. 
 * Checked vs. `RJafroc` implementation
-* An issue is that the `Cython` code does not easily implement -`Inf`. So the ratings have to be filtered to replace all such ratings with -10^6.
+* An issue is that the `Cython` code does not easily implement -`Inf`. So the ratings have to be filtered to replace all such ratings with -10^6. Is there a better way?
 * At this time check vs. `RJafroc` only applies to `Wilcoxon` FOM.
 
 

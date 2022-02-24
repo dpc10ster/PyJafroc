@@ -5,6 +5,7 @@ from DfReadDataFile import DfReadDataFile, DfExtractDataset
 import sys
 
 
+
 def UtilLesionWeightsDistr(maxLL, relWeights=0):
     """
     Parameters
@@ -20,20 +21,19 @@ def UtilLesionWeightsDistr(maxLL, relWeights=0):
     -------
     The lower triangular lesion weights distribution square matrix:
     """
-    lesWghtDistr = pd.DataFrame(
-        index=np.arange(maxLL), columns=np.arange(maxLL))
+    lesWghtDistr = np.zeros((maxLL, maxLL))
     if relWeights == 0:
         for i in range(maxLL):
-            lesWghtDistr.values[i, 0:(i+1)] = 1./(i+1)
+            lesWghtDistr[i, 0:(i+1)] = 1./(i+1)
         pass
     else:
-        relWeights = np.array(relWeights, float)
+        relWeights = np.array(relWeights)
         for i in range(maxLL):
-            lesWghtDistr.values[i, 0:(
-                i+1)] = relWeights[0:(i+1)] / sum(relWeights[0:(i+1)])
+            lesWghtDistr[i, 0:(i+1)] = relWeights[0:(i+1)] / sum(relWeights[0:(i+1)])
 
     pass
     return (lesWghtDistr)
+
 
 
 def Psi(x, y):
@@ -64,61 +64,18 @@ def FigureOfMerit_ij(nl, ll, perCase, FOM):
     if FOM == "Wilcoxon":
         nl = nl[:,0]
         ll = ll[:,0]
-        np.where(nl == -np.inf, -1e7, nl) 
-        np.where(ll == -np.inf, -1e7, ll) 
+        nl = np.where(nl == -np.inf, -1e7, nl) 
+        ll = np.where(ll == -np.inf, -1e7, ll) 
         return foms.wilcoxon(nl,ll)
     elif FOM == "wAfroc":
+        nl = np.where(nl == -np.inf, -1e7, nl) 
+        ll = np.where(ll == -np.inf, -1e7, ll) 
         maxLL = len(ll[0][:])
         lesWghtDistr = UtilLesionWeightsDistr(maxLL)
-        return foms.wilcoxon(nl,ll,perCase,lesWghtDistr)
+        return foms.wAfroc(nl,ll,np.array(perCase),lesWghtDistr)
     else: 
         sys.exit("unsupported value of FOM")
 
-
-def FigureOfMerit_ij1(NL, LL, perCase, FOM):
-    """
-    Parameters
-    ----------
-    TODO
-    NL : list
-        JAFROC dataset list object created by DfReadDataFile()
-
-    FOM: str
-        The figure of merit or measure of performance, the
-        default is "wAFROC", or "Wilcoxon"
-
-    Returns
-    -------
-    A dataframe with I rows and J columns, corresponding to treatments and
-    readers, respectively, containing the FOM values
-    """
-
-    K = len(NL)
-    K2 = len(LL)
-    K1 = K - K2
-    
-    fom = 0.0
-    if FOM == "Wilcoxon":
-        for k1 in range(K1):
-            for k2 in range(K2):
-                fom += Psi(NL[k1][0], LL[k2][0])
-        fom /= (K1*K2)
-    else:
-        maxNL = len(NL[0][:])
-        maxLL = len(LL[0][:])
-        lesWghtDistr = UtilLesionWeightsDistr(maxLL)
-        for k1 in range(K1):
-            fp = -np.inf
-            for l1 in range(maxNL):
-                if NL[k1][l1] > fp:  # capture the highest value
-                    fp = NL[k1][l1]
-            for k2 in range(K2):
-                for l2 in range(perCase[k2]):
-                    fom += lesWghtDistr.values[perCase[k2]-1, l2] * \
-                        Psi(fp, LL[k2][l2])
-        fom /= (K1*K2)
-
-    return fom
 
 
 def UtilFigureOfMerit(ds, FOM):

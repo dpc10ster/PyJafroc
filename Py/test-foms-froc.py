@@ -52,7 +52,7 @@ for i in range(maxLL):
 #        [ 1.e+00, -1.e+07, -1.e+07]], dtype=float32)
 
 
-foms.wAfroc(nl,ll,perCase,lesWghtDistr)
+fom = foms.wAfroc(nl,ll,perCase,lesWghtDistr)
 
 # Out[10]: 0.6583333380520344 cython (uses floating point)
 # Out[10]: 0.6583333333333334 cython (uses double precision)

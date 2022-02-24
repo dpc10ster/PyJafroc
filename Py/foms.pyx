@@ -1,5 +1,6 @@
 #from cpython.array cimport array
-#cimport numpy as np
+# import numpy as np
+# cimport numpy as np
 from libc.stdio cimport printf
 
 def wilcoxon(double [:] fp, double [:] tp):
@@ -21,7 +22,9 @@ def wilcoxon(double [:] fp, double [:] tp):
     return ret
 
 
-def wAfroc(double [:,:] nl, double [:,:] ll, int [:] perCase, double [:,:] lesWghtDistr):
+def wAfroc(double [:,::1] nl, double [:,::1] ll, long [:] perCase, double [:,:] lesWghtDistr):
+
+#def wAfroc(double [:,::1] nl, double [:,::1] ll, long [:] perCase):
     cdef: 
         double ret = 0.0
         double fp
@@ -44,9 +47,9 @@ def wAfroc(double [:,:] nl, double [:,:] ll, int [:] perCase, double [:,:] lesWg
             for l2 in range(perCase[k2]):
                 #printf("k2 = %d, perCase[k2] = %d, l2 = %d, ll[k2][l2] = %f, lesWghtDistr[perCase[k2]-1, l2] = %f\n", k2, perCase[k2], l2, ll[k2][l2], lesWghtDistr[perCase[k2]-1, l2])
                 if fp < ll[k2,l2]: 
-                    ret += lesWghtDistr[perCase[k2]-1, l2]
+                    ret += 1.0*(lesWghtDistr[perCase[k2]-1, l2])
                 elif fp == ll[k2,l2]:
-                    ret += (0.5*lesWghtDistr[perCase[k2]-1, l2])
+                    ret += 0.5*(lesWghtDistr[perCase[k2]-1, l2])
     ret /= (K1 * K2)
   
     return ret

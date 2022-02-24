@@ -169,7 +169,45 @@ pre code {
 
 <div id="pyjafroc" class="section level1">
 <h1>PyJafroc</h1>
-<p>This repository is works-in-progress for converting some of the <code>RJafroc</code> functions to <code>Python</code>.</p>
+<p>This repository is a works-in-progress project for converting some of the <code>RJafroc</code> functions to <code>Python</code>. The converted functions are those judged essential for analyzing ROC/FROC datasets. Functions in <code>RJafroc</code> that are of research interest to me are not converted.</p>
+<div id="dfextractdataset-makes-arrays-not-c-contiguous-22322" class="section level2">
+<h2>DfExtractDataset makes arrays not C-contiguous 2/23/22</h2>
+<ul>
+<li>extended <code>cython</code> fom code to apply to <code>wAfroc</code> FOM.</li>
+<li>had to change <code>perCase</code> and <code>lesWghtsDistr</code> to numpy arrays</li>
+<li>UtilFom works but … not when <code>DfExtractDataset</code> is used</li>
+</ul>
+<pre><code>ds = DfReadDataFile(&quot;extdata/Froc.xlsx&quot;)
+dse = DfExtractDataset(ds, trts= [0], rdrs = [0,1,2,3])
+fom = UtilFigureOfMerit(dse, FOM = &quot;wAfroc&quot;)</code></pre>
+<ul>
+<li>test for this with <code>dse[0].flags[&#39;C_CONTIGUOUS&#39;]</code> -&gt; False</li>
+<li>need to work on fixing this code</li>
+</ul>
+</div>
+<div id="cython-code-introduced-22222" class="section level2">
+<h2>Cython code introduced 2/22/22</h2>
+<ul>
+<li>The Python code implementation of <code>StCadVsRad</code> for Nico ROC dataset was incredibly slow.</li>
+<li>Spent about 10 days wading through tutorials on <code>Cython</code>.</li>
+<li>Added <code>Cython</code> function <code>foms.pyx</code> which currently implements <code>Wilcoxon</code> and <code>wAfroc</code> FOMs.</li>
+<li>Checked vs. <code>RJafroc</code> implementation</li>
+<li>An issue is that the <code>Cython</code> code does not easily implement -<code>Inf</code>. So the ratings have to be filtered to replace all such ratings with -10^6. Is there a better way?</li>
+<li>At this time check vs. <code>RJafroc</code> only applies to <code>Wilcoxon</code> FOM.</li>
+</ul>
+</div>
+<div id="workflow-for-using-cython-22222" class="section level2">
+<h2>Workflow for using Cython 2/22/22</h2>
+<ul>
+<li>Note <code>setup.py</code> and <code>foms.pyx</code> files</li>
+<li>Open Terminal and navigate to <code>~/GitHub/PyJafroc/Py</code> directory.</li>
+<li><code>python setup.py build_ext -if</code></li>
+<li><code>ipython</code></li>
+<li>Copy code from <code>test-foms-roc.py</code> to <code>ipython</code> window and hit return</li>
+<li>One can now work in <code>Spyder</code> (useful for running in Debug mode, etc).</li>
+<li>If any changes are made to <code>foms.pyx</code> one must recompile and restart <code>ipython</code> or <code>Spyder</code> kernel.</li>
+</ul>
+</div>
 <div id="work-on-significance-testing-21122" class="section level2">
 <h2>Work on significance testing 2/11/22</h2>
 <ul>
