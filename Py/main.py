@@ -63,11 +63,15 @@ from UtilORVarComponents import testJackKnife, UtilPseudoValues, UtilORVarCompon
 
 
 ## test7 check c fom function with froc dataset
-ds = DfReadDataFile("extdata/Froc.xlsx")
+#ds = DfReadDataFile("extdata/Froc.xlsx")
 #pv = UtilPseudoValues(ds, FOM = "wAfroc")
-dse = DfExtractDataset(ds, trts= [0], rdrs = [0,1,2,3])
+#dse = DfExtractDataset(ds, trts= [0], rdrs = [0,1,2,3])
 #dse[0].flags['C_CONTIGUOUS'] # check if array is C-contiguous
-fom = UtilFigureOfMerit(dse, FOM = "wAfroc")
-#varCom = UtilORVarComponents(ds)
+#fom = UtilFigureOfMerit(dse, FOM = "wAfroc")
 #st = StSignificanceTesting(ds)
 #fom = UtilFigureOfMerit(ds, "wAfroc")
+
+
+## test8 check c fom function with froc dataset
+ds = DfReadDataFile("extdata/Froc.xlsx")
+st = StSignificanceTesting(ds)
