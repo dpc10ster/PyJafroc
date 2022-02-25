@@ -73,10 +73,10 @@ import numpy as np
 #fom = UtilFigureOfMerit(ds, "wAfroc")
 
 
-## test8 check c fom function with froc dataset
-#ds = DfReadDataFile("extdata/Froc.xlsx")
-NL = np.array([1,2,1,2,3])
-LL = np.array([2,3,5,2,6])
-
-#st = StSignificanceTesting(ds)
-ds = DfRatings2Dataset(NL, LL)
+## test8 adding DfRatings2Dataset function
+# NL = [30, 19,  8,  2,  1]
+# LL = [5,  6,  5, 12, 22]
+# [NL, LL] = DfRatings2Dataset(NL, LL, InputIsCountsTable =True)
+NL = [1,2,3,2,1]
+LL = [1,2,3,2,1,4,5]
+temp = DfRatings2Dataset(NL, LL, perCase = np.ones(7))

@@ -358,7 +358,7 @@ def DfFroc2Roc(ds):
     return ds1
 
 
-def DfRatings2Dataset (NL, LL, InputIsCountsTable = False, *args):
+def DfRatings2Dataset (NL, LL, InputIsCountsTable = False, **kwargs):
     """
     Convert ratings arrays to a dataset
 
@@ -387,25 +387,19 @@ def DfRatings2Dataset (NL, LL, InputIsCountsTable = False, *args):
     ds: A dataset
 
     """
-    if len(args) == 0:
-       DataType = "ROC" 
-       if InputIsCountsTable:
-           ret = RatingsArrayFromCountsTable(NL,LL)
-           NL = ret[0]
-           LL = ret[1]        
-    pass
-
-    
-
-# K1 and K2 are as in book chapter 5
-def RatingsArrayFromCountsTable(NL,LL):  
-    R = len(K1)
-    if (len(K2) != R):
-        sy.exit("Length of two ratings arrays in RatingsArrayFromCountsTable \
-                are unequal")
-    tab = data.frame(value=seq(1:R), freq=K1)
-    NL = rep(tab$value, tab$freq)
-    tab = data.frame(value=seq(1:R), freq=K2)
-    LL = rep(tab$value, tab$freq)
-  
+    if len(kwargs) == 0:
+        DataType = "ROC" 
+        if InputIsCountsTable:
+            R = len(NL)
+            if (len(LL) != R):
+                sys.exit("Lengths of rating-counts arrays are unequal")
+            NL = [j+1 for j in range(R) for i in range(NL[j])]
+            LL = [j+1 for j in range(R) for i in range(LL[j])]
+    else:
+        pass
+            
+            
+    for key in kwargs:
+        [names, values] = (key, kwargs[key])       
+            
     return [NL,LL]
