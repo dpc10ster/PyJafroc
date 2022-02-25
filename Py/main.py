@@ -1,8 +1,9 @@
-from DfReadDataFile import DfReadDataFile, DfFroc2Roc, DfExtractDataset
+from DfReadDataFile import DfReadDataFile, DfFroc2Roc, DfExtractDataset, DfRatings2Dataset
 from StSignificanceTesting import StSignificanceTesting, StSignificanceTestingCadVsRad
 from UtilFigureOfMerit import UtilFigureOfMerit
 from UtilFigureOfMerit import UtilLesionWeightsDistr
 from UtilORVarComponents import testJackKnife, UtilPseudoValues, UtilORVarComponents
+import numpy as np
 
 
 
@@ -73,5 +74,9 @@ from UtilORVarComponents import testJackKnife, UtilPseudoValues, UtilORVarCompon
 
 
 ## test8 check c fom function with froc dataset
-ds = DfReadDataFile("extdata/Froc.xlsx")
-st = StSignificanceTesting(ds)
+#ds = DfReadDataFile("extdata/Froc.xlsx")
+NL = np.array([1,2,1,2,3])
+LL = np.array([2,3,5,2,6])
+
+#st = StSignificanceTesting(ds)
+ds = DfRatings2Dataset(NL, LL)

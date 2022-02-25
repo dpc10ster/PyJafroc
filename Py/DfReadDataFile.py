@@ -387,6 +387,25 @@ def DfRatings2Dataset (NL, LL, InputIsCountsTable = False, *args):
     ds: A dataset
 
     """
-    
+    if len(args) == 0:
+       DataType = "ROC" 
+       if InputIsCountsTable:
+           ret = RatingsArrayFromCountsTable(NL,LL)
+           NL = ret[0]
+           LL = ret[1]        
+    pass
 
     
+
+# K1 and K2 are as in book chapter 5
+def RatingsArrayFromCountsTable(NL,LL):  
+    R = len(K1)
+    if (len(K2) != R):
+        sy.exit("Length of two ratings arrays in RatingsArrayFromCountsTable \
+                are unequal")
+    tab = data.frame(value=seq(1:R), freq=K1)
+    NL = rep(tab$value, tab$freq)
+    tab = data.frame(value=seq(1:R), freq=K2)
+    LL = rep(tab$value, tab$freq)
+  
+    return [NL,LL]
