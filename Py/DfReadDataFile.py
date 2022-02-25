@@ -360,7 +360,8 @@ def DfFroc2Roc(ds):
 
 def DfRatings2Dataset (NL, LL, InputIsCountsTable = False, **kwargs):
     """
-    Convert ratings arrays to a dataset
+    Convert ratings arrays to a dataset; currently limited to single modality
+    single reader dataset
 
     Parameters
     ----------
@@ -387,19 +388,57 @@ def DfRatings2Dataset (NL, LL, InputIsCountsTable = False, **kwargs):
     ds: A dataset
 
     """
+
+    if NL.ndim != LL.ndim:
+        sys.exit("number of dimensions of NL and LL arrays must be equal")
+
+    if NL.ndim > 1:
+        sys.exit("unimplemented code: limited to single modality and single reader")
+        
     if len(kwargs) == 0:
-        DataType = "ROC" 
         if InputIsCountsTable:
             R = len(NL)
             if (len(LL) != R):
                 sys.exit("Lengths of rating-counts arrays are unequal")
             NL = [j+1 for j in range(R) for i in range(NL[j])]
             LL = [j+1 for j in range(R) for i in range(LL[j])]
+            I = 1
+            J = 1
+            K1 = len(NL)
+            K2 = len(LL)
+            perCase = np.ones(K2)
+            NL1 = np.full((I, J, K1+K2, 1), -np.inf)
+            NL1[0,0,0:K1,0] = NL
+            LL1 = np.full((I, J, K2, 1), -np.inf)
+            LL1[0,0,:,0] = LL
+            relWeights = 1
+            modalityID = "0"
+            readerID = "0"
+            DataType = "ROC" 
+            ds = [NL1, LL1, perCase, relWeights, DataType, modalityID, readerID]
+            return ds
     else:
-        pass
+        for key in kwargs:
+            [names, values] = (key, kwargs[key])
+        if names != "perCase":
+            sys.exit("missing 'perCase' argument")
+        else: perCase = values
+        
+        if NL.ndim == 1: #single modality and single reader
+            I = 1
+            J = 1
+            K1 = len(NL)
+            K2 = len(LL)
+            if len(perCase) != K2:
+                sys.exit("length of perCase not equal to len(LL)")
+            NL1 = np.full((I, J, K1+K2, 1), -np.inf)
+            NL1[0,0,0:K1,0] = NL
+            LL1 = np.full((I, J, K2, 1), -np.inf)
+            LL1[0,0,:,0] = LL
+            DataType = "FROC"
+            relWeights = 1
+            modalityID = "0"
+            readerID = "0"
+            ds = [NL1, LL1, perCase, relWeights, DataType, modalityID, readerID]
+            return ds
             
-            
-    for key in kwargs:
-        [names, values] = (key, kwargs[key])       
-            
-    return [NL,LL]
