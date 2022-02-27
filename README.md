@@ -3,6 +3,11 @@
 This repository is a works-in-progress project for converting some of the `RJafroc` functions to `Python`. The converted functions are those judged essential for analyzing ROC/FROC datasets. Functions in `RJafroc` that are of research interest to me are not converted.
 
 
+## Double check DfReadDataFile 2/27/22
+* Found some errors in read code
+* Converted all output items to numpy arrays
+
+
 ## DfExtractDataset makes NL, LL arrays not C-contiguous 2/23/22
 * extended `cython` fom code to apply to `wAfroc` FOM.
 * had to change `perCase` and `lesWghtsDistr` to numpy arrays

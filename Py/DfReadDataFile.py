@@ -16,28 +16,13 @@ def myExit(sheetNames, expectedNames, msg):
 # =============================================================================
 # Put all checks of the Excel file in here
 # =============================================================================
-def DfCheck(FileName):
-
-    # =============================================================================
-    # Tested with 1 good and 2 bad files
-    # FileName = 'extdata/toyFiles/FROC/frocCr.xlsx'
-    # FileName = 'extdata/toyFiles/FROC/bad/frocCr-01.xlsx' unordered TRUTH
-    # FileName = 'extdata/toyFiles/FROC/bad/frocCr-02.xlsx' unordered TRUTH
-    # FileName = 'extdata/toyFiles/FROC/bad/frocCr-03.xlsx' incorrect sheet names
-    # FileName = 'extdata/toyFiles/FROC/bad/frocCr-04.xlsx' normal case in LL
-    # FileName = 'extdata/toyFiles/FROC/bad/frocCr-05.xlsx' do: numeric format
-    # FileName = 'extdata/toyFiles/FROC/bad/frocCr2BlankRows.xlsx'
-    # FileName = 'extdata/toyFiles/FROC/bad/frocCrNonCharInReaderID.xlsx'
-    # FileName = 'extdata/toyFiles/FROC/bad/incorrectCaseIDsInLL.xlsx' why missing?
-    # FileName = 'extdata/toyFiles/FROC/bad/incorrectCaseIDsInLL2.xlsx'
-    # FileName = "extdata/toyFiles/FROC/bad/incoCaseIDsInTP.xlsx"
-    # =============================================================================
+def DfCheckDataFile(FileName):
 
     wb = load_workbook(FileName)
     sheetNames = wb.sheetnames
     expectedNames = ["NL", "LL", "TRUTH"]
     msg = ("Excel workbook has missing or incorrectly named sheets. "
-           "These are the correct names: ") + ", ".join(expectedNames)
+           "The expected names (case sensitive) are: ") + ", ".join(expectedNames)
     myExit(sheetNames, expectedNames, msg)
 
     ws = wb['TRUTH']
@@ -46,8 +31,8 @@ def DfCheck(FileName):
 
     expectedNames = ['CaseID', 'LesionID', 'Weight']
     msg = ("Excel worksheet TRUTH has missing or incorrect "
-           "required column names. "
-           "These are the correct names: ") + ", ".join(expectedNames)
+           "column names. "
+           "The expected names are: ") + ", ".join(expectedNames)
     myExit(columnNames, expectedNames, msg)
 
     dfTruth = pd.DataFrame(data, columns=columnNames)
@@ -116,7 +101,7 @@ def DfReadDataFile(FileName, DataType="FROC"):
 # Check the Excel file
 # Load the Excel file
 # =============================================================================
-    DfCheck(FileName)
+    DfCheckDataFile(FileName)
     wb = load_workbook(FileName)
 
 # =============================================================================
@@ -134,7 +119,8 @@ def DfReadDataFile(FileName, DataType="FROC"):
 
 # =============================================================================
 # See DfReadDataFileChkFrocCrExcelFile.py for cross check with input file
-# 'extdata/toyFiles/FROC/frocCr.xlsx'
+# 'extdata/toyFiles/FROC/frocCr.xlsx'; 
+# in /Users/Dev/Desktop/PyJafroc scraps/moved
 # =============================================================================
 
     # sort on "TruthID" & "CaseID" fields to put non-diseased cases first
@@ -145,13 +131,13 @@ def DfReadDataFile(FileName, DataType="FROC"):
 
     u, ind = np.unique(dfTruth["CaseID"], return_index=True)
     AllCases = u[np.argsort(ind)]
-    NormalCases = dfTruth.loc[dfTruth['LesionID'] == 0]["CaseID"]
+    NormalCases = np.array(dfTruth.loc[dfTruth['LesionID'] == 0]["CaseID"])
     K1 = len(NormalCases)
-    AbnormalCases = dfTruth.loc[dfTruth['LesionID'] == 1]["CaseID"]
+    AbnormalCases = np.array(dfTruth.loc[dfTruth['LesionID'] == 1]["CaseID"])
     K2 = len(AbnormalCases)
     K = K1 + K2
 
-    # calculate lesion perCase
+    # calculate lesions perCase
     x = pd.Series(dfTruth["CaseID"])
     x = x.isin(AbnormalCases)
     x = pd.Series(dfTruth["CaseID"][x])
@@ -161,12 +147,12 @@ def DfReadDataFile(FileName, DataType="FROC"):
     # Fixes indexing of perCase array
     # perCase = pd.Series(list(perCase))
     # did not need the above after all
-    perCase = list(perCase)
+    perCase = np.array(perCase)
 
     maxLL = max(perCase)
     if (maxLL > 1) & (DataType != "FROC"):
         sys.exit("Only FROC data can have more than one lesion per case")
-    relWeights = [1/maxLL] * maxLL
+    relWeights = np.array([1/maxLL] * maxLL)
 
 # =============================================================================
 # Load the NL sheet
@@ -192,9 +178,11 @@ def DfReadDataFile(FileName, DataType="FROC"):
     modalities = (dfLL["ModalityID"].append(dfNL["ModalityID"])).unique()
     I = len(modalities)
     modalityID = [str(x) for x in list(range(I))]
+    modalityID = np.array(modalityID)
     readers = (dfLL["ReaderID"].append(dfNL["ReaderID"])).unique()
     J = len(readers)
     readerID = [str(x) for x in list(range(J))]
+    readerID = np.array(readerID)
     # lesions = np.unique(dfTruth["LesionID"])[1:]
     maxNL = dfNL.groupby(['ReaderID',
                           'ModalityID',
@@ -204,7 +192,9 @@ def DfReadDataFile(FileName, DataType="FROC"):
         sys.exit("Only FROC data can have more than one NL per case")
 
     NL = np.full((I, J, K, maxNL), -np.inf)
-    for indxNl in range(len(dfNL["ModalityID"])):
+    indxNl = 0
+    while indxNl < len(dfNL["ModalityID"]):
+    #for indxNl in range(len(dfNL["ModalityID"])):
         i = (modalities == dfNL["ModalityID"][indxNl])
         j = (readers == dfNL["ReaderID"][indxNl])
         c = (AllCases == dfNL["CaseID"][indxNl])
@@ -215,6 +205,10 @@ def DfReadDataFile(FileName, DataType="FROC"):
         for l in range(sum(matchCount)):
             if NL[i, j, c, l] == -np.inf:
                 NL[i, j, c, l] = dfNL["NLRating"][indxNl + l]
+            else:
+                print("i: %2d, j: %2d, c: %4d" % (i, j, c))
+                sys.exit("Overwriting NL values!")
+        indxNl += sum(matchCount)
 
     lesions = list(range(1, maxLL+1))
     LL = np.full((I, J, K2, maxLL), -np.inf)
@@ -223,8 +217,21 @@ def DfReadDataFile(FileName, DataType="FROC"):
         j = (readers == dfLL["ReaderID"][indxLl])
         c = (AbnormalCases == dfLL["CaseID"][indxLl])
         l = (lesions == dfLL["LesionID"][indxLl])
-
-        LL[i, j, c, l] = dfLL["LLRating"][indxLl]
+        if LL[i, j, c, l] == -np.inf:
+            LL[i, j, c, l] = dfLL["LLRating"][indxLl]
+        else:
+            print("i: %2d, j: %2d, c: %4d" % (i, j, c))
+            sys.exit("Overwriting LL values!")
+        
+# =============================================================================
+# check that no abnormal case has more marked lesions that total number of les
+# =============================================================================
+    for i in range(I):
+        for j in range(J):
+            for c in range(K2):
+                if sum(LL[i,j,c,:] != -np.inf) > perCase[c]:
+                    print("i: %2d, j: %2d, c: %4d" % (i, j, c))
+                    sys.exit("number of LLs greater than number of lesions")
 
 # =============================================================================
 # Return a dataset object

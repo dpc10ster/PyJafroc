@@ -7,9 +7,6 @@ import numpy as np
 
 
 
-#ds = DfReadDataFile("extdata/toyFiles/FROC/frocCr.xlsx")
-#ds = DfReadDataFile("extdata/toyFiles/ROC/rocCr.xlsx")
-#ds = DfReadDataFile("extdata/Froc.xlsx")
 #ds1 = DfFroc2Roc(ds)
 # val = UtilFigureOfMerit(ds, "wAfroc")
 # ds = StSignificanceTesting("extdata/JT.xlsx")
@@ -22,7 +19,6 @@ import numpy as np
 # # varCom = UtilORVarComponents(ds)
 # #fomMeans = UtilORVarComponents(ds)
 # st = StSignificanceTesting(ds)
-# FileName = "extdata/JT.xlsx"
 # ste = StSignificanceTesting(ds)
 # fom = UtilFigureOfMerit(ds, FOM = "wAfroc")
 # fom1 = UtilFigureOfMerit(ds1, FOM = "Wilcoxon")
@@ -82,3 +78,21 @@ import numpy as np
 # LL = np.array([1,2,3,2,1,4,5])
 # ds = DfRatings2Dataset(NL, LL, perCase = np.ones(7, dtype=int))
 # fom2 = UtilFigureOfMerit(ds, FOM = "wAfroc")
+
+
+## test9 after changes to DfRead.. function
+#ds = DfReadDataFile("extdata/toyFiles/FROC/frocCr.xlsx")
+#ds = DfReadDataFile("extdata/toyFiles/ROC/rocCr.xlsx", DataType="ROC")
+#ds = DfReadDataFile('extdata/toyFiles/FROC/bad/frocCr-01.xlsx') # unordered TRUTH
+#ds = DfReadDataFile('extdata/toyFiles/FROC/bad/frocCr-02.xlsx') # unordered TRUTH
+#ds = DfReadDataFile('extdata/toyFiles/FROC/bad/frocCr-03.xlsx') # incorrect sheet names
+#ds = DfReadDataFile('extdata/toyFiles/FROC/bad/frocCr-04.xlsx') # normal case in LL
+#ds = DfReadDataFile('extdata/toyFiles/FROC/bad/frocCr-05.xlsx') # do: numeric format
+#ds = DfReadDataFile('extdata/toyFiles/FROC/bad/frocCr2BlankRows.xlsx')
+#ds = DfReadDataFile('extdata/toyFiles/FROC/bad/frocCrNonCharInReaderID.xlsx')
+#ds = DfReadDataFile('extdata/toyFiles/FROC/bad/incorrectCaseIDsInLL.xlsx') #why missing?
+#ds = DfReadDataFile('extdata/toyFiles/FROC/bad/incorrectCaseIDsInLL2.xlsx')
+#ds = DfReadDataFile("extdata/toyFiles/FROC/bad/incoCaseIDsInTP.xlsx")
+#ds = DfReadDataFile("extdata/JT.xlsx")
+#ds = DfReadDataFile("extdata/Froc.xlsx")
+#st = StSignificanceTesting(ds)
