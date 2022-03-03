@@ -96,3 +96,9 @@ import numpy as np
 #ds = DfReadDataFile("extdata/JT.xlsx")
 #ds = DfReadDataFile("extdata/Froc.xlsx")
 #st = StSignificanceTesting(ds)
+
+
+#ds = DfReadDataFile("extdata/Froc.xlsx")
+#pv = UtilPseudoValues(ds, FOM = "wAfroc")
+#dse = DfExtractDataset(ds, trts= [0], rdrs = [0,1,2,3])
+
