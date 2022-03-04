@@ -138,16 +138,9 @@ def DfReadDataFile(FileName, DataType="FROC"):
     K = K1 + K2
 
     # calculate lesions perCase
-    x = pd.Series(dfTruth["CaseID"])
-    x = x.isin(AbnormalCases)
-    x = pd.Series(dfTruth["CaseID"][x])
-    x = x.value_counts(sort=False)
-    perCase = x.sort_index()
-    # next line indexes using abnormal cases, 0 to K2-1
-    # Fixes indexing of perCase array
-    # perCase = pd.Series(list(perCase))
-    # did not need the above after all
-    perCase = np.array(perCase)
+    x1 = pd.Series(dfTruth["CaseID"])
+    x = x1[x1.isin(AbnormalCases)]
+    perCase = np.array(x.value_counts(sort=False))
 
     maxLL = max(perCase)
     if (maxLL > 1) & (DataType != "FROC"):

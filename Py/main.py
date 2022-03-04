@@ -98,7 +98,7 @@ import numpy as np
 #st = StSignificanceTesting(ds)
 
 
-#ds = DfReadDataFile("extdata/Froc.xlsx")
+#ds = DfReadDataFile("extdata/toyFiles/FROC/frocCr.xlsx")
 #pv = UtilPseudoValues(ds, FOM = "wAfroc")
 #dse = DfExtractDataset(ds, trts= [0], rdrs = [0,1,2,3])
 
