@@ -81,7 +81,8 @@ class tests(unittest.TestCase):
 # var and cov1, cov2, cov3
             self.assertIsNone(nptesting.assert_allclose(\
                                                             stNow[1]["VarCom"]["Estimates"], \
-                                                            stGood[1]["VarCom"]["Estimates"]))        
+                                                            stGood[1]["VarCom"]["Estimates"]))
+                
             strtests = ["FTests", "ciDiffTrt", "ciAvgRdrEachTrt"]
             for i in range(len(strtests)):
                 self.assertIsNone(nptesting.assert_allclose(\
