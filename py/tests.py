@@ -1,9 +1,10 @@
 import unittest
 import pickle
+import numpy as np 
 import numpy.testing as nptesting
 from DfReadDataFile import DfReadDataFile, DfExtractDataset
 from UtilFigureOfMerit import UtilFigureOfMerit
-from StSignificanceTesting import StSignificanceTesting
+from StSignificanceTesting import StSignificanceTesting, StSignificanceTestingCadVsRad
 import os
 
 
@@ -30,7 +31,7 @@ class tests(unittest.TestCase):
         dsNow = DfExtractDataset(ds, trts= [0], rdrs = [0,1,2,3]) 
         if not os.path.exists(save_fn):
             pickle.dump( dsNow, open( save_fn, "wb" ) )
-            print("writing goodValues for extracted dataset")            
+            print("writing goodValues for DfExtractDataset")            
         else:
             dsGood = pickle.load(open( save_fn, "rb" ))
             for i in range(len(dsNow)):
@@ -44,21 +45,36 @@ class tests(unittest.TestCase):
         fomNow = UtilFigureOfMerit(ds, FOM = "wAfroc") 
         if not os.path.exists(save_fn):
             pickle.dump( fomNow, open( save_fn, "wb" ) )
-            print("writing ggoodValues for figures of merit")            
+            print("writing goodValues for UtilFigureOfMerit")            
         else:
             fomGood = pickle.load(open( save_fn, "rb" ))
             for i in range(len(fomNow)):
                 self.assertIsNone(nptesting.assert_array_equal(fomNow[i], fomGood[i]))
 
+    def test_st_significance_cad(self):
+        fileName = "../Py/extdata/NicoRadRoc.xlsx"
+        fn = os.path.splitext(os.path.basename(fileName))[0]
+        save_fn = "goodValues/foms/ds_" + fn + ".p"
+        ds = DfReadDataFile(fileName, DataType="ROC")
+        stNow = StSignificanceTestingCadVsRad(ds, FOM = "Wilcoxon") 
+        if not os.path.exists(save_fn):
+            pickle.dump( stNow, open( save_fn, "wb" ) )
+            print("writing goodValues for StSignificanceTestingCadVsRad")            
+        else:
+            stGood = pickle.load(open( save_fn, "rb" ))
+            x = np.array(stNow)[0,:]
+            y = np.array(stGood)[0,:]
+            self.assertIsNone(nptesting.assert_array_equal(x, y))
+                
     def test_st_significance(self):
         fileName = "../Py/extdata/JT.xlsx"
         fn = os.path.splitext(os.path.basename(fileName))[0]
         save_fn = "goodValues/st/ds_" + fn + ".p"
-        ds = DfReadDataFile(fileName)
+        ds = DfReadDataFile(fileName, DataType="FROC")
         stNow = StSignificanceTesting(ds, FOM = "wAfroc") 
         if not os.path.exists(save_fn):
             pickle.dump( stNow, open( save_fn, "wb" ) )
-            print("writing goodValues for st_significance")            
+            print("writing goodValues for StSignificanceTesting")            
         else:
             stGood = pickle.load(open( save_fn, "rb" ))
             strtests = ["foms", "trtMeans", "trtMeanDiffs"]

@@ -233,10 +233,6 @@ def DfReadDataFile(FileName, DataType="FROC"):
     return(ds)
 
 
-# FileName = "extdata/toyFiles/FROC/frocCr.xlsx"
-# FileName = "extdata/JT.xlsx"
-# ds = DfReadDataFile(FileName)
-
 
 def DfExtractDataset(ds, trts = None, rdrs = None):
     """
