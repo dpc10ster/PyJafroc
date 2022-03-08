@@ -4,12 +4,12 @@
 {
     "distutils": {
         "depends": [],
-        "name": "foms",
+        "name": "py.foms",
         "sources": [
             "foms.pyx"
         ]
     },
-    "module_name": "foms"
+    "module_name": "py.foms"
 }
 END: Cython Metadata */
 
@@ -686,8 +686,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__foms
-#define __PYX_HAVE_API__foms
+#define __PYX_HAVE__py__foms
+#define __PYX_HAVE_API__py__foms
 /* Early includes */
 #include <string.h>
 #include <stdio.h>
@@ -1785,7 +1785,7 @@ static PyObject *__pyx_memoryviewslice_assign_item_from_object(struct __pyx_memo
 
 /* Module declarations from 'libc.stdio' */
 
-/* Module declarations from 'foms' */
+/* Module declarations from 'py.foms' */
 static PyTypeObject *__pyx_array_type = 0;
 static PyTypeObject *__pyx_MemviewEnum_type = 0;
 static PyTypeObject *__pyx_memoryview_type = 0;
@@ -1832,11 +1832,11 @@ static void __pyx_memoryview__slice_assign_scalar(char *, Py_ssize_t *, Py_ssize
 static PyObject *__pyx_unpickle_Enum__set_state(struct __pyx_MemviewEnum_obj *, PyObject *); /*proto*/
 static __Pyx_TypeInfo __Pyx_TypeInfo_double = { "double", NULL, sizeof(double), { 0 }, 0, 'R', 0, 0 };
 static __Pyx_TypeInfo __Pyx_TypeInfo_long = { "long", NULL, sizeof(long), { 0 }, 0, IS_UNSIGNED(long) ? 'U' : 'I', IS_UNSIGNED(long), 0 };
-#define __Pyx_MODULE_NAME "foms"
-extern int __pyx_module_is_main_foms;
-int __pyx_module_is_main_foms = 0;
+#define __Pyx_MODULE_NAME "py.foms"
+extern int __pyx_module_is_main_py__foms;
+int __pyx_module_is_main_py__foms = 0;
 
-/* Implementation of 'foms' */
+/* Implementation of 'py.foms' */
 static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_ValueError;
 static PyObject *__pyx_builtin_MemoryError;
@@ -1863,7 +1863,6 @@ static const char __pyx_k_obj[] = "obj";
 static const char __pyx_k_ret[] = "ret";
 static const char __pyx_k_base[] = "base";
 static const char __pyx_k_dict[] = "__dict__";
-static const char __pyx_k_foms[] = "foms";
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_mode[] = "mode";
 static const char __pyx_k_name[] = "name";
@@ -1895,6 +1894,7 @@ static const char __pyx_k_wAfroc[] = "wAfroc";
 static const char __pyx_k_fortran[] = "fortran";
 static const char __pyx_k_memview[] = "memview";
 static const char __pyx_k_perCase[] = "perCase";
+static const char __pyx_k_py_foms[] = "py.foms";
 static const char __pyx_k_Ellipsis[] = "Ellipsis";
 static const char __pyx_k_foms_pyx[] = "foms.pyx";
 static const char __pyx_k_getstate[] = "__getstate__";
@@ -1987,7 +1987,6 @@ static PyObject *__pyx_n_s_encode;
 static PyObject *__pyx_n_s_enumerate;
 static PyObject *__pyx_n_s_error;
 static PyObject *__pyx_n_s_flags;
-static PyObject *__pyx_n_s_foms;
 static PyObject *__pyx_kp_s_foms_pyx;
 static PyObject *__pyx_n_s_format;
 static PyObject *__pyx_n_s_fortran;
@@ -2020,6 +2019,7 @@ static PyObject *__pyx_n_s_obj;
 static PyObject *__pyx_n_s_pack;
 static PyObject *__pyx_n_s_perCase;
 static PyObject *__pyx_n_s_pickle;
+static PyObject *__pyx_n_s_py_foms;
 static PyObject *__pyx_n_s_pyx_PickleError;
 static PyObject *__pyx_n_s_pyx_checksum;
 static PyObject *__pyx_n_s_pyx_getbuffer;
@@ -2053,8 +2053,8 @@ static PyObject *__pyx_n_s_unpack;
 static PyObject *__pyx_n_s_update;
 static PyObject *__pyx_n_s_wAfroc;
 static PyObject *__pyx_n_s_wilcoxon;
-static PyObject *__pyx_pf_4foms_wilcoxon(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_fp, __Pyx_memviewslice __pyx_v_tp); /* proto */
-static PyObject *__pyx_pf_4foms_2wAfroc(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_nl, __Pyx_memviewslice __pyx_v_ll, __Pyx_memviewslice __pyx_v_perCase, __Pyx_memviewslice __pyx_v_lesWghtDistr); /* proto */
+static PyObject *__pyx_pf_2py_4foms_wilcoxon(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_fp, __Pyx_memviewslice __pyx_v_tp); /* proto */
+static PyObject *__pyx_pf_2py_4foms_2wAfroc(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_nl, __Pyx_memviewslice __pyx_v_ll, __Pyx_memviewslice __pyx_v_perCase, __Pyx_memviewslice __pyx_v_lesWghtDistr); /* proto */
 static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array___cinit__(struct __pyx_array_obj *__pyx_v_self, PyObject *__pyx_v_shape, Py_ssize_t __pyx_v_itemsize, PyObject *__pyx_v_format, PyObject *__pyx_v_mode, int __pyx_v_allocate_buffer); /* proto */
 static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array_2__getbuffer__(struct __pyx_array_obj *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_array___pyx_pf_15View_dot_MemoryView_5array_4__dealloc__(struct __pyx_array_obj *__pyx_v_self); /* proto */
@@ -2136,7 +2136,7 @@ static PyObject *__pyx_codeobj__22;
 static PyObject *__pyx_codeobj__29;
 /* Late includes */
 
-/* "foms.pyx":6
+/* "py/foms.pyx":6
  * from libc.stdio cimport printf
  * 
  * def wilcoxon(double [:] fp, double [:] tp):             # <<<<<<<<<<<<<<
@@ -2145,9 +2145,9 @@ static PyObject *__pyx_codeobj__29;
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_4foms_1wilcoxon(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_4foms_1wilcoxon = {"wilcoxon", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_4foms_1wilcoxon, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_4foms_1wilcoxon(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_2py_4foms_1wilcoxon(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_2py_4foms_1wilcoxon = {"wilcoxon", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_2py_4foms_1wilcoxon, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_2py_4foms_1wilcoxon(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   __Pyx_memviewslice __pyx_v_fp = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_tp = { 0, 0, { 0 }, { 0 }, { 0 } };
   int __pyx_lineno = 0;
@@ -2198,18 +2198,18 @@ static PyObject *__pyx_pw_4foms_1wilcoxon(PyObject *__pyx_self, PyObject *__pyx_
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("wilcoxon", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 6, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("foms.wilcoxon", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("py.foms.wilcoxon", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_4foms_wilcoxon(__pyx_self, __pyx_v_fp, __pyx_v_tp);
+  __pyx_r = __pyx_pf_2py_4foms_wilcoxon(__pyx_self, __pyx_v_fp, __pyx_v_tp);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_4foms_wilcoxon(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_fp, __Pyx_memviewslice __pyx_v_tp) {
+static PyObject *__pyx_pf_2py_4foms_wilcoxon(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_fp, __Pyx_memviewslice __pyx_v_tp) {
   double __pyx_v_ret;
   int __pyx_v_K1;
   int __pyx_v_K2;
@@ -2233,7 +2233,7 @@ static PyObject *__pyx_pf_4foms_wilcoxon(CYTHON_UNUSED PyObject *__pyx_self, __P
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("wilcoxon", 0);
 
-  /* "foms.pyx":8
+  /* "py/foms.pyx":8
  * def wilcoxon(double [:] fp, double [:] tp):
  *     cdef:
  *         double ret = 0.0             # <<<<<<<<<<<<<<
@@ -2242,7 +2242,7 @@ static PyObject *__pyx_pf_4foms_wilcoxon(CYTHON_UNUSED PyObject *__pyx_self, __P
  */
   __pyx_v_ret = 0.0;
 
-  /* "foms.pyx":11
+  /* "py/foms.pyx":11
  *         int K1, K2, k1, k2
  * 
  *     K2 = tp.shape[0]             # <<<<<<<<<<<<<<
@@ -2251,7 +2251,7 @@ static PyObject *__pyx_pf_4foms_wilcoxon(CYTHON_UNUSED PyObject *__pyx_self, __P
  */
   __pyx_v_K2 = (__pyx_v_tp.shape[0]);
 
-  /* "foms.pyx":12
+  /* "py/foms.pyx":12
  * 
  *     K2 = tp.shape[0]
  *     K1 = fp.shape[0] - K2             # <<<<<<<<<<<<<<
@@ -2260,7 +2260,7 @@ static PyObject *__pyx_pf_4foms_wilcoxon(CYTHON_UNUSED PyObject *__pyx_self, __P
  */
   __pyx_v_K1 = ((__pyx_v_fp.shape[0]) - __pyx_v_K2);
 
-  /* "foms.pyx":14
+  /* "py/foms.pyx":14
  *     K1 = fp.shape[0] - K2
  * 
  *     for k1 in range(K1):             # <<<<<<<<<<<<<<
@@ -2272,7 +2272,7 @@ static PyObject *__pyx_pf_4foms_wilcoxon(CYTHON_UNUSED PyObject *__pyx_self, __P
   for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
     __pyx_v_k1 = __pyx_t_3;
 
-    /* "foms.pyx":15
+    /* "py/foms.pyx":15
  * 
  *     for k1 in range(K1):
  *         for k2 in range(K2):             # <<<<<<<<<<<<<<
@@ -2284,7 +2284,7 @@ static PyObject *__pyx_pf_4foms_wilcoxon(CYTHON_UNUSED PyObject *__pyx_self, __P
     for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
       __pyx_v_k2 = __pyx_t_6;
 
-      /* "foms.pyx":16
+      /* "py/foms.pyx":16
  *     for k1 in range(K1):
  *         for k2 in range(K2):
  *             if fp[k1] < tp[k2]:             # <<<<<<<<<<<<<<
@@ -2314,7 +2314,7 @@ static PyObject *__pyx_pf_4foms_wilcoxon(CYTHON_UNUSED PyObject *__pyx_self, __P
       __pyx_t_10 = (((*((double *) ( /* dim=0 */ (__pyx_v_fp.data + __pyx_t_7 * __pyx_v_fp.strides[0]) ))) < (*((double *) ( /* dim=0 */ (__pyx_v_tp.data + __pyx_t_9 * __pyx_v_tp.strides[0]) )))) != 0);
       if (__pyx_t_10) {
 
-        /* "foms.pyx":17
+        /* "py/foms.pyx":17
  *         for k2 in range(K2):
  *             if fp[k1] < tp[k2]:
  *                 ret += 1.0             # <<<<<<<<<<<<<<
@@ -2323,7 +2323,7 @@ static PyObject *__pyx_pf_4foms_wilcoxon(CYTHON_UNUSED PyObject *__pyx_self, __P
  */
         __pyx_v_ret = (__pyx_v_ret + 1.0);
 
-        /* "foms.pyx":16
+        /* "py/foms.pyx":16
  *     for k1 in range(K1):
  *         for k2 in range(K2):
  *             if fp[k1] < tp[k2]:             # <<<<<<<<<<<<<<
@@ -2333,7 +2333,7 @@ static PyObject *__pyx_pf_4foms_wilcoxon(CYTHON_UNUSED PyObject *__pyx_self, __P
         goto __pyx_L7;
       }
 
-      /* "foms.pyx":18
+      /* "py/foms.pyx":18
  *             if fp[k1] < tp[k2]:
  *                 ret += 1.0
  *             elif fp[k1] == tp[k2]:             # <<<<<<<<<<<<<<
@@ -2363,7 +2363,7 @@ static PyObject *__pyx_pf_4foms_wilcoxon(CYTHON_UNUSED PyObject *__pyx_self, __P
       __pyx_t_10 = (((*((double *) ( /* dim=0 */ (__pyx_v_fp.data + __pyx_t_9 * __pyx_v_fp.strides[0]) ))) == (*((double *) ( /* dim=0 */ (__pyx_v_tp.data + __pyx_t_7 * __pyx_v_tp.strides[0]) )))) != 0);
       if (__pyx_t_10) {
 
-        /* "foms.pyx":19
+        /* "py/foms.pyx":19
  *                 ret += 1.0
  *             elif fp[k1] == tp[k2]:
  *                 ret += 0.5             # <<<<<<<<<<<<<<
@@ -2372,7 +2372,7 @@ static PyObject *__pyx_pf_4foms_wilcoxon(CYTHON_UNUSED PyObject *__pyx_self, __P
  */
         __pyx_v_ret = (__pyx_v_ret + 0.5);
 
-        /* "foms.pyx":18
+        /* "py/foms.pyx":18
  *             if fp[k1] < tp[k2]:
  *                 ret += 1.0
  *             elif fp[k1] == tp[k2]:             # <<<<<<<<<<<<<<
@@ -2384,7 +2384,7 @@ static PyObject *__pyx_pf_4foms_wilcoxon(CYTHON_UNUSED PyObject *__pyx_self, __P
     }
   }
 
-  /* "foms.pyx":20
+  /* "py/foms.pyx":20
  *             elif fp[k1] == tp[k2]:
  *                 ret += 0.5
  *     ret /= (K1 * K2)             # <<<<<<<<<<<<<<
@@ -2398,7 +2398,7 @@ static PyObject *__pyx_pf_4foms_wilcoxon(CYTHON_UNUSED PyObject *__pyx_self, __P
   }
   __pyx_v_ret = (__pyx_v_ret / __pyx_t_1);
 
-  /* "foms.pyx":22
+  /* "py/foms.pyx":22
  *     ret /= (K1 * K2)
  * 
  *     return ret             # <<<<<<<<<<<<<<
@@ -2412,7 +2412,7 @@ static PyObject *__pyx_pf_4foms_wilcoxon(CYTHON_UNUSED PyObject *__pyx_self, __P
   __pyx_t_11 = 0;
   goto __pyx_L0;
 
-  /* "foms.pyx":6
+  /* "py/foms.pyx":6
  * from libc.stdio cimport printf
  * 
  * def wilcoxon(double [:] fp, double [:] tp):             # <<<<<<<<<<<<<<
@@ -2423,7 +2423,7 @@ static PyObject *__pyx_pf_4foms_wilcoxon(CYTHON_UNUSED PyObject *__pyx_self, __P
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_11);
-  __Pyx_AddTraceback("foms.wilcoxon", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("py.foms.wilcoxon", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __PYX_XDEC_MEMVIEW(&__pyx_v_fp, 1);
@@ -2433,7 +2433,7 @@ static PyObject *__pyx_pf_4foms_wilcoxon(CYTHON_UNUSED PyObject *__pyx_self, __P
   return __pyx_r;
 }
 
-/* "foms.pyx":25
+/* "py/foms.pyx":25
  * 
  * 
  * def wAfroc(double [:,::1] nl, double [:,::1] ll, long [:] perCase, double [:,:] lesWghtDistr):             # <<<<<<<<<<<<<<
@@ -2442,9 +2442,9 @@ static PyObject *__pyx_pf_4foms_wilcoxon(CYTHON_UNUSED PyObject *__pyx_self, __P
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_4foms_3wAfroc(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_4foms_3wAfroc = {"wAfroc", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_4foms_3wAfroc, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_4foms_3wAfroc(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_2py_4foms_3wAfroc(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_2py_4foms_3wAfroc = {"wAfroc", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_2py_4foms_3wAfroc, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_2py_4foms_3wAfroc(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   __Pyx_memviewslice __pyx_v_nl = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_ll = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_perCase = { 0, 0, { 0 }, { 0 }, { 0 } };
@@ -2517,18 +2517,18 @@ static PyObject *__pyx_pw_4foms_3wAfroc(PyObject *__pyx_self, PyObject *__pyx_ar
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("wAfroc", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 25, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("foms.wAfroc", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("py.foms.wAfroc", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_4foms_2wAfroc(__pyx_self, __pyx_v_nl, __pyx_v_ll, __pyx_v_perCase, __pyx_v_lesWghtDistr);
+  __pyx_r = __pyx_pf_2py_4foms_2wAfroc(__pyx_self, __pyx_v_nl, __pyx_v_ll, __pyx_v_perCase, __pyx_v_lesWghtDistr);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_4foms_2wAfroc(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_nl, __Pyx_memviewslice __pyx_v_ll, __Pyx_memviewslice __pyx_v_perCase, __Pyx_memviewslice __pyx_v_lesWghtDistr) {
+static PyObject *__pyx_pf_2py_4foms_2wAfroc(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_nl, __Pyx_memviewslice __pyx_v_ll, __Pyx_memviewslice __pyx_v_perCase, __Pyx_memviewslice __pyx_v_lesWghtDistr) {
   double __pyx_v_ret;
   double __pyx_v_fp;
   int __pyx_v_K1;
@@ -2561,7 +2561,7 @@ static PyObject *__pyx_pf_4foms_2wAfroc(CYTHON_UNUSED PyObject *__pyx_self, __Py
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("wAfroc", 0);
 
-  /* "foms.pyx":29
+  /* "py/foms.pyx":29
  * #def wAfroc(double [:,::1] nl, double [:,::1] ll, long [:] perCase):
  *     cdef:
  *         double ret = 0.0             # <<<<<<<<<<<<<<
@@ -2570,7 +2570,7 @@ static PyObject *__pyx_pf_4foms_2wAfroc(CYTHON_UNUSED PyObject *__pyx_self, __Py
  */
   __pyx_v_ret = 0.0;
 
-  /* "foms.pyx":33
+  /* "py/foms.pyx":33
  *         int K1, K2, k1, k2, maxNL, maxLL, l1, l2
  * 
  *     K2    = ll.shape[0]             # <<<<<<<<<<<<<<
@@ -2579,7 +2579,7 @@ static PyObject *__pyx_pf_4foms_2wAfroc(CYTHON_UNUSED PyObject *__pyx_self, __Py
  */
   __pyx_v_K2 = (__pyx_v_ll.shape[0]);
 
-  /* "foms.pyx":34
+  /* "py/foms.pyx":34
  * 
  *     K2    = ll.shape[0]
  *     maxLL = ll.shape[1]             # <<<<<<<<<<<<<<
@@ -2588,7 +2588,7 @@ static PyObject *__pyx_pf_4foms_2wAfroc(CYTHON_UNUSED PyObject *__pyx_self, __Py
  */
   __pyx_v_maxLL = (__pyx_v_ll.shape[1]);
 
-  /* "foms.pyx":35
+  /* "py/foms.pyx":35
  *     K2    = ll.shape[0]
  *     maxLL = ll.shape[1]
  *     K1    = nl.shape[0] - K2             # <<<<<<<<<<<<<<
@@ -2597,7 +2597,7 @@ static PyObject *__pyx_pf_4foms_2wAfroc(CYTHON_UNUSED PyObject *__pyx_self, __Py
  */
   __pyx_v_K1 = ((__pyx_v_nl.shape[0]) - __pyx_v_K2);
 
-  /* "foms.pyx":36
+  /* "py/foms.pyx":36
  *     maxLL = ll.shape[1]
  *     K1    = nl.shape[0] - K2
  *     maxNL = nl.shape[1]             # <<<<<<<<<<<<<<
@@ -2606,7 +2606,7 @@ static PyObject *__pyx_pf_4foms_2wAfroc(CYTHON_UNUSED PyObject *__pyx_self, __Py
  */
   __pyx_v_maxNL = (__pyx_v_nl.shape[1]);
 
-  /* "foms.pyx":40
+  /* "py/foms.pyx":40
  *     #printf("maxNL = %d, maxLL = %d\n", maxNL, maxLL)
  * 
  *     for k1 in range(K1):             # <<<<<<<<<<<<<<
@@ -2618,7 +2618,7 @@ static PyObject *__pyx_pf_4foms_2wAfroc(CYTHON_UNUSED PyObject *__pyx_self, __Py
   for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
     __pyx_v_k1 = __pyx_t_3;
 
-    /* "foms.pyx":41
+    /* "py/foms.pyx":41
  * 
  *     for k1 in range(K1):
  *         fp = -10e6             # <<<<<<<<<<<<<<
@@ -2627,7 +2627,7 @@ static PyObject *__pyx_pf_4foms_2wAfroc(CYTHON_UNUSED PyObject *__pyx_self, __Py
  */
     __pyx_v_fp = -10e6;
 
-    /* "foms.pyx":42
+    /* "py/foms.pyx":42
  *     for k1 in range(K1):
  *         fp = -10e6
  *         for l1 in range(maxNL):             # <<<<<<<<<<<<<<
@@ -2639,7 +2639,7 @@ static PyObject *__pyx_pf_4foms_2wAfroc(CYTHON_UNUSED PyObject *__pyx_self, __Py
     for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
       __pyx_v_l1 = __pyx_t_6;
 
-      /* "foms.pyx":44
+      /* "py/foms.pyx":44
  *         for l1 in range(maxNL):
  *             #printf("k1 = %d, l1 = %d, nl[k1][l1] = %f\n", k1, l1, nl[k1][l1])
  *             if nl[k1][l1] > fp:  # capture the highest value             # <<<<<<<<<<<<<<
@@ -2664,7 +2664,7 @@ static PyObject *__pyx_pf_4foms_2wAfroc(CYTHON_UNUSED PyObject *__pyx_self, __Py
       __pyx_t_10 = (((*((double *) ( /* dim=1 */ ((char *) (((double *) ( /* dim=0 */ (__pyx_v_nl.data + __pyx_t_7 * __pyx_v_nl.strides[0]) )) + __pyx_t_8)) ))) > __pyx_v_fp) != 0);
       if (__pyx_t_10) {
 
-        /* "foms.pyx":45
+        /* "py/foms.pyx":45
  *             #printf("k1 = %d, l1 = %d, nl[k1][l1] = %f\n", k1, l1, nl[k1][l1])
  *             if nl[k1][l1] > fp:  # capture the highest value
  *                 fp = nl[k1][l1]             # <<<<<<<<<<<<<<
@@ -2688,7 +2688,7 @@ static PyObject *__pyx_pf_4foms_2wAfroc(CYTHON_UNUSED PyObject *__pyx_self, __Py
         }
         __pyx_v_fp = (*((double *) ( /* dim=1 */ ((char *) (((double *) ( /* dim=0 */ (__pyx_v_nl.data + __pyx_t_8 * __pyx_v_nl.strides[0]) )) + __pyx_t_7)) )));
 
-        /* "foms.pyx":44
+        /* "py/foms.pyx":44
  *         for l1 in range(maxNL):
  *             #printf("k1 = %d, l1 = %d, nl[k1][l1] = %f\n", k1, l1, nl[k1][l1])
  *             if nl[k1][l1] > fp:  # capture the highest value             # <<<<<<<<<<<<<<
@@ -2698,7 +2698,7 @@ static PyObject *__pyx_pf_4foms_2wAfroc(CYTHON_UNUSED PyObject *__pyx_self, __Py
       }
     }
 
-    /* "foms.pyx":46
+    /* "py/foms.pyx":46
  *             if nl[k1][l1] > fp:  # capture the highest value
  *                 fp = nl[k1][l1]
  *         for k2 in range(K2):             # <<<<<<<<<<<<<<
@@ -2710,7 +2710,7 @@ static PyObject *__pyx_pf_4foms_2wAfroc(CYTHON_UNUSED PyObject *__pyx_self, __Py
     for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
       __pyx_v_k2 = __pyx_t_6;
 
-      /* "foms.pyx":47
+      /* "py/foms.pyx":47
  *                 fp = nl[k1][l1]
  *         for k2 in range(K2):
  *             for l2 in range(perCase[k2]):             # <<<<<<<<<<<<<<
@@ -2732,7 +2732,7 @@ static PyObject *__pyx_pf_4foms_2wAfroc(CYTHON_UNUSED PyObject *__pyx_self, __Py
       for (__pyx_t_9 = 0; __pyx_t_9 < __pyx_t_12; __pyx_t_9+=1) {
         __pyx_v_l2 = __pyx_t_9;
 
-        /* "foms.pyx":49
+        /* "py/foms.pyx":49
  *             for l2 in range(perCase[k2]):
  *                 #printf("k2 = %d, perCase[k2] = %d, l2 = %d, ll[k2][l2] = %f, lesWghtDistr[perCase[k2]-1, l2] = %f\n", k2, perCase[k2], l2, ll[k2][l2], lesWghtDistr[perCase[k2]-1, l2])
  *                 if fp < ll[k2,l2]:             # <<<<<<<<<<<<<<
@@ -2757,7 +2757,7 @@ static PyObject *__pyx_pf_4foms_2wAfroc(CYTHON_UNUSED PyObject *__pyx_self, __Py
         __pyx_t_10 = ((__pyx_v_fp < (*((double *) ( /* dim=1 */ ((char *) (((double *) ( /* dim=0 */ (__pyx_v_ll.data + __pyx_t_7 * __pyx_v_ll.strides[0]) )) + __pyx_t_8)) )))) != 0);
         if (__pyx_t_10) {
 
-          /* "foms.pyx":50
+          /* "py/foms.pyx":50
  *                 #printf("k2 = %d, perCase[k2] = %d, l2 = %d, ll[k2][l2] = %f, lesWghtDistr[perCase[k2]-1, l2] = %f\n", k2, perCase[k2], l2, ll[k2][l2], lesWghtDistr[perCase[k2]-1, l2])
  *                 if fp < ll[k2,l2]:
  *                     ret += 1.0*(lesWghtDistr[perCase[k2]-1, l2])             # <<<<<<<<<<<<<<
@@ -2791,7 +2791,7 @@ static PyObject *__pyx_pf_4foms_2wAfroc(CYTHON_UNUSED PyObject *__pyx_self, __Py
           }
           __pyx_v_ret = (__pyx_v_ret + (1.0 * (*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_lesWghtDistr.data + __pyx_t_7 * __pyx_v_lesWghtDistr.strides[0]) ) + __pyx_t_14 * __pyx_v_lesWghtDistr.strides[1]) )))));
 
-          /* "foms.pyx":49
+          /* "py/foms.pyx":49
  *             for l2 in range(perCase[k2]):
  *                 #printf("k2 = %d, perCase[k2] = %d, l2 = %d, ll[k2][l2] = %f, lesWghtDistr[perCase[k2]-1, l2] = %f\n", k2, perCase[k2], l2, ll[k2][l2], lesWghtDistr[perCase[k2]-1, l2])
  *                 if fp < ll[k2,l2]:             # <<<<<<<<<<<<<<
@@ -2801,7 +2801,7 @@ static PyObject *__pyx_pf_4foms_2wAfroc(CYTHON_UNUSED PyObject *__pyx_self, __Py
           goto __pyx_L12;
         }
 
-        /* "foms.pyx":51
+        /* "py/foms.pyx":51
  *                 if fp < ll[k2,l2]:
  *                     ret += 1.0*(lesWghtDistr[perCase[k2]-1, l2])
  *                 elif fp == ll[k2,l2]:             # <<<<<<<<<<<<<<
@@ -2826,7 +2826,7 @@ static PyObject *__pyx_pf_4foms_2wAfroc(CYTHON_UNUSED PyObject *__pyx_self, __Py
         __pyx_t_10 = ((__pyx_v_fp == (*((double *) ( /* dim=1 */ ((char *) (((double *) ( /* dim=0 */ (__pyx_v_ll.data + __pyx_t_8 * __pyx_v_ll.strides[0]) )) + __pyx_t_14)) )))) != 0);
         if (__pyx_t_10) {
 
-          /* "foms.pyx":52
+          /* "py/foms.pyx":52
  *                     ret += 1.0*(lesWghtDistr[perCase[k2]-1, l2])
  *                 elif fp == ll[k2,l2]:
  *                     ret += 0.5*(lesWghtDistr[perCase[k2]-1, l2])             # <<<<<<<<<<<<<<
@@ -2860,7 +2860,7 @@ static PyObject *__pyx_pf_4foms_2wAfroc(CYTHON_UNUSED PyObject *__pyx_self, __Py
           }
           __pyx_v_ret = (__pyx_v_ret + (0.5 * (*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_lesWghtDistr.data + __pyx_t_8 * __pyx_v_lesWghtDistr.strides[0]) ) + __pyx_t_7 * __pyx_v_lesWghtDistr.strides[1]) )))));
 
-          /* "foms.pyx":51
+          /* "py/foms.pyx":51
  *                 if fp < ll[k2,l2]:
  *                     ret += 1.0*(lesWghtDistr[perCase[k2]-1, l2])
  *                 elif fp == ll[k2,l2]:             # <<<<<<<<<<<<<<
@@ -2873,7 +2873,7 @@ static PyObject *__pyx_pf_4foms_2wAfroc(CYTHON_UNUSED PyObject *__pyx_self, __Py
     }
   }
 
-  /* "foms.pyx":53
+  /* "py/foms.pyx":53
  *                 elif fp == ll[k2,l2]:
  *                     ret += 0.5*(lesWghtDistr[perCase[k2]-1, l2])
  *     ret /= (K1 * K2)             # <<<<<<<<<<<<<<
@@ -2887,7 +2887,7 @@ static PyObject *__pyx_pf_4foms_2wAfroc(CYTHON_UNUSED PyObject *__pyx_self, __Py
   }
   __pyx_v_ret = (__pyx_v_ret / __pyx_t_1);
 
-  /* "foms.pyx":55
+  /* "py/foms.pyx":55
  *     ret /= (K1 * K2)
  * 
  *     return ret             # <<<<<<<<<<<<<<
@@ -2899,7 +2899,7 @@ static PyObject *__pyx_pf_4foms_2wAfroc(CYTHON_UNUSED PyObject *__pyx_self, __Py
   __pyx_t_15 = 0;
   goto __pyx_L0;
 
-  /* "foms.pyx":25
+  /* "py/foms.pyx":25
  * 
  * 
  * def wAfroc(double [:,::1] nl, double [:,::1] ll, long [:] perCase, double [:,:] lesWghtDistr):             # <<<<<<<<<<<<<<
@@ -2910,7 +2910,7 @@ static PyObject *__pyx_pf_4foms_2wAfroc(CYTHON_UNUSED PyObject *__pyx_self, __Py
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_15);
-  __Pyx_AddTraceback("foms.wAfroc", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("py.foms.wAfroc", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __PYX_XDEC_MEMVIEW(&__pyx_v_nl, 1);
@@ -16062,7 +16062,7 @@ static PyBufferProcs __pyx_tp_as_buffer_array = {
 
 static PyTypeObject __pyx_type___pyx_array = {
   PyVarObject_HEAD_INIT(0, 0)
-  "foms.array", /*tp_name*/
+  "py.foms.array", /*tp_name*/
   sizeof(struct __pyx_array_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc_array, /*tp_dealloc*/
@@ -16184,7 +16184,7 @@ static PyMethodDef __pyx_methods_Enum[] = {
 
 static PyTypeObject __pyx_type___pyx_MemviewEnum = {
   PyVarObject_HEAD_INIT(0, 0)
-  "foms.Enum", /*tp_name*/
+  "py.foms.Enum", /*tp_name*/
   sizeof(struct __pyx_MemviewEnum_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc_Enum, /*tp_dealloc*/
@@ -16448,7 +16448,7 @@ static PyBufferProcs __pyx_tp_as_buffer_memoryview = {
 
 static PyTypeObject __pyx_type___pyx_memoryview = {
   PyVarObject_HEAD_INIT(0, 0)
-  "foms.memoryview", /*tp_name*/
+  "py.foms.memoryview", /*tp_name*/
   sizeof(struct __pyx_memoryview_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc_memoryview, /*tp_dealloc*/
@@ -16589,7 +16589,7 @@ static struct PyGetSetDef __pyx_getsets__memoryviewslice[] = {
 
 static PyTypeObject __pyx_type___pyx_memoryviewslice = {
   PyVarObject_HEAD_INIT(0, 0)
-  "foms._memoryviewslice", /*tp_name*/
+  "py.foms._memoryviewslice", /*tp_name*/
   sizeof(struct __pyx_memoryviewslice_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc__memoryviewslice, /*tp_dealloc*/
@@ -16752,7 +16752,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_enumerate, __pyx_k_enumerate, sizeof(__pyx_k_enumerate), 0, 0, 1, 1},
   {&__pyx_n_s_error, __pyx_k_error, sizeof(__pyx_k_error), 0, 0, 1, 1},
   {&__pyx_n_s_flags, __pyx_k_flags, sizeof(__pyx_k_flags), 0, 0, 1, 1},
-  {&__pyx_n_s_foms, __pyx_k_foms, sizeof(__pyx_k_foms), 0, 0, 1, 1},
   {&__pyx_kp_s_foms_pyx, __pyx_k_foms_pyx, sizeof(__pyx_k_foms_pyx), 0, 0, 1, 0},
   {&__pyx_n_s_format, __pyx_k_format, sizeof(__pyx_k_format), 0, 0, 1, 1},
   {&__pyx_n_s_fortran, __pyx_k_fortran, sizeof(__pyx_k_fortran), 0, 0, 1, 1},
@@ -16785,6 +16784,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_pack, __pyx_k_pack, sizeof(__pyx_k_pack), 0, 0, 1, 1},
   {&__pyx_n_s_perCase, __pyx_k_perCase, sizeof(__pyx_k_perCase), 0, 0, 1, 1},
   {&__pyx_n_s_pickle, __pyx_k_pickle, sizeof(__pyx_k_pickle), 0, 0, 1, 1},
+  {&__pyx_n_s_py_foms, __pyx_k_py_foms, sizeof(__pyx_k_py_foms), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_PickleError, __pyx_k_pyx_PickleError, sizeof(__pyx_k_pyx_PickleError), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_checksum, __pyx_k_pyx_checksum, sizeof(__pyx_k_pyx_checksum), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_getbuffer, __pyx_k_pyx_getbuffer, sizeof(__pyx_k_pyx_getbuffer), 0, 0, 1, 1},
@@ -17030,7 +17030,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__18);
   __Pyx_GIVEREF(__pyx_tuple__18);
 
-  /* "foms.pyx":6
+  /* "py/foms.pyx":6
  * from libc.stdio cimport printf
  * 
  * def wilcoxon(double [:] fp, double [:] tp):             # <<<<<<<<<<<<<<
@@ -17042,7 +17042,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__19);
   __pyx_codeobj__20 = (PyObject*)__Pyx_PyCode_New(2, 0, 7, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__19, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_foms_pyx, __pyx_n_s_wilcoxon, 6, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__20)) __PYX_ERR(0, 6, __pyx_L1_error)
 
-  /* "foms.pyx":25
+  /* "py/foms.pyx":25
  * 
  * 
  * def wAfroc(double [:,::1] nl, double [:,::1] ll, long [:] perCase, double [:,:] lesWghtDistr):             # <<<<<<<<<<<<<<
@@ -17435,14 +17435,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_foms) {
+  if (__pyx_module_is_main_py__foms) {
     if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name_2, __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "foms")) {
-      if (unlikely(PyDict_SetItemString(modules, "foms", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "py.foms")) {
+      if (unlikely(PyDict_SetItemString(modules, "py.foms", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -17463,31 +17463,31 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "foms.pyx":6
+  /* "py/foms.pyx":6
  * from libc.stdio cimport printf
  * 
  * def wilcoxon(double [:] fp, double [:] tp):             # <<<<<<<<<<<<<<
  *     cdef:
  *         double ret = 0.0
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_4foms_1wilcoxon, NULL, __pyx_n_s_foms); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 6, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_2py_4foms_1wilcoxon, NULL, __pyx_n_s_py_foms); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 6, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_wilcoxon, __pyx_t_1) < 0) __PYX_ERR(0, 6, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "foms.pyx":25
+  /* "py/foms.pyx":25
  * 
  * 
  * def wAfroc(double [:,::1] nl, double [:,::1] ll, long [:] perCase, double [:,:] lesWghtDistr):             # <<<<<<<<<<<<<<
  * 
  * #def wAfroc(double [:,::1] nl, double [:,::1] ll, long [:] perCase):
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_4foms_3wAfroc, NULL, __pyx_n_s_foms); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 25, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_2py_4foms_3wAfroc, NULL, __pyx_n_s_py_foms); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 25, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_wAfroc, __pyx_t_1) < 0) __PYX_ERR(0, 25, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "foms.pyx":1
+  /* "py/foms.pyx":1
  * #from cpython.array cimport array             # <<<<<<<<<<<<<<
  * # import numpy as np
  * # cimport numpy as np
@@ -17657,11 +17657,11 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_1);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init foms", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init py.foms", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_CLEAR(__pyx_m);
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init foms");
+    PyErr_SetString(PyExc_ImportError, "init py.foms");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();

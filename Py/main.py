@@ -102,3 +102,6 @@ import numpy as np
 #pv = UtilPseudoValues(ds, FOM = "wAfroc")
 #dse = DfExtractDataset(ds, trts= [0], rdrs = [0,1,2,3])
 
+
+# ds = DfReadDataFile("../Py/extdata/JT.xlsx")
+# stNow = StSignificanceTesting(ds, FOM = "wAfroc")

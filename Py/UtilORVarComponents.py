@@ -92,9 +92,8 @@ def testJackKnife(ds, FOM):
             #                                 FOM)
             jkFomValues[i, j, :] = JackKnifeArr(x, y, perCase, FOM)
             toc = time.perf_counter()
-            if (i == 0) & (j == 0):
-                print(f"Loop time is {toc - tic:0.4f} seconds")
-            pass
+            # if (i == 0) & (j == 0):
+            #     print(f"Loop time is {toc - tic:0.4f} seconds")
 
     return jkFomValues
 
@@ -127,10 +126,8 @@ def UtilPseudoValues(ds, FOM):
             #jkFomValues[i][j][:] = JackKnifeList(list(x), list(y), list(perCase), FOM)
             jkFomValues[i, j, :] = JackKnifeArr(x, y, perCase, FOM)
             toc = time.perf_counter()
-            if (i == 0) & (j == 0):
-                print(f"Loop time is {toc - tic:0.4f} seconds")
-            # for k in range(K):
-            #     jkPseudoValues[i][j][k]  = (fom.values[i, j] * K - jkFomValues[i][j][k] * (K-1))
+            # if (i == 0) & (j == 0):
+            #     print(f"Loop time is {toc - tic:0.4f} seconds")
             jkPseudoValues[i, j, :] = (
                 fom[i, j] * K - jkFomValues[i, j, :] * (K-1))
             pass
