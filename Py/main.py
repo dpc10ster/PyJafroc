@@ -103,9 +103,9 @@ import numpy as np
 #dse = DfExtractDataset(ds, trts= [0], rdrs = [0,1,2,3])
 
 
-# ds = DfReadDataFile("../Py/extdata/JT.xlsx")
-# stNow = StSignificanceTesting(ds, FOM = "wAfroc")
+ds = DfReadDataFile("../Py/extdata/JT.xlsx")
+stNow = StSignificanceTesting(ds, FOM = "wAfroc")
 
 
-ds = DfReadDataFile("extdata/JT.xlsx")
-foms = UtilFigureOfMerit(ds, "wAfroc1")
+# ds = DfReadDataFile("extdata/JT.xlsx")
+# foms = UtilFigureOfMerit(ds, "wAfroc1")

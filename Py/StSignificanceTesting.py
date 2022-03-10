@@ -153,6 +153,8 @@ def StSignificanceTesting(ds, FOM = "wAfroc", analysisOption = "RRRC", \
     
     I = len(ds[0][:,0,0,0])
     J = len(ds[0][0,:,0,0])
+    trtNames = ["trt" + s for s in ds[5]]
+    rdrNames = ["rdr" + s for s in ds[6]]
     
     if J == 1:
         analysisOption = "FRRC" 
@@ -161,8 +163,9 @@ def StSignificanceTesting(ds, FOM = "wAfroc", analysisOption = "RRRC", \
     pass
 
     foms = UtilFigureOfMerit(ds, FOM)
+    foms = pd.DataFrame(foms, index = trtNames, columns = rdrNames)
     fomsMeansEchMod = foms.mean(axis=1) # row means
-    trtMeans = pd.DataFrame({"Estimate": fomsMeansEchMod})
+    trtMeans = pd.DataFrame({"Estimate": fomsMeansEchMod}, index = trtNames)
     
     ANOVA = UtilORVarComponents(ds)
     
@@ -184,7 +187,6 @@ def StSignificanceTesting(ds, FOM = "wAfroc", analysisOption = "RRRC", \
     
     pass
 
-# list(FOMs.keys())[0]
     if analysisOption == "RRRC":
         RRRC = ORSummaryRRRC(ds, FOMs, ANOVA, alpha, diffTRName)
         return [FOMs, ANOVA, RRRC]
