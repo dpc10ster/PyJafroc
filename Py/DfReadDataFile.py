@@ -347,7 +347,7 @@ def DfFroc2Roc(ds):
     tp[tp == -np.inf] = 0
     ds1[0] = fp
     ds1[1] = tp
-    ds1[2] = pd.Series([1] * K2)
+    ds1[2] = np.array([1] * K2)
     ds1[3] = [1]
     ds1[4] = "ROC"
     pass

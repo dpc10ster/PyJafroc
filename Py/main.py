@@ -105,3 +105,7 @@ import numpy as np
 
 # ds = DfReadDataFile("../Py/extdata/JT.xlsx")
 # stNow = StSignificanceTesting(ds, FOM = "wAfroc")
+
+
+ds = DfReadDataFile("extdata/JT.xlsx")
+foms = UtilFigureOfMerit(ds, "wAfroc1")

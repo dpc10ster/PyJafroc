@@ -2,7 +2,7 @@ import unittest
 import pickle
 import numpy as np 
 import numpy.testing as nptesting
-from DfReadDataFile import DfReadDataFile, DfExtractDataset
+from DfReadDataFile import DfReadDataFile, DfExtractDataset, DfFroc2Roc
 from UtilFigureOfMerit import UtilFigureOfMerit
 from StSignificanceTesting import StSignificanceTesting, StSignificanceTestingCadVsRad
 import os
@@ -16,11 +16,10 @@ class tests(unittest.TestCase):
         dsNow = DfReadDataFile(fileName) 
         if not os.path.exists(save_fn):
             pickle.dump( dsNow, open( save_fn, "wb" ) )
-            print("writing good value ds file for frocCr.xlsx")            
+            print("writing good values for test_df_read")            
         else:
             dsGood = pickle.load(open( save_fn, "rb" ))
             for i in range(len(dsNow)):
-# https://stackoverflow.com/questions/3302949/best-way-to-assert-for-numpy-array-equality
                 self.assertIsNone(nptesting.assert_array_equal(dsNow[i], dsGood[i]))
 
     def test_df_extract(self):
@@ -31,21 +30,53 @@ class tests(unittest.TestCase):
         dsNow = DfExtractDataset(ds, trts= [0], rdrs = [0,1,2,3]) 
         if not os.path.exists(save_fn):
             pickle.dump( dsNow, open( save_fn, "wb" ) )
-            print("writing goodValues for DfExtractDataset")            
+            print("writing goodValues for test_df_extract")            
         else:
             dsGood = pickle.load(open( save_fn, "rb" ))
             for i in range(len(dsNow)):
                 self.assertIsNone(nptesting.assert_array_equal(dsNow[i], dsGood[i]))
 
-    def test_util_fom(self):
-        fileName = "../Py/extdata/Froc.xlsx"
+    def test_util_fom_Wilcoxon(self):
+        # see JT_R_Py_Foms.xlsx for cross check with R code
+        fileName = "../Py/extdata/JT.xlsx"
         fn = os.path.splitext(os.path.basename(fileName))[0]
-        save_fn = "goodValues/foms/ds_" + fn + ".p"
+        save_fn = "goodValues/foms/Wilcoxon_" + fn + ".p"
+        ds = DfReadDataFile(fileName)
+        ds = DfFroc2Roc(ds)
+        fomNow = UtilFigureOfMerit(ds, FOM = "Wilcoxon") 
+        if not os.path.exists(save_fn):
+            pickle.dump( fomNow, open( save_fn, "wb" ) )
+            print("writing goodValues for test_util_fom_Wilcoxon")            
+        else:
+            fomGood = pickle.load(open( save_fn, "rb" ))
+            for i in range(len(fomNow)):
+                self.assertIsNone(nptesting.assert_array_equal(fomNow[i], fomGood[i]))
+
+    def test_util_fom_wAfroc(self):
+        # see JT_R_Py_Foms.xlsx for cross check with R code
+        fileName = "../Py/extdata/JT.xlsx"
+        fn = os.path.splitext(os.path.basename(fileName))[0]
+        save_fn = "goodValues/foms/wAfroc_" + fn + ".p"
         ds = DfReadDataFile(fileName)
         fomNow = UtilFigureOfMerit(ds, FOM = "wAfroc") 
         if not os.path.exists(save_fn):
             pickle.dump( fomNow, open( save_fn, "wb" ) )
-            print("writing goodValues for UtilFigureOfMerit")            
+            print("writing goodValues for test_util_fom_wAfroc")            
+        else:
+            fomGood = pickle.load(open( save_fn, "rb" ))
+            for i in range(len(fomNow)):
+                self.assertIsNone(nptesting.assert_array_equal(fomNow[i], fomGood[i]))
+
+    def test_util_fom_wAfroc1(self):
+        # see JT_R_Py_Foms.xlsx for cross check with R code
+        fileName = "../Py/extdata/JT.xlsx"
+        fn = os.path.splitext(os.path.basename(fileName))[0]
+        save_fn = "goodValues/foms/wAfroc1_" + fn + ".p"
+        ds = DfReadDataFile(fileName)
+        fomNow = UtilFigureOfMerit(ds, FOM = "wAfroc1") 
+        if not os.path.exists(save_fn):
+            pickle.dump( fomNow, open( save_fn, "wb" ) )
+            print("writing goodValues for test_util_fom_wAfroc1")            
         else:
             fomGood = pickle.load(open( save_fn, "rb" ))
             for i in range(len(fomNow)):
@@ -54,12 +85,12 @@ class tests(unittest.TestCase):
     def test_st_significance_cad(self):
         fileName = "../Py/extdata/NicoRadRoc.xlsx"
         fn = os.path.splitext(os.path.basename(fileName))[0]
-        save_fn = "goodValues/foms/ds_" + fn + ".p"
+        save_fn = "goodValues/foms/Wilcoxon_" + fn + ".p"
         ds = DfReadDataFile(fileName, DataType="ROC")
         stNow = StSignificanceTestingCadVsRad(ds, FOM = "Wilcoxon") 
         if not os.path.exists(save_fn):
             pickle.dump( stNow, open( save_fn, "wb" ) )
-            print("writing goodValues for StSignificanceTestingCadVsRad")            
+            print("writing goodValues for test_st_significance_cad")            
         else:
             stGood = pickle.load(open( save_fn, "rb" ))
             x = np.array(stNow)[0,:]
@@ -74,7 +105,7 @@ class tests(unittest.TestCase):
         stNow = StSignificanceTesting(ds, FOM = "wAfroc") 
         if not os.path.exists(save_fn):
             pickle.dump( stNow, open( save_fn, "wb" ) )
-            print("writing goodValues for StSignificanceTesting")            
+            print("writing goodValues for test_st_significance")            
         else:
             stGood = pickle.load(open( save_fn, "rb" ))
             strtests = ["foms", "trtMeans", "trtMeanDiffs"]

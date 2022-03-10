@@ -73,6 +73,12 @@ def FigureOfMerit_ij(nl, ll, perCase, FOM):
         maxLL = len(ll[0][:])
         lesWghtDistr = UtilLesionWeightsDistr(maxLL)
         return foms.wAfroc(nl,ll,np.array(perCase),lesWghtDistr)
+    elif FOM == "wAfroc1":
+        nl = np.where(nl == -np.inf, -1e7, nl) 
+        ll = np.where(ll == -np.inf, -1e7, ll) 
+        maxLL = len(ll[0][:])
+        lesWghtDistr = UtilLesionWeightsDistr(maxLL)
+        return foms.wAfroc1(nl,ll,np.array(perCase),lesWghtDistr)
     else: 
         sys.exit("unsupported value of FOM")
 
@@ -87,7 +93,7 @@ def UtilFigureOfMerit(ds, FOM):
 
     FOM: str
         The figure of merit or measure of performance, the
-        default is "wAFROC", or "Wilcoxon"
+        default is "wAFROC", "wAFROC1", or "Wilcoxon"
 
     Returns
     -------
@@ -96,13 +102,13 @@ def UtilFigureOfMerit(ds, FOM):
     """
     DataType = ds[4]
 
-    if not FOM in ["wAfroc", "Wilcoxon"]:
-        sys.exit('FOM NOT in ["wAfroc", "Wilcoxon"]')
+    if not FOM in ["wAfroc", "wAfroc1", "Wilcoxon"]:
+        sys.exit('FOM NOT in ["wAfroc", "wAfroc1", "Wilcoxon"]')
 
     if (FOM != "Wilcoxon") & (DataType == "ROC"):
         sys.exit("ROC dataset requires FOM = 'Wilcoxon'")
-    if (FOM != "wAfroc") & (DataType == "FROC"):
-        sys.exit("FROC dataset requires FOM = 'wAfroc'")
+    if (FOM not in ["wAfroc", "wAfroc1"]) & (DataType == "FROC"):
+        sys.exit("FROC dataset requires FOM = 'wAfroc' or 'wAfroc1'")
         
     NL = ds[0]
     LL = ds[1]
