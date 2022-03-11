@@ -153,6 +153,7 @@ def StSignificanceTesting(ds, FOM = "wAfroc", analysisOption = "RRRC", \
     
     I = len(ds[0][:,0,0,0])
     J = len(ds[0][0,:,0,0])
+    # https://www.tutorialsteacher.com/python/python-list-comprehension
     trtNames = ["trt" + s for s in ds[5]]
     rdrNames = ["rdr" + s for s in ds[6]]
     
