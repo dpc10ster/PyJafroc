@@ -155,11 +155,14 @@ def StSignificanceTesting(ds, FOM = "wAfroc", analysisOption = "RRRC", alpha = 0
     
     I = len(ds[0][:,0,0,0])
     J = len(ds[0][0,:,0,0])
-    DataType = ds[4]
     # https://www.tutorialsteacher.com/python/python-list-comprehension
     trtNames = ["trt" + s for s in ds[5]]
     rdrNames = ["rdr" + s for s in ds[6]]
-    
+    DataType = ds[4]
+    if (DataType == "ROC") & (FOM != "Wilcoxon"):
+        sys.exit("ROC dataset requires Wilcoxon FOM")    
+    if (DataType == "FROC") & (FOM == "Wilcoxon"):
+        sys.exit("FROC dataset cannot have Wilcoxon FOM")    
     if J == 1:
         analysisOption = "FRRC" 
     elif I == 1: 
