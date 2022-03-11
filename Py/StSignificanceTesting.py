@@ -5,6 +5,7 @@ from UtilORVarComponents import UtilORVarComponents, UtilPseudoValues, FOMijk2Va
 import math
 import numpy as np
 from scipy.stats import f, t
+import statistics
 
 
 
@@ -124,17 +125,18 @@ def ORSummaryRRFC(ds, FOMs, ANOVA, alpha, diffTRName):
 
 
 
-def StSignificanceTesting(ds, FOM = "wAfroc", analysisOption = "RRRC", \
-                          alpha = 0.05):
+def StSignificanceTesting(ds, FOM = "wAfroc", analysisOption = "RRRC", alpha = 0.05):
     """
     Parameters
     ----------
     ds : list
         dataset object
-    FOM : str
-        The figure of merit or measure of performance, 
-        "wAfroc" (default) or "Wilcoxon"
         
+    FOM: str
+        The figure of merit, default "wAfroc" for FROC data, or "wAfroc1" 
+        (for FROC dataset with mainly diseased cases) or "Wilcoxon", 
+        for ROC dataset.
+
     analysisOption : str
         The desired generalization: random reader random case
         "RRRC" (default), random reader fixed case "RRFC" or 
@@ -153,6 +155,7 @@ def StSignificanceTesting(ds, FOM = "wAfroc", analysisOption = "RRRC", \
     
     I = len(ds[0][:,0,0,0])
     J = len(ds[0][0,:,0,0])
+    DataType = ds[4]
     # https://www.tutorialsteacher.com/python/python-list-comprehension
     trtNames = ["trt" + s for s in ds[5]]
     rdrNames = ["rdr" + s for s in ds[6]]
@@ -205,14 +208,14 @@ def StSignificanceTesting(ds, FOM = "wAfroc", analysisOption = "RRRC", \
 
 
 
-def MyVar(x):
-    avgx = np.mean(x)
-    var = 0.0
-    N = len(x)
-    for i in range(N):
-        var += (x[i] - avgx) ** 2
-    var /=  (N - 1)
-    return var
+# def MyVar(x):
+#     avgx = np.mean(x)
+#     var = 0.0
+#     N = len(x)
+#     for i in range(N):
+#         var += (x[i] - avgx) ** 2
+#     var /=  (N - 1)
+#     return var
     
     
 
@@ -260,8 +263,9 @@ def StSignificanceTestingCadVsRad(ds, FOM = "wAfroc", alpha = 0.05):
     # numpy variance function is incorrect
     # https://stackoverflow.com/questions/11236951/output-values-differ-between-r-and-python#comment14763812_11236993
     x = thetajc[0][list(range(1,J))]
-    #varRad = np.var(x) * J1/(J1-1)
-    varRad = MyVar(x)
+    #varRad = np.var(x) * J1/(J1-1) # uses incorrect definition
+    #varRad = MyVar(x) # my implementation
+    varRad = statistics.stdev(x)**2 # this uses correct definition of stdev
                        
     
     MSR = 0 # 1st un-numbered equation on page 607

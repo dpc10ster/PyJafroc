@@ -82,15 +82,12 @@ def DfCheckDataFile(FileName):
 # TODO: Add checks for duplicate rows in LL sheet
 # =============================================================================
 
-def DfReadDataFile(FileName, DataType="FROC"):
+def DfReadDataFile(FileName):
     """
     Parameters
     ----------
     FileName : str
         JAFROC format Excel input file name
-
-    DataType : str
-        The type of data, "FROC" (default) or "ROC"
 
     Returns
     -------
@@ -143,8 +140,7 @@ def DfReadDataFile(FileName, DataType="FROC"):
     perCase = np.array(x.value_counts(sort=False))
 
     maxLL = max(perCase)
-    if (maxLL > 1) & (DataType != "FROC"):
-        sys.exit("Only FROC data can have more than one lesion per case")
+    minLL = min(perCase)
     relWeights = np.array([1/maxLL] * maxLL)
 
 # =============================================================================
@@ -181,8 +177,15 @@ def DfReadDataFile(FileName, DataType="FROC"):
                           'ModalityID',
                           'CaseID']).transform(len).max()[0]
 
-    if (maxNL > 1) & (DataType != "FROC"):
-        sys.exit("Only FROC data can have more than one NL per case")
+    minNL = dfNL.groupby(['ReaderID',
+                          'ModalityID',
+                          'CaseID']).transform(len).min()[0]
+
+    if (maxNL == 1) & (maxLL == 1) & (minNL == 1) & (minLL == 1):
+        DataType = "ROC"
+    else: 
+        DataType = "FROC"
+        
 
     NL = np.full((I, J, K, maxNL), -np.inf)
     indxNl = 0

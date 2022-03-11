@@ -36,7 +36,7 @@ import numpy as np
 #st = StSignificanceTesting(ds)
 
 ## test2
-# ds = DfReadDataFile("extdata/NicoRadRoc.xlsx", DataType="ROC")
+# ds = DfReadDataFile("extdata/NicoRadRoc.xlsx")
 # dse = DfExtractDataset(ds, rdrs = [0,1,2,3])
 # Stats = StSignificanceTestingCadVsRad(dse, FOM = "Wilcoxon")
 
@@ -45,16 +45,16 @@ import numpy as np
 # st = StSignificanceTesting(ds)
 
 ## test4
-# ds = DfReadDataFile("extdata/NicoRadRoc.xlsx", DataType="ROC")
+# ds = DfReadDataFile("extdata/NicoRadRoc.xlsx")
 # Stats = StSignificanceTestingCadVsRad(ds, FOM = "Wilcoxon")
 
 ## test5 c interface to fom functions
-# ds = DfReadDataFile("extdata/toyFiles/ROC/rocCr.xlsx", DataType="ROC")
+# ds = DfReadDataFile("extdata/toyFiles/ROC/rocCr.xlsx")
 # fom = UtilFigureOfMerit(ds, "Wilcoxon")
 
 
 ## test6 check c fom function with NicoRad dataset
-#ds = DfReadDataFile("extdata/NicoRadRoc.xlsx", DataType="ROC")
+#ds = DfReadDataFile("extdata/NicoRadRoc.xlsx")
 #dse = DfExtractDataset(ds, rdrs = [0,1,2,3])
 #Stats = StSignificanceTestingCadVsRad(ds, FOM = "Wilcoxon")
 
@@ -82,7 +82,7 @@ import numpy as np
 
 ## test9 after changes to DfRead.. function
 #ds = DfReadDataFile("extdata/toyFiles/FROC/frocCr.xlsx")
-#ds = DfReadDataFile("extdata/toyFiles/ROC/rocCr.xlsx", DataType="ROC")
+#ds = DfReadDataFile("extdata/toyFiles/ROC/rocCr.xlsx")
 #ds = DfReadDataFile('extdata/toyFiles/FROC/bad/frocCr-01.xlsx') # unordered TRUTH
 #ds = DfReadDataFile('extdata/toyFiles/FROC/bad/frocCr-02.xlsx') # unordered TRUTH
 #ds = DfReadDataFile('extdata/toyFiles/FROC/bad/frocCr-03.xlsx') # incorrect sheet names
@@ -104,8 +104,8 @@ import numpy as np
 
 
 ds = DfReadDataFile("../Py/extdata/JT.xlsx")
-stNow = StSignificanceTesting(ds, FOM = "wAfroc")
-
+#stNow = StSignificanceTesting(ds, FOM = "wAfroc")
+# st = StSignificanceTestingCadVsRad(ds, FOM = "wAfroc")
 
 # ds = DfReadDataFile("extdata/JT.xlsx")
 # foms = UtilFigureOfMerit(ds, "wAfroc1")

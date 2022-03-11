@@ -86,7 +86,7 @@ class tests(unittest.TestCase):
         fileName = "../Py/extdata/NicoRadRoc.xlsx"
         fn = os.path.splitext(os.path.basename(fileName))[0]
         save_fn = "goodValues/foms/Wilcoxon_" + fn + ".p"
-        ds = DfReadDataFile(fileName, DataType="ROC")
+        ds = DfReadDataFile(fileName)
         stNow = StSignificanceTestingCadVsRad(ds, FOM = "Wilcoxon") 
         if not os.path.exists(save_fn):
             pickle.dump( stNow, open( save_fn, "wb" ) )
@@ -101,7 +101,7 @@ class tests(unittest.TestCase):
         fileName = "../Py/extdata/JT.xlsx"
         fn = os.path.splitext(os.path.basename(fileName))[0]
         save_fn = "goodValues/st/ds_" + fn + ".p"
-        ds = DfReadDataFile(fileName, DataType="FROC")
+        ds = DfReadDataFile(fileName)
         stNow = StSignificanceTesting(ds, FOM = "wAfroc") 
         if not os.path.exists(save_fn):
             pickle.dump( stNow, open( save_fn, "wb" ) )
