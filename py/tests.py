@@ -95,7 +95,7 @@ class tests(unittest.TestCase):
             stGood = pickle.load(open( save_fn, "rb" ))
             x = np.array(stNow)[0,:]
             y = np.array(stGood)[0,:]
-            self.assertIsNone(nptesting.assert_array_equal(x, y))
+            self.assertIsNone(nptesting.assert_allclose(x, y))
                 
     def test_st_significance(self):
         fileName = "../Py/extdata/JT.xlsx"
@@ -110,7 +110,7 @@ class tests(unittest.TestCase):
             stGood = pickle.load(open( save_fn, "rb" ))
             strtests = ["foms", "trtMeans", "trtMeanDiffs"]
             for i in range(len(strtests)):
-                self.assertIsNone(nptesting.assert_array_equal(\
+                self.assertIsNone(nptesting.assert_allclose(\
                                                                stNow[0][strtests[i]], \
                                                                stGood[0][strtests[i]]))
             #strtests = ["TRAnova", "VarCom", "IndividualTrt", "IndividualRdr"]
