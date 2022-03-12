@@ -1,6 +1,6 @@
-{\rtf1\ansi\ansicpg1252\cocoartf2636
-\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fmodern\fcharset0 Courier;\f1\froman\fcharset0 Times-Roman;\f2\froman\fcharset0 Times-Bold;
-\f3\fnil\fcharset0 Monaco;}
+{\rtf1\ansi\ansicpg1252\cocoartf2513
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fmodern\fcharset0 Courier;\f1\fnil\fcharset0 Monaco;\f2\froman\fcharset0 Times-Roman;
+\f3\froman\fcharset0 Times-Bold;}
 {\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red0\green0\blue0;}
 {\*\expandedcolortbl;;\cssrgb\c0\c0\c0;\csgray\c0;}
 \margl1440\margr1440\vieww11520\viewh8400\viewkind0
@@ -8,41 +8,34 @@
 \pard\pardeftab720\partightenfactor0
 
 \f0\fs26 \cf0 \expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec2 conda create -n spyder-env -y\
+conda create -n spyder-env -y\
 conda activate spyder-env\
 conda install spyder-kernels openpyxl -y\
-\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\fs20 \cf3 \kerning1\expnd0\expndtw0 \CocoaLigature0 \
+conda install -c conda-forge spyder-kernels\
+conda install pandas\
+conda install scipy\
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs26 \cf0 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
 \
 \pard\pardeftab720\sa240\partightenfactor0
 
-\f1\fs24 \cf0 \strokec2 Finally, you need to connect Spyder to this environment by changing Spyder\'92s default Python interpreter. To do this, click the name of the current environment in the status bar, and then click Change default environment in Preferences.\
+\f2\fs24 \cf0 Finally, you need to connect Spyder to this environment by changing Spyder\'92s default Python interpreter. To do this, click the name of the current environment in the status bar, and then click Change default environment in Preferences.\
 This will open the Preferences dialog in the Python interpreter section. Here, select the option Use the following Python interpreter, and use the dropdown below to select your preferred environment. If it is not listed, use the text box or the Select file button to enter the path to the Python interpreter you want to use.\
 \pard\pardeftab720\sa240\partightenfactor0
 
-\f2\b \cf0 Your new environment will only be listed here if you installed Miniconda (or Anaconda) in the default path as shown in the table above.
-\f1\b0 \
+\f3\b \cf0 Your new environment will only be listed here if you installed Miniconda (or Anaconda) in the default path as shown in the table above.
+\f2\b0 \
 Click Restart kernel in the Consoles menu for this change to take effect.\
 \
 \
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural\partightenfactor0
 
-\f3\fs20 \cf3 \kerning1\expnd0\expndtw0 \CocoaLigature0 \outl0\strokewidth0 Last login: Fri Mar 11 19:49:06 on ttys000\
-(base) Dev@Devs-MacBook-Pro ~ % conda create -n spyder-env -y\
-conda activate spyder-env\
-conda install spyder-kernels openpyxl -y\
-Collecting package metadata (current_repodata.json): done\
-Solving environment: done\
-\
-## Package Plan ##\
-\
-  environment location: /Users/Dev/opt/anaconda3/envs/spyder-env\
-\
-\
-\
-Preparing transaction: done\
-Verifying transaction: done\
-Executing transaction: done\
-#\
+\f1\fs20 \cf3 \kerning1\expnd0\expndtw0 \CocoaLigature0 #\
 # To activate this environment, use\
 #\
 #     $ conda activate spyder-env\
@@ -51,108 +44,9 @@ Executing transaction: done\
 #\
 #     $ conda deactivate\
 \
-Collecting package metadata (current_repodata.json): done\
-Solving environment: done\
-\
-## Package Plan ##\
-\
-  environment location: /Users/Dev/opt/anaconda3/envs/spyder-env\
-\
-  added / updated specs:\
-    - openpyxl\
-    - spyder-kernels\
 \
 \
-The following packages will be downloaded:\
-\
-    package                    |            build\
-    ---------------------------|-----------------\
-    asttokens-2.0.5            |     pyhd3eb1b0_0          20 KB\
-    executing-0.8.3            |     pyhd3eb1b0_0          18 KB\
-    ipykernel-6.9.1            |   py39hecd8cb5_0         202 KB\
-    ipython-8.1.1              |   py39hecd8cb5_0         962 KB\
-    jupyter_client-7.1.2       |     pyhd3eb1b0_0          93 KB\
-    jupyter_core-4.9.2         |   py39hecd8cb5_0          79 KB\
-    pure_eval-0.2.2            |     pyhd3eb1b0_0          14 KB\
-    spyder-kernels-2.2.0       |   py39hecd8cb5_0         115 KB\
-    stack_data-0.2.0           |     pyhd3eb1b0_0          22 KB\
-    ------------------------------------------------------------\
-                                           Total:         1.5 MB\
-\
-The following NEW packages will be INSTALLED:\
-\
-  appnope            pkgs/main/osx-64::appnope-0.1.2-py39hecd8cb5_1001\
-  asttokens          pkgs/main/noarch::asttokens-2.0.5-pyhd3eb1b0_0\
-  backcall           pkgs/main/noarch::backcall-0.2.0-pyhd3eb1b0_0\
-  ca-certificates    pkgs/main/osx-64::ca-certificates-2022.2.1-hecd8cb5_0\
-  certifi            pkgs/main/osx-64::certifi-2021.10.8-py39hecd8cb5_2\
-  cloudpickle        pkgs/main/noarch::cloudpickle-2.0.0-pyhd3eb1b0_0\
-  debugpy            pkgs/main/osx-64::debugpy-1.5.1-py39he9d5cce_0\
-  decorator          pkgs/main/noarch::decorator-5.1.1-pyhd3eb1b0_0\
-  entrypoints        pkgs/main/osx-64::entrypoints-0.3-py39hecd8cb5_0\
-  et_xmlfile         pkgs/main/osx-64::et_xmlfile-1.1.0-py39hecd8cb5_0\
-  executing          pkgs/main/noarch::executing-0.8.3-pyhd3eb1b0_0\
-  ipykernel          pkgs/main/osx-64::ipykernel-6.9.1-py39hecd8cb5_0\
-  ipython            pkgs/main/osx-64::ipython-8.1.1-py39hecd8cb5_0\
-  jedi               pkgs/main/osx-64::jedi-0.18.1-py39hecd8cb5_1\
-  jupyter_client     pkgs/main/noarch::jupyter_client-7.1.2-pyhd3eb1b0_0\
-  jupyter_core       pkgs/main/osx-64::jupyter_core-4.9.2-py39hecd8cb5_0\
-  libcxx             pkgs/main/osx-64::libcxx-12.0.0-h2f01273_0\
-  libffi             pkgs/main/osx-64::libffi-3.3-hb1e8313_2\
-  libsodium          pkgs/main/osx-64::libsodium-1.0.18-h1de35cc_0\
-  matplotlib-inline  pkgs/main/noarch::matplotlib-inline-0.1.2-pyhd3eb1b0_2\
-  ncurses            pkgs/main/osx-64::ncurses-6.3-hca72f7f_2\
-  nest-asyncio       pkgs/main/noarch::nest-asyncio-1.5.1-pyhd3eb1b0_0\
-  openpyxl           pkgs/main/noarch::openpyxl-3.0.9-pyhd3eb1b0_0\
-  openssl            pkgs/main/osx-64::openssl-1.1.1m-hca72f7f_0\
-  parso              pkgs/main/noarch::parso-0.8.3-pyhd3eb1b0_0\
-  pexpect            pkgs/main/noarch::pexpect-4.8.0-pyhd3eb1b0_3\
-  pickleshare        pkgs/main/noarch::pickleshare-0.7.5-pyhd3eb1b0_1003\
-  pip                pkgs/main/osx-64::pip-21.2.4-py39hecd8cb5_0\
-  prompt-toolkit     pkgs/main/noarch::prompt-toolkit-3.0.20-pyhd3eb1b0_0\
-  ptyprocess         pkgs/main/noarch::ptyprocess-0.7.0-pyhd3eb1b0_2\
-  pure_eval          pkgs/main/noarch::pure_eval-0.2.2-pyhd3eb1b0_0\
-  pygments           pkgs/main/noarch::pygments-2.11.2-pyhd3eb1b0_0\
-  python             pkgs/main/osx-64::python-3.9.7-h88f2d9e_1\
-  python-dateutil    pkgs/main/noarch::python-dateutil-2.8.2-pyhd3eb1b0_0\
-  pyzmq              pkgs/main/osx-64::pyzmq-22.3.0-py39he9d5cce_2\
-  readline           pkgs/main/osx-64::readline-8.1.2-hca72f7f_1\
-  setuptools         pkgs/main/osx-64::setuptools-58.0.4-py39hecd8cb5_0\
-  six                pkgs/main/noarch::six-1.16.0-pyhd3eb1b0_1\
-  spyder-kernels     pkgs/main/osx-64::spyder-kernels-2.2.0-py39hecd8cb5_0\
-  sqlite             pkgs/main/osx-64::sqlite-3.37.2-h707629a_0\
-  stack_data         pkgs/main/noarch::stack_data-0.2.0-pyhd3eb1b0_0\
-  tk                 pkgs/main/osx-64::tk-8.6.11-h7bc2e8c_0\
-  tornado            pkgs/main/osx-64::tornado-6.1-py39h9ed2024_0\
-  traitlets          pkgs/main/noarch::traitlets-5.1.1-pyhd3eb1b0_0\
-  tzdata             pkgs/main/noarch::tzdata-2021e-hda174b7_0\
-  wcwidth            pkgs/main/noarch::wcwidth-0.2.5-pyhd3eb1b0_0\
-  wheel              pkgs/main/noarch::wheel-0.37.1-pyhd3eb1b0_0\
-  wurlitzer          pkgs/main/osx-64::wurlitzer-3.0.2-py39hecd8cb5_0\
-  xz                 pkgs/main/osx-64::xz-5.2.5-h1de35cc_0\
-  zeromq             pkgs/main/osx-64::zeromq-4.3.4-h23ab428_0\
-  zlib               pkgs/main/osx-64::zlib-1.2.11-h4dc903c_4\
-\
-\
-\
-Downloading and Extracting Packages\
-stack_data-0.2.0     | 22 KB     | ##################################### | 100% \
-jupyter_client-7.1.2 | 93 KB     | ##################################### | 100% \
-jupyter_core-4.9.2   | 79 KB     | ##################################### | 100% \
-pure_eval-0.2.2      | 14 KB     | ##################################### | 100% \
-asttokens-2.0.5      | 20 KB     | ##################################### | 100% \
-ipython-8.1.1        | 962 KB    | ##################################### | 100% \
-ipykernel-6.9.1      | 202 KB    | ##################################### | 100% \
-executing-0.8.3      | 18 KB     | ##################################### | 100% \
-spyder-kernels-2.2.0 | 115 KB    | ##################################### | 100% \
-Preparing transaction: done\
-Verifying transaction: done\
-Executing transaction: done\
-(spyder-env) Dev@Devs-MacBook-Pro ~ % \
-\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural\partightenfactor0
 conda activate spyder-env\
 conda deactivate\
-conda install -c conda-forge spyder-kernels\
-conda install pandas\
-conda install scipy\
 }
