@@ -1,10 +1,5 @@
-from setuptools import setup
-setup(name='Py',
-version='0.0.1',
-description='Installation of package pjafroc',
-url='#',
-author='Dev Chakraborty',
-author_email='dpc10ster@gmail.com',
-license='MIT',
-packages=['Py'],
-zip_safe=False)
+from distutils.core import setup
+from Cython.Build import cythonize
+
+setup(ext_modules=cythonize(module_list = "foms.pyx", 
+compiler_directives={'language_level' : "3"}))

@@ -1,8 +1,6 @@
-Py/__pycache__/**
 __pycache__/**
-.Rproj.user
-.Rhistory
+.ipynb_checkpoints/
 __.spyproject__/**
-Py/env/**
+env/**
 
 
