@@ -3,6 +3,6 @@ __pycache__/**
 .Rproj.user
 .Rhistory
 __.spyproject__/**
-env/**
+Py/env/**
 
 
