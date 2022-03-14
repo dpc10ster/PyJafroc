@@ -36,9 +36,9 @@ import numpy as np
 #st = StSignificanceTesting(ds)
 
 ## test2
-# ds = DfReadDataFile("extdata/NicoRadRoc.xlsx")
+ds = DfReadDataFile("extdata/NicoRadRoc.xlsx")
 # dse = DfExtractDataset(ds, rdrs = [0,1,2,3])
-# Stats = StSignificanceTestingCadVsRad(dse, FOM = "Wilcoxon")
+stats = StSignificanceTestingCadVsRad(ds, FOM = "Wilcoxon")
 
 ## test 3
 # ds = DfReadDataFile("extdata/JT2Rdrs.xlsx")
@@ -103,7 +103,7 @@ import numpy as np
 #dse = DfExtractDataset(ds, trts= [0], rdrs = [0,1,2,3])
 
 
-ds = DfReadDataFile("../Py/extdata/JT.xlsx")
+#ds = DfReadDataFile("../Py/extdata/JT.xlsx")
 #stNow = StSignificanceTesting(ds, FOM = "wAfroc")
 # st = StSignificanceTestingCadVsRad(ds, FOM = "wAfroc")
 
