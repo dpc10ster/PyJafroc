@@ -10,7 +10,7 @@ import os
 
 class tests(unittest.TestCase):
     def test_df_read(self):
-        fileName = "../Py/extdata/toyFiles/FROC/frocCr.xlsx"
+        fileName = "extdata/toyFiles/FROC/frocCr.xlsx"
         fn = os.path.splitext(os.path.basename(fileName))[0]
         save_fn = "goodValues/DfRead/ds_" + fn + ".p"
         dsNow = DfReadDataFile(fileName) 
@@ -23,7 +23,7 @@ class tests(unittest.TestCase):
                 self.assertIsNone(nptesting.assert_array_equal(dsNow[i], dsGood[i]))
 
     def test_df_extract(self):
-        fileName = "../Py/extdata/Froc.xlsx"
+        fileName = "extdata/Froc.xlsx"
         fn = os.path.splitext(os.path.basename(fileName))[0]
         save_fn = "goodValues/DfExtract/ds_" + fn + ".p"
         ds = DfReadDataFile(fileName)
@@ -38,7 +38,7 @@ class tests(unittest.TestCase):
 
     def test_util_fom_Wilcoxon(self):
         # see JT_R_Py_Foms.xlsx for cross check with R code
-        fileName = "../Py/extdata/JT.xlsx"
+        fileName = "extdata/JT.xlsx"
         fn = os.path.splitext(os.path.basename(fileName))[0]
         save_fn = "goodValues/foms/Wilcoxon_" + fn + ".p"
         ds = DfReadDataFile(fileName)
@@ -54,7 +54,7 @@ class tests(unittest.TestCase):
 
     def test_util_fom_wAfroc(self):
         # see JT_R_Py_Foms.xlsx for cross check with R code
-        fileName = "../Py/extdata/JT.xlsx"
+        fileName = "extdata/JT.xlsx"
         fn = os.path.splitext(os.path.basename(fileName))[0]
         save_fn = "goodValues/foms/wAfroc_" + fn + ".p"
         ds = DfReadDataFile(fileName)
@@ -69,7 +69,7 @@ class tests(unittest.TestCase):
 
     def test_util_fom_wAfroc1(self):
         # see JT_R_Py_Foms.xlsx for cross check with R code
-        fileName = "../Py/extdata/JT.xlsx"
+        fileName = "extdata/JT.xlsx"
         fn = os.path.splitext(os.path.basename(fileName))[0]
         save_fn = "goodValues/foms/wAfroc1_" + fn + ".p"
         ds = DfReadDataFile(fileName)
@@ -83,7 +83,7 @@ class tests(unittest.TestCase):
                 self.assertIsNone(nptesting.assert_array_equal(fomNow[i], fomGood[i]))
 
     def test_st_significance_cad(self):
-        fileName = "../Py/extdata/NicoRadRoc.xlsx"
+        fileName = "extdata/NicoRadRoc.xlsx"
         fn = os.path.splitext(os.path.basename(fileName))[0]
         save_fn = "goodValues/foms/Wilcoxon_" + fn + ".p"
         ds = DfReadDataFile(fileName)
@@ -98,7 +98,7 @@ class tests(unittest.TestCase):
             self.assertIsNone(nptesting.assert_allclose(x, y))
                 
     def test_st_significance(self):
-        fileName = "../Py/extdata/JT.xlsx"
+        fileName = "extdata/JT.xlsx"
         fn = os.path.splitext(os.path.basename(fileName))[0]
         save_fn = "goodValues/st/ds_" + fn + ".p"
         ds = DfReadDataFile(fileName)
@@ -111,8 +111,8 @@ class tests(unittest.TestCase):
             strtests = ["foms", "trtMeans", "trtMeanDiffs"]
             for i in range(len(strtests)):
                 self.assertIsNone(nptesting.assert_allclose(\
-                                                               stNow[0][strtests[i]], \
-                                                               stGood[0][strtests[i]]))
+                                                                stNow[0][strtests[i]], \
+                                                                stGood[0][strtests[i]]))
             #strtests = ["TRAnova", "VarCom", "IndividualTrt", "IndividualRdr"]
             strtests = ["TRAnova", "IndividualTrt", "IndividualRdr"]
             for i in range(len(strtests)):
@@ -133,8 +133,8 @@ class tests(unittest.TestCase):
             strtests = ["FTests", "ciDiffTrt", "ciAvgRdrEachTrt"]
             for i in range(len(strtests)):
                 self.assertIsNone(nptesting.assert_allclose(\
-                                                               stNow[2][strtests[i]], \
-                                                               stGood[2][strtests[i]]))
+                                                                stNow[2][strtests[i]], \
+                                                                stGood[2][strtests[i]]))
 
 
 if __name__ == '__main__':
