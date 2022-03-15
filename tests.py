@@ -112,6 +112,14 @@ class tests(unittest.TestCase):
             y = np.array(stGood)[0,:]
             self.assertIsNone(nptesting.assert_allclose(x, y))
                 
+    def test_st_significance_test_equality_foms(self):
+        ds = DfReadDataFile("extdata/CadFrocData.xlsx", DataType = "FROC")
+        ds1 = DfFroc2Roc(ds)
+        fom1 = UtilFigureOfMerit(ds1, FOM = "Wilcoxon")
+        ds = DfReadDataFile("extdata/NicoRadRoc.xlsx")
+        fom = UtilFigureOfMerit(ds, FOM = "Wilcoxon")
+        self.assertIsNone(nptesting.assert_allclose(fom1, fom))
+                
     def test_st_significance(self):
         fileName = "extdata/JT.xlsx"
         fn = os.path.splitext(os.path.basename(fileName))[0]
