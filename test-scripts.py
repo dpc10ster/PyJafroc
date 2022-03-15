@@ -110,5 +110,5 @@ stats = StSignificanceTestingCadVsRad(ds, FOM = "Wilcoxon")
 # ds = DfReadDataFile("extdata/JT.xlsx")
 # foms = UtilFigureOfMerit(ds, "wAfroc1")
 
-ds2 = DfReadDataFile("extdata/CadFrocData.xlsx", DataType= "FROC")
-statsFroc = StSignificanceTestingCadVsRad(ds2, FOM = "wAfroc")
+# ds2 = DfReadDataFile("extdata/CadFrocData.xlsx", DataType= "FROC")
+# statsFroc = StSignificanceTestingCadVsRad(ds2, FOM = "wAfroc")
