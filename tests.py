@@ -82,15 +82,30 @@ class tests(unittest.TestCase):
             for i in range(len(fomNow)):
                 self.assertIsNone(nptesting.assert_array_equal(fomNow[i], fomGood[i]))
 
-    def test_st_significance_cad(self):
+    def test_st_significance_cad_roc(self):
         fileName = "extdata/NicoRadRoc.xlsx"
         fn = os.path.splitext(os.path.basename(fileName))[0]
-        save_fn = "goodValues/foms/Wilcoxon_" + fn + ".p"
+        save_fn = "goodValues/stCad/Wilcoxon_" + fn + ".p"
         ds = DfReadDataFile(fileName)
         stNow = StSignificanceTestingCadVsRad(ds, FOM = "Wilcoxon") 
         if not os.path.exists(save_fn):
             pickle.dump( stNow, open( save_fn, "wb" ) )
-            print("writing goodValues for test_st_significance_cad")            
+            print("writing goodValues for test_st_significance_cad_roc")            
+        else:
+            stGood = pickle.load(open( save_fn, "rb" ))
+            x = np.array(stNow)[0,:]
+            y = np.array(stGood)[0,:]
+            self.assertIsNone(nptesting.assert_allclose(x, y))
+                
+    def test_st_significance_cad_froc(self):
+        fileName = "extdata/CadFrocData.xlsx"
+        fn = os.path.splitext(os.path.basename(fileName))[0]
+        save_fn = "goodValues/stCad/wAfroc_" + fn + ".p"
+        ds = DfReadDataFile(fileName, DataType = "FROC")
+        stNow = StSignificanceTestingCadVsRad(ds, FOM = "wAfroc") 
+        if not os.path.exists(save_fn):
+            pickle.dump( stNow, open( save_fn, "wb" ) )
+            print("writing goodValues for test_st_significance_cad_froc")            
         else:
             stGood = pickle.load(open( save_fn, "rb" ))
             x = np.array(stNow)[0,:]

@@ -82,7 +82,7 @@ def DfCheckDataFile(FileName):
 # TODO: Add checks for duplicate rows in LL sheet
 # =============================================================================
 
-def DfReadDataFile(FileName):
+def DfReadDataFile(FileName, DataType = None):
     """
     Parameters
     ----------
@@ -180,11 +180,11 @@ def DfReadDataFile(FileName):
     minNL = dfNL.groupby(['ReaderID',
                           'ModalityID',
                           'CaseID']).transform(len).min()[0]
-
-    if (maxNL == 1) & (maxLL == 1) & (minNL == 1) & (minLL == 1):
-        DataType = "ROC"
-    else: 
-        DataType = "FROC"
+    if DataType == None:
+        if (maxNL == 1) & (maxLL == 1) & (minNL == 1) & (minLL == 1):
+            DataType = "ROC"
+        else: 
+            DataType = "FROC"
         
 
     NL = np.full((I, J, K, maxNL), -np.inf)
