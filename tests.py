@@ -11,9 +11,9 @@ import os
 class tests(unittest.TestCase):
     def test_df_read(self):
         fileName = "extdata/toyFiles/FROC/frocCr.xlsx"
+        dsNow = DfReadDataFile(fileName) 
         fn = os.path.splitext(os.path.basename(fileName))[0]
         save_fn = "goodValues/DfRead/ds_" + fn + ".p"
-        dsNow = DfReadDataFile(fileName) 
         if not os.path.exists(save_fn):
             pickle.dump( dsNow, open( save_fn, "wb" ) )
             print("writing good values for test_df_read")            
@@ -24,13 +24,27 @@ class tests(unittest.TestCase):
 
     def test_df_extract(self):
         fileName = "extdata/Froc.xlsx"
-        fn = os.path.splitext(os.path.basename(fileName))[0]
-        save_fn = "goodValues/DfExtract/ds_" + fn + ".p"
         ds = DfReadDataFile(fileName)
         dsNow = DfExtractDataset(ds, trts= [0], rdrs = [0,1,2,3]) 
+        fn = os.path.splitext(os.path.basename(fileName))[0]
+        save_fn = "goodValues/DfExtract/ds_" + fn + ".p"
         if not os.path.exists(save_fn):
             pickle.dump( dsNow, open( save_fn, "wb" ) )
             print("writing goodValues for test_df_extract")            
+        else:
+            dsGood = pickle.load(open( save_fn, "rb" ))
+            for i in range(len(dsNow)):
+                self.assertIsNone(nptesting.assert_array_equal(dsNow[i], dsGood[i]))
+
+    def test_df_froc_roc(self):
+        fileName = "extdata/JT.xlsx"
+        ds = DfReadDataFile(fileName)
+        dsNow = DfFroc2Roc(ds)
+        fn = os.path.splitext(os.path.basename(fileName))[0]
+        save_fn = "goodValues/DF2Roc/ds_" + fn + ".p"
+        if not os.path.exists(save_fn):
+            pickle.dump( dsNow, open( save_fn, "wb" ) )
+            print("writing goodValues for test_df_froc_roc")            
         else:
             dsGood = pickle.load(open( save_fn, "rb" ))
             for i in range(len(dsNow)):

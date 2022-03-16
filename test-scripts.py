@@ -36,9 +36,9 @@ import numpy as np
 #st = StSignificanceTesting(ds)
 
 ## test2
-ds = DfReadDataFile("extdata/NicoRadRoc.xlsx")
+# ds = DfReadDataFile("extdata/NicoRadRoc.xlsx")
 # dse = DfExtractDataset(ds, rdrs = [0,1,2,3])
-stats = StSignificanceTestingCadVsRad(ds, FOM = "Wilcoxon")
+# stats = StSignificanceTestingCadVsRad(ds, FOM = "Wilcoxon")
 
 ## test 3
 # ds = DfReadDataFile("extdata/JT2Rdrs.xlsx")
